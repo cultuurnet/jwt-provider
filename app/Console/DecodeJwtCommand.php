@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
-use CultuurNet\UDB3\Jwt\JwtDecoderService;
+use CultuurNet\UDB3\Jwt\JWTDecoderServiceInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,10 +65,10 @@ class DecodeJwtCommand extends AbstractCommand
     }
 
     /**
-     * @return JwtDecoderService
+     * @return JWTDecoderServiceInterface
      */
     private function getDecoderService()
     {
-        return $this->getService($this->decoderServiceName, JwtDecoderService::class);
+        return $this->getService($this->decoderServiceName, JWTDecoderServiceInterface::class);
     }
 }
