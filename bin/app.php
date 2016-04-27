@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use CultuurNet\UDB3\JwtProvider\Console\GenerateJwtCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -19,5 +20,16 @@ $app->register(
 
 /** @var \Knp\Console\Application $consoleApp */
 $consoleApp = $app['console'];
+
+$consoleApp->add(
+    new GenerateJwtCommand(
+        'jwt.builder',
+        'jwt.signer',
+        'jwt.keys.private',
+        $app['config']['jwt']['iss'],
+        $app['config']['jwt']['exp'],
+        $app['config']['jwt']['nbf']
+    )
+);
 
 $consoleApp->run();
