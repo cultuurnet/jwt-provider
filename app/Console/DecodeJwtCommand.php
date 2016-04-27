@@ -50,6 +50,8 @@ class DecodeJwtCommand extends AbstractCommand
             new StringLiteral($input->getArgument('token'))
         );
 
+        $output->writeln('');
+
         foreach ($token->getClaims() as $claim => $value) {
             $output->writeln("{$claim}: {$value}");
         }

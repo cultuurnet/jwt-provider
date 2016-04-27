@@ -132,7 +132,7 @@ class GenerateJwtCommand extends AbstractCommand
             )
             ->getToken();
 
-        $output->writeln(["JSON Web Token:", $token]);
+        $output->writeln(['', $token]);
     }
 
     /**
