@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
-use Knp\Command\Command;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
@@ -10,7 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateJwtCommand extends Command
+class GenerateJwtCommand extends AbstractCommand
 {
     /**
      * @var string
@@ -107,7 +106,6 @@ class GenerateJwtCommand extends Command
                 InputArgument::REQUIRED,
                 "User's secret"
             );
-
     }
 
     /**
@@ -119,7 +117,9 @@ class GenerateJwtCommand extends Command
     {
         $builder = $this->getBuilder();
         foreach ($input->getArguments() as $claim => $value) {
-            $builder = $builder->set($claim, $value);
+            if ($claim !== 'command') {
+                $builder = $builder->set($claim, $value);
+            }
         }
 
         $token = $builder
@@ -157,22 +157,6 @@ class GenerateJwtCommand extends Command
     private function getKey()
     {
         return $this->getService($this->keyName, Key::class);
-    }
-
-    /**
-     * @param string $name
-     * @param string $expectedType
-     */
-    private function getService($name, $expectedType)
-    {
-        $app = $this->getSilexApplication();
-        $service = $app[$name];
-
-        if (!($service instanceof $expectedType)) {
-            throw new \RuntimeException("{$name} is not of type {$expectedType}.");
-        }
-
-        return $service;
     }
 
     /**

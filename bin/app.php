@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use CultuurNet\UDB3\JwtProvider\Console\DecodeJwtCommand;
 use CultuurNet\UDB3\JwtProvider\Console\GenerateJwtCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -30,6 +31,10 @@ $consoleApp->add(
         $app['config']['jwt']['exp'],
         $app['config']['jwt']['nbf']
     )
+);
+
+$consoleApp->add(
+    new DecodeJwtCommand('jwt.decoder')
 );
 
 $consoleApp->run();

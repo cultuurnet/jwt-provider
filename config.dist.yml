@@ -8,3 +8,5 @@ jwt:
     private:
       file: private.pem
       passphrase: secret
+    public:
+      file: public.pem
