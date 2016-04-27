@@ -1,2 +1,4 @@
 /vendor
 /build
+*.pem
+config.yml
