@@ -8,17 +8,10 @@ use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use ValueObjects\String\String as StringLiteral;
 
 class OAuthController
 {
-    const DESTINATION = 'destination';
-    const AUTHORISATION_ROUTE_NAME = 'uitid.oauth.authorize';
-
-    const OAUTH_TOKEN = 'oauth_token';
-    const OAUTH_VERIFIER = 'oauth_verifier';
-
     /**
      * @var OAuthServiceInterface
      */
@@ -29,10 +22,10 @@ class OAuthController
      */
     private $requestTokenStorage;
 
-    /**
-     * @var UrlGeneratorInterface
+    /** 
+     * @var  OAuthUrlHelper 
      */
-    private $urlGenerator;
+    private $OAuthUrlHelper;
 
     /**
      * @var StringLiteral
@@ -42,14 +35,14 @@ class OAuthController
     public function __construct(
         OAuthServiceInterface $oAuthService,
         RequestTokenStorageInterface $requestTokenStorage,
-        UrlGeneratorInterface $urlGenerator,
+        OAuthUrlHelper $OAuthUrlHelper,
         StringLiteral $defaultDestination = null
     ) {
         $this->oAuthService = $oAuthService;
 
         $this->requestTokenStorage = $requestTokenStorage;
 
-        $this->urlGenerator = $urlGenerator;
+        $this->OAuthUrlHelper = $OAuthUrlHelper;
 
         $this->defaultDestination = $defaultDestination;
     }
@@ -60,7 +53,7 @@ class OAuthController
      */
     public function connect(Request $request)
     {
-        $callbackUrl = $this->createCallbackUrl($request);
+        $callbackUrl = $this->OAuthUrlHelper->createCallbackUrl($request);
 
         $requestToken = $this->oAuthService->getRequestToken($callbackUrl);
         $this->requestTokenStorage->storeRequestToken($requestToken);
@@ -84,53 +77,14 @@ class OAuthController
             // TODO: Set the user information aka access token.
         }
 
-        $destination = $this->getDestination($request);
+        $destination = $this->OAuthUrlHelper->getDestination($request);
         if ($destination) {
             $redirectResponse = new RedirectResponse($destination->toNative());
         } else {
-            $redirectResponse = new RedirectResponse(
-                $this->urlGenerator->generate(
-                    $this->defaultDestination->toNative()
-                )
-            );
+            $redirectResponse = $this->OAuthUrlHelper->createDefaultRedirect($this->defaultDestination);
         }
 
         return $redirectResponse;
-    }
-
-    /**
-     * @param Request $request
-     * @return StringLiteral|null
-     */
-    private function getDestination(Request $request)
-    {
-        $destination = null;
-
-        if ($request->query->get(self::DESTINATION)) {
-            $destination = new StringLiteral(
-                $request->query->get(self::DESTINATION)
-            );
-        }
-
-        return $destination;
-    }
-
-    /**
-     * @param Request $request
-     * @return StringLiteral
-     * @internal param StringLiteral $destination
-     */
-    private function createCallbackUrl(Request $request)
-    {
-        $destination = $this->getDestination($request);
-
-        $url = $this->urlGenerator->generate(
-            self::AUTHORISATION_ROUTE_NAME,
-            [$destination->toNative()],
-            UrlGeneratorInterface::ABSOLUTE_PATH
-        );
-
-        return new StringLiteral($url);
     }
 
     /**
@@ -144,30 +98,13 @@ class OAuthController
     ) {
         $accessToken = null;
 
-        if ($this->hasAccessToken($request, $requestToken)) {
+        if ($this->OAuthUrlHelper->hasAccessToken($request, $requestToken)) {
             $accessToken = $this->oAuthService->getAccessToken(
                 $requestToken,
-                $request->query->get(self::OAUTH_VERIFIER)
+                $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER)
             );
         }
 
         return $accessToken;
-    }
-
-    /**
-     * @param Request $request
-     * @param RequestToken $requestToken
-     * @return bool
-     */
-    private function hasAccessToken(
-        Request $request,
-        RequestToken $requestToken
-    ) {
-        $token = $requestToken->getToken();
-
-        $hasAccessToken = $request->query->get(self::OAUTH_TOKEN) == $token &&
-            $request->query->get(self::OAUTH_VERIFIER);
-
-        return $hasAccessToken;
     }
 }
