@@ -96,15 +96,6 @@ class GenerateJwtCommand extends AbstractCommand
                 'email',
                 InputArgument::REQUIRED,
                 "User's e-mail"
-            )
-            ->addArgument(
-                'token',
-                InputArgument::REQUIRED,
-                "User's token"
-            )->addArgument(
-                'secret',
-                InputArgument::REQUIRED,
-                "User's secret"
             );
     }
 
