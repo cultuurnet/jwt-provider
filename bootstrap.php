@@ -1,5 +1,6 @@
 <?php
 
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Silex\Application;
 
@@ -23,5 +24,7 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
         require __DIR__ . "/bootstrap/{$identifier}.php";
     }
 }
+
+$app->register(new JwtServiceProvider());
 
 return $app;
