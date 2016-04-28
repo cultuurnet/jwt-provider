@@ -30,7 +30,7 @@ class OAuthUrlHelper
      * @param Request $request
      * @return StringLiteral|null
      */
-    public function getDestination(Request $request)
+    private function getDestination(Request $request)
     {
         $destination = null;
 
@@ -41,6 +41,24 @@ class OAuthUrlHelper
         }
 
         return $destination;
+    }
+
+    /**
+     * @param Request $request
+     * @param StringLiteral $defaultDestination
+     * @return RedirectResponse
+     */
+    public function createAuthorizationResponse(
+        Request $request,
+        StringLiteral $defaultDestination
+    ) {
+        $destination = $this->getDestination($request);
+        if ($destination) {
+            $redirectResponse = $this->createRedirect($destination);
+        } else {
+            $redirectResponse = $this->createDefaultRedirect($defaultDestination);
+        }
+        return $redirectResponse;
     }
     
     /**
@@ -81,11 +99,23 @@ class OAuthUrlHelper
      * @param StringLiteral $defaultDestination
      * @return RedirectResponse
      */
-    public function createDefaultRedirect(StringLiteral $defaultDestination) {
+    public function createDefaultRedirect(StringLiteral $defaultDestination)
+    {
+        /* not sure why we need urlGenerator here, but not in createRedirect
+           this is taken from the old implementation */
         return new RedirectResponse(
             $this->urlGenerator->generate(
                 $defaultDestination->toNative()
             )
         );
+    }
+
+    /**
+     * @param StringLiteral $destination
+     * @return RedirectResponse
+     */
+    public function createRedirect(StringLiteral $destination)
+    {
+        return new RedirectResponse($destination->toNative());
     }
 }

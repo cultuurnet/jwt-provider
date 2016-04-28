@@ -1,5 +1,4 @@
 <?php
-
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\ServiceInterface as OAuthServiceInterface;
@@ -22,8 +21,8 @@ class OAuthController
      */
     private $requestTokenStorage;
 
-    /** 
-     * @var  OAuthUrlHelper 
+    /**
+     * @var OAuthUrlHelper
      */
     private $OAuthUrlHelper;
 
@@ -77,14 +76,10 @@ class OAuthController
             // TODO: Set the user information aka access token.
         }
 
-        $destination = $this->OAuthUrlHelper->getDestination($request);
-        if ($destination) {
-            $redirectResponse = new RedirectResponse($destination->toNative());
-        } else {
-            $redirectResponse = $this->OAuthUrlHelper->createDefaultRedirect($this->defaultDestination);
-        }
-
-        return $redirectResponse;
+        return $this->OAuthUrlHelper->createAuthorizationResponse(
+            $request,
+            $this->defaultDestination
+        );
     }
 
     /**
