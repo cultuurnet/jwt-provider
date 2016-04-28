@@ -43,6 +43,9 @@ class OAuthController
 
         $this->OAuthUrlHelper = $OAuthUrlHelper;
 
+        if ($defaultDestination === null) {
+            $defaultDestination = new StringLiteral('/');
+        }
         $this->defaultDestination = $defaultDestination;
     }
 
