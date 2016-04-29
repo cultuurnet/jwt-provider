@@ -28,23 +28,6 @@ class OAuthUrlHelper
 
     /**
      * @param Request $request
-     * @return StringLiteral|null
-     */
-    private function getDestination(Request $request)
-    {
-        $destination = null;
-
-        if ($request->query->get(self::DESTINATION)) {
-            $destination = new StringLiteral(
-                $request->query->get(self::DESTINATION)
-            );
-        }
-
-        return $destination;
-    }
-
-    /**
-     * @param Request $request
      * @param StringLiteral $defaultDestination
      * @return RedirectResponse
      */
@@ -63,19 +46,25 @@ class OAuthUrlHelper
     
     /**
      * @param Request $request
-     * @return StringLiteral
+     * @return StringLiteral|null
      */
     public function createCallbackUrl(Request $request)
     {
+        $callbackUrl = null;
+
         $destination = $this->getDestination($request);
 
-        $url = $this->urlGenerator->generate(
-            self::AUTHORISATION_ROUTE_NAME,
-            [$destination->toNative()],
-            UrlGeneratorInterface::ABSOLUTE_PATH
-        );
+        if ($destination) {
+            $url = $this->urlGenerator->generate(
+                self::AUTHORISATION_ROUTE_NAME,
+                [self::DESTINATION => $destination->toNative()],
+                UrlGeneratorInterface::ABSOLUTE_PATH
+            );
 
-        return new StringLiteral($url);
+            $callbackUrl = new StringLiteral($url);
+        }
+
+        return $callbackUrl;
     }
     
     /**
@@ -83,14 +72,16 @@ class OAuthUrlHelper
      * @param RequestToken $requestToken
      * @return bool
      */
-    public function hasAccessToken(
+    public function hasValidAccessToken(
         Request $request,
         RequestToken $requestToken
     ) {
         $token = $requestToken->getToken();
 
-        $hasAccessToken = $request->query->get(self::OAUTH_TOKEN) == $token &&
-            $request->query->get(self::OAUTH_VERIFIER);
+        $actualToken = $request->query->get(self::OAUTH_TOKEN);
+        $actualVerifier = $request->query->get(self::OAUTH_VERIFIER);
+
+        $hasAccessToken = ($actualToken === $token) && (bool) $actualVerifier;
 
         return $hasAccessToken;
     }
@@ -99,7 +90,7 @@ class OAuthUrlHelper
      * @param StringLiteral $defaultDestination
      * @return RedirectResponse
      */
-    public function createDefaultRedirect(StringLiteral $defaultDestination)
+    private function createDefaultRedirect(StringLiteral $defaultDestination)
     {
         /* not sure why we need urlGenerator here, but not in createRedirect
            this is taken from the old implementation */
@@ -114,8 +105,25 @@ class OAuthUrlHelper
      * @param StringLiteral $destination
      * @return RedirectResponse
      */
-    public function createRedirect(StringLiteral $destination)
+    private function createRedirect(StringLiteral $destination)
     {
         return new RedirectResponse($destination->toNative());
+    }
+
+    /**
+     * @param Request $request
+     * @return StringLiteral|null
+     */
+    private function getDestination(Request $request)
+    {
+        $destination = null;
+
+        if ($request->query->get(self::DESTINATION)) {
+            $destination = new StringLiteral(
+                $request->query->get(self::DESTINATION)
+            );
+        }
+
+        return $destination;
     }
 }

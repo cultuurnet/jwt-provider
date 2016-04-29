@@ -1,95 +1,175 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Silex\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 use ValueObjects\String\String as StringLiteral;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 
 class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var OAuthUrlHelper */
-    private $oauthUrlHelper;
+    const TEST_TOKEN = 'testToken';
+    const TEST_SECRET = 'testSecret';
+    const TEST_VERIFIER = 'testVerifier';
+    const DEFAULT_DESTINATION = 'http://www.default.com';
+
+    /**
+     * @var OAuthUrlHelper
+     */
+    private $oAuthUrlHelper;
     
-    /** @var UrlGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject */
-    private $urlGenerator;
-    
-    /** @var Request|\PHPUnit_Framework_MockObject_MockObject */
-    private $request;
-    
-    /** @var ParameterBag|\PHPUnit_Framework_MockObject_MockObject */
-    private $parameterBag;
-    
-    /** @var StringLiteral */
+    /**
+     * @var StringLiteral
+     */
     private $defaultDestination;
     
-    /** @var RequestToken */
+    /**
+     * @var RequestToken
+     */
     private $requestToken;
-    private $requestTokenToken = 'testToken';
-    private $requestTokenSecret = 'testSecret';
     
     public function setUp()
     {
-        /*
-         * TODO: would it be interesting to not mock urlGenerator, but have an implementation
-        */
-        $this->urlGenerator = $this->getMock(UrlGeneratorInterface::class);
-        $this->requestToken = new RequestToken($this->requestTokenToken, $this->requestTokenSecret);
-        $this->oauthUrlHelper = new OAuthUrlHelper($this->urlGenerator);
-        $this->defaultDestination = new StringLiteral("http://defaultDestination");
+        $this->requestToken = new RequestToken(
+            self::TEST_TOKEN,
+            self::TEST_SECRET
+        );
+        
+        $this->oAuthUrlHelper = new OAuthUrlHelper($this->createUrlGenerator());
+
+        $this->defaultDestination = new StringLiteral(self::DEFAULT_DESTINATION);
     }
     
     /**
      * @test
      */
-    public function it_should_return_default_redirect_for_successful_when_creating_authorization_response()
+    public function it_creates_callback_url_from_request()
     {
-        $redirectedTarget = 'http://redirect.example.com';
-        $this->request = Request::create('http://example.com/?test');
-        $this->urlGenerator->expects($this->once())
-            ->method('generate')->willReturn($redirectedTarget);
-        $this->oauthUrlHelper->createAuthorizationResponse($this->request, $this->defaultDestination);
-    }
-    
-    /**
-     * @test
-     */
-    public function it_should_return_passed_redirect_for_successful_when_creating_authorization_response()
-    {
-        $this->request = Request::create('http://example.com/?destination=test');
-        $this->urlGenerator->expects($this->never())->method('generate');
-        $redirect = $this->oauthUrlHelper->createAuthorizationResponse($this->request, $this->defaultDestination);
-        $this->assertEquals('test', $redirect->getTargetUrl());
+        $request = Request::create(
+            'http://culudb-jwt-provider.dev/culturefeed/oauth/authorize',
+            'GET',
+            ['destination' => 'culudb-silex.dev']
+        );
+        $expectedUrl = '//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
+
+        $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
+
+        $this->assertEquals($expectedUrl, $callbackUrl->toNative());
     }
 
     /**
      * @test
      */
-    public function it_should_create_a_callbackUrl_with_request_parameter()
+    public function it_returns_null_for_callback_url_when_destination_is_missing()
     {
-        $redirectedTarget = 'http://redirect.example.com';
-        $this->request = Request::create('http://example.com/?destination=test');
-        $this->urlGenerator
-            ->expects($this->once())
-            ->method('generate')
-            ->with(
-                OAuthUrlHelper::AUTHORISATION_ROUTE_NAME,
-                ['test'],
-                UrlGeneratorInterface::ABSOLUTE_PATH
-            )
-            ->willReturn($redirectedTarget);
-        $this->oauthUrlHelper->createCallbackUrl($this->request);
+        $request = Request::create(
+            '/culturefeed/oauth/authorize',
+            'GET'
+        );
+
+        $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
+        
+        $this->assertNull($callbackUrl);
     }
     
     /**
      * @test
      */
-    public function it_should_validate_tokens()
+    public function access_token_is_valid_when_token_match_and_verifier_is_present()
     {
-        $redirectedTarget = 'http://redirect.example.com';
-        $this->request = Request::create('http://example.com/?oauth_verifier&oauth_token='.$this->requestTokenToken);
-        $hasAccessToken = $this->oauthUrlHelper->hasAccessToken($this->request, $this->requestToken);
-        echo $hasAccessToken;
+        $url = $this->createUrlWithTokenAndVerifier(
+            self::TEST_TOKEN,
+            self::TEST_VERIFIER
+        );
+
+        $request = Request::create($url);
+
+        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+            $request,
+            $this->requestToken
+        );
+
+        $this->assertTrue($hasValidAccessToken);
+    }
+
+    /**
+     * @test
+     */
+    public function access_token_is_not_valid_when_token_does_not_match()
+    {
+        $url = $this->createUrlWithTokenAndVerifier(
+            'wrongToken',
+            self::TEST_VERIFIER
+        );
+
+        $request = Request::create($url);
+
+        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+            $request,
+            $this->requestToken
+        );
+
+        $this->assertFalse($hasValidAccessToken);
+    }
+
+    /**
+     * @test
+     */
+    public function access_token_is_not_valid_when_verifier_is_missing()
+    {
+        $url = $this->createUrlWithTokenAndVerifier(
+            self::TEST_TOKEN,
+            ''
+        );
+
+        $request = Request::create($url);
+
+        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+            $request,
+            $this->requestToken
+        );
+
+        $this->assertFalse($hasValidAccessToken);
+    }
+
+    /**
+     * @param string $token
+     * @param string $verifier
+     * @return string
+     */
+    private function createUrlWithTokenAndVerifier(
+        $token,
+        $verifier
+    ) {
+        $baseUrl = 'http://www.example.com?';
+
+        if (!empty($token)) {
+            $baseUrl .= 'oauth_token=' . $token . '&';
+        }
+
+        if (!empty($verifier)) {
+            $baseUrl .= 'oauth_verifier=' . $verifier;
+        }
+
+        return $baseUrl;
+    }
+
+    /**
+     * @return UrlGenerator
+     */
+    private function createUrlGenerator()
+    {
+        $routes = new RouteCollection();
+        $routes->add(
+            OAuthUrlHelper::AUTHORISATION_ROUTE_NAME,
+            new Route('/culturefeed/oauth/authorize?destination={destination}')
+        );
+
+        $context = new RequestContext('/');
+
+        return new UrlGenerator($routes, $context);
     }
 }

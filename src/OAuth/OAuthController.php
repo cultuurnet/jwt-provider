@@ -96,7 +96,7 @@ class OAuthController
     ) {
         $accessToken = null;
 
-        if ($this->OAuthUrlHelper->hasAccessToken($request, $requestToken)) {
+        if ($this->OAuthUrlHelper->hasValidAccessToken($request, $requestToken)) {
             $accessToken = $this->oAuthService->getAccessToken(
                 $requestToken,
                 $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER)
