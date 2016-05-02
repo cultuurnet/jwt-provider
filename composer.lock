@@ -128,12 +128,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "1c288fb790c6158124532eae0ba8ab650eb244a9"
+                "reference": "0c56f025d9cf0dea595ec11db0d9d1742c6b8bd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/1c288fb790c6158124532eae0ba8ab650eb244a9",
-                "reference": "1c288fb790c6158124532eae0ba8ab650eb244a9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0c56f025d9cf0dea595ec11db0d9d1742c6b8bd0",
+                "reference": "0c56f025d9cf0dea595ec11db0d9d1742c6b8bd0",
                 "shasum": ""
             },
             "require": {
@@ -169,7 +169,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-02 15:19:44"
+            "time": "2016-05-02 15:39:40"
         },
         {
             "name": "deralex/yaml-config-service-provider",

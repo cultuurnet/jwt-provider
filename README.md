@@ -7,18 +7,18 @@ Silex application that provides JSON Web Tokens
 
 ## CLI commands
 
-### Generating tokens
+### Encoding tokens
 
 ```bash
-$ ./bin/app.php jwt:generate <uid> <nickname> <email> <uitid-token> <uitid-secret>
+$ ./bin/app.php jwt:encode <uid> <nickname> <email>
 ```
 
 Example:
 
 ```bash
-$ ./bin/app.php jwt:generate 1 bert2dotstwice bert@2dotstwice.be 1234567 AZERTY
+$ ./bin/app.php jwt:encode 1 foo foo@bar.com
     
-eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiIxIiwibmljayI6ImJlcnQyZG90c3R3aWNlIiwiZW1haWwiOiJiZXJ0QDJkb3RzdHdpY2UuYmUiLCJ0b2tlbiI6IjEyMzQ1NjciLCJzZWNyZXQiOiJBWkVSVFkiLCJpc3MiOiJodHRwOlwvXC9jdWx1ZGItand0LXByb3ZpZGVyLmRldiIsImV4cCI6MTQ2MTc3NjE1NSwibmJmIjoxNDYxNzcyNTU1fQ.f32PejGZRqIRsN__FC88asBCJFUhRcr2DZwfQGjLA05Gwhio3Ney3wWeXN_GFroTfl5ONhqMi4N1gqOlULvv-2GjC4yP2IPtTiEQfVNmMpgP1BXEN7NEy9-axgRsMCii6qZwTbKs09Q0GJg0FU7nlyf4PLlBb2gkPzp7qttZ9vz0RhTjYvaaGW_kDdhZ4Zah1Go416zAM_cTMkhF_BAeNHLa2Y3t9qFW_UHhPxqDOufThmzJDPoTfqLN1WpleSXDCEROQUErdqLsdUPWD2WIkYC3VIewR5OGjPn3zlKZ-vfPHALD1bXn3guO3wm2Bo6pWjlmgKLRCXcgJPd522LN5w
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9jdWx1ZGItand0LXByb3ZpZGVyLmRldiIsInVpZCI6IjEiLCJuaWNrIjoiZm9vIiwiZW1haWwiOiJmb29AYmFyLmNvbSIsImV4cCI6MTQ2MjIwNjk5NywibmJmIjoxNDYyMjAzMzk3fQ.Agb_I2JYyjy2algqi2KxmvDHIUPC5PtYb2bHjWODO9LYxfpy5XCsl9tL8znXUri2mL5yPLd-AIIZ60JLhCL5fU6nREjF16kYrZ28KknOZxam9iYPHhas4KWf8m3e3iaxlQ9iPkDiYPmjGwUdIJZ_Jh5vG4d_83mWgKW2pk_vD64YDaBZ9RmFEvvALNiFaDbgnKMT777SA2dA-DymIIrFeojzBxntsk3oCpzm3S-UGgFKlEYMkEi8IQblXEUNH9bLbeE1GgYAtEIkBf5OhqoQmrrvbTkYJecyNfqqGOIPCiPUJ0mQlgw89m-nSWms6OkGhNwsXt4-nhO1Nc9r5vmR3Q
 ```
 
 ### Decoding, validating, and verifying tokens
@@ -30,14 +30,12 @@ $ ./bin/app.php jwt:decode <token>
 Example:
 
 ```bash
-$ ./bin/app.php jwt:decode eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiIxIiwibmljayI6ImJlcnQyZG90c3R3aWNlIiwiZW1haWwiOiJiZXJ0QDJkb3RzdHdpY2UuYmUiLCJ0b2tlbiI6IjEyMzQ1NjciLCJzZWNyZXQiOiJBWkVSVFkiLCJpc3MiOiJodHRwOlwvXC9jdWx1ZGItand0LXByb3ZpZGVyLmRldiIsImV4cCI6MTQ2MTc3NTIyMywibmJmIjoxNDYxNzcxNjIzfQ.Ep-V2UtAWEOgK_4DWB1VzS4nHMOb1yRnLGH0A9q1W3TB984Ob_US5E_Fg_aPv5ypbplXJvLaZDWosWA8qOnG51uT1twxnugkdJ2NeivYGxvcpd9KrXs2So65deQNXmAHWAoBEaJsYzUtub8-clKGboRRl724mpzsvwssLqP2tDtjtMP7gvb6bqTFsNh7gGfm0Rxn8Ct_cTsjpqWmHg9-FnYJSc-o9fs0HhBOKPzdzbUZMPNcIY6G7tZddkHHTNrW8ISy8dXwHLsToHs4vBgRsjjqDkDKKk5Fp7JmRdb0ElFJBm_suuzvWCSpxWErFwYjq_S5nyoqsWUs6i98s-qRIA
+$ ./bin/app.php jwt:decode eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9jdWx1ZGItand0LXByb3ZpZGVyLmRldiIsInVpZCI6IjEiLCJuaWNrIjoiZm9vIiwiZW1haWwiOiJmb29AYmFyLmNvbSIsImV4cCI6MTQ2MjIwNjk5NywibmJmIjoxNDYyMjAzMzk3fQ.Agb_I2JYyjy2algqi2KxmvDHIUPC5PtYb2bHjWODO9LYxfpy5XCsl9tL8znXUri2mL5yPLd-AIIZ60JLhCL5fU6nREjF16kYrZ28KknOZxam9iYPHhas4KWf8m3e3iaxlQ9iPkDiYPmjGwUdIJZ_Jh5vG4d_83mWgKW2pk_vD64YDaBZ9RmFEvvALNiFaDbgnKMT777SA2dA-DymIIrFeojzBxntsk3oCpzm3S-UGgFKlEYMkEi8IQblXEUNH9bLbeE1GgYAtEIkBf5OhqoQmrrvbTkYJecyNfqqGOIPCiPUJ0mQlgw89m-nSWms6OkGhNwsXt4-nhO1Nc9r5vmR3Q
     
-uid: 1
-nick: bert2dotstwice
-email: bert@2dotstwice.be
-token: 1234567
-secret: AZERTY
 iss: http://culudb-jwt-provider.dev
+uid: 1
+nick: foo
+email: foo@bar.com
 exp: 1461775223
 nbf: 1461771623
 Valid: ✓
