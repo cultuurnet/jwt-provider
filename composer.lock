@@ -40,12 +40,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "8f25f6e8d30de7afef540718305a7b02b93e3945"
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/8f25f6e8d30de7afef540718305a7b02b93e3945",
-                "reference": "8f25f6e8d30de7afef540718305a7b02b93e3945",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-04-27 15:28:48"
+            "time": "2016-05-02 13:56:20"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -206,7 +206,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
