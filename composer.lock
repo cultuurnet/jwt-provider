@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d0fff88ad9ca91b12d05b784c4ef3105",
-    "content-hash": "65bfe16344b94189568152527bd28706",
+    "hash": "56eb621fd12ab1d723ecab251f2f513a",
+    "content-hash": "7a8ee423d3d6656f10b9e032c2be823b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -80,6 +80,54 @@
             ],
             "description": "Authentication service for CultuurNet web services",
             "time": "2015-08-24 20:22:37"
+        },
+        {
+            "name": "cultuurnet/udb3-jwt",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-jwt.git",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "shasum": ""
+            },
+            "require": {
+                "lcobucci/jwt": "~3.1",
+                "nicolopignatelli/valueobjects": "~2.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "description": "Provides JWT service classes",
+            "time": "2016-05-02 13:56:20"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -366,7 +414,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],

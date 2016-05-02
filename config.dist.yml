@@ -6,3 +6,14 @@ uitid:
     key: ***
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
+
+jwt:
+  iss: http://culudb-jwt-provider.dev
+  nbf: 0
+  exp: 3600
+  keys:
+    private:
+      file: private.pem
+      passphrase: secret
+    public:
+      file: public.pem
