@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "56eb621fd12ab1d723ecab251f2f513a",
-    "content-hash": "7a8ee423d3d6656f10b9e032c2be823b",
+    "hash": "6ff9658509dff06821688b801556bb4e",
+    "content-hash": "815f93478ea0fb644ce921eef92341f1",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -82,20 +82,62 @@
             "time": "2015-08-24 20:22:37"
         },
         {
-            "name": "cultuurnet/udb3-jwt",
+            "name": "cultuurnet/clock",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
+                "url": "https://github.com/cultuurnet/clock.git",
+                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
-                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "url": "https://api.github.com/repos/cultuurnet/clock/zipball/601aaf46375fffd3d3367a866253ca6bb092f584",
+                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\Clock\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                }
+            ],
+            "description": "Clock abstraction library",
+            "time": "2015-06-08 16:12:34"
+        },
+        {
+            "name": "cultuurnet/udb3-jwt",
+            "version": "dev-feature/III-890",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-jwt.git",
+                "reference": "1c288fb790c6158124532eae0ba8ab650eb244a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/1c288fb790c6158124532eae0ba8ab650eb244a9",
+                "reference": "1c288fb790c6158124532eae0ba8ab650eb244a9",
                 "shasum": ""
             },
             "require": {
+                "cultuurnet/clock": "~0.1",
                 "lcobucci/jwt": "~3.1",
                 "nicolopignatelli/valueobjects": "~2.0"
             },
@@ -127,7 +169,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-02 13:56:20"
+            "time": "2016-05-02 15:19:44"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -3195,9 +3237,18 @@
             "time": "2016-03-04 07:55:57"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-890",
+            "package": "cultuurnet/udb3-jwt"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-jwt": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

@@ -12,7 +12,7 @@
         "monolog/monolog": "~1.11",
         "lcobucci/jwt": "~3.1",
         "nicolopignatelli/valueobjects": "~2.0",
-        "cultuurnet/udb3-jwt": "~0.1"
+        "cultuurnet/udb3-jwt": "dev-feature/III-890 as 0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
