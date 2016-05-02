@@ -1,6 +1,7 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use CultuurNet\Auth\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use ValueObjects\String\String as StringLiteral;
@@ -20,27 +21,47 @@ class OAuthUrlHelper
      */
     private $urlGenerator;
 
+    /**
+     * @var DestinationModifierInterface
+     */
+    private $destinationModifier;
+
     public function __construct(
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        DestinationModifierInterface $destinationModifier = null
     ) {
         $this->urlGenerator = $urlGenerator;
+
+        $this->destinationModifier = $destinationModifier;
     }
 
     /**
      * @param Request $request
      * @param StringLiteral $defaultDestination
+     * @param User $user
      * @return RedirectResponse
      */
     public function createAuthorizationResponse(
         Request $request,
-        StringLiteral $defaultDestination
+        StringLiteral $defaultDestination,
+        User $user
     ) {
         $destination = $this->getDestination($request);
-        if ($destination) {
-            $redirectResponse = $this->createRedirect($destination);
-        } else {
-            $redirectResponse = $this->createDefaultRedirect($defaultDestination);
+
+        $realDestination = $destination ? $destination : $defaultDestination;
+        if ($this->destinationModifier) {
+            $realDestination = $this->destinationModifier->modify(
+                $realDestination,
+                $user
+            );
         }
+
+        if ($destination) {
+            $redirectResponse = $this->createRedirect($realDestination);
+        } else {
+            $redirectResponse = $this->createDefaultRedirect($realDestination);
+        }
+
         return $redirectResponse;
     }
     

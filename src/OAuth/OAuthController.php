@@ -76,12 +76,12 @@ class OAuthController
 
         if ($accessToken) {
             $this->requestTokenStorage->removeStoredRequestToken();
-            // TODO: Set the user information aka access token.
         }
 
         return $this->OAuthUrlHelper->createAuthorizationResponse(
             $request,
-            $this->defaultDestination
+            $this->defaultDestination,
+            $accessToken
         );
     }
 
