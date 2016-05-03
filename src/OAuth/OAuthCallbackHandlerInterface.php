@@ -6,12 +6,12 @@ use CultuurNet\Auth\User as AccessToken;
 use GuzzleHttp\Psr7\Uri;
 use Symfony\Component\HttpFoundation\Response;
 
-interface OAuthResponseFactoryInterface
+interface OAuthCallbackHandlerInterface
 {
     /**
      * @param AccessToken $accessToken
      * @param Uri $destination
      * @return Response
      */
-    public function create(AccessToken $accessToken, Uri $destination);
+    public function handle(AccessToken $accessToken, Uri $destination);
 }

@@ -13,7 +13,7 @@ class OAuthUrlHelper
 {
     const DESTINATION = 'destination';
     const AUTHORISATION_ROUTE_NAME = 'uitid.oauth.authorize';
-    
+
     const OAUTH_TOKEN = 'oauth_token';
     const OAUTH_VERIFIER = 'oauth_verifier';
 
@@ -23,19 +23,19 @@ class OAuthUrlHelper
     private $urlGenerator;
 
     /**
-     * @var OAuthResponseFactoryInterface
+     * @var OAuthCallbackHandlerInterface
      */
     private $oAuthResponseFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        OAuthResponseFactoryInterface $oAuthResponseFactory = null
+        OAuthCallbackHandlerInterface $oAuthResponseFactory = null
     ) {
         $this->urlGenerator = $urlGenerator;
 
         $this->oAuthResponseFactory = $oAuthResponseFactory;
     }
-    
+
     /**
      * @param Request $request
      * @return StringLiteral|null
@@ -56,7 +56,7 @@ class OAuthUrlHelper
 
         return new StringLiteral($url);
     }
-    
+
     /**
      * @param Request $request
      * @param RequestToken $requestToken
