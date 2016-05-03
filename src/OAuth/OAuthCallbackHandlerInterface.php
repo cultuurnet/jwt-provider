@@ -3,15 +3,15 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\User as AccessToken;
-use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 interface OAuthCallbackHandlerInterface
 {
     /**
      * @param AccessToken $accessToken
-     * @param Uri $destination
+     * @param UriInterface $destination
      * @return Response
      */
-    public function handle(AccessToken $accessToken, Uri $destination);
+    public function handle(AccessToken $accessToken, UriInterface $destination);
 }
