@@ -12,7 +12,7 @@ class OAuthController
     /**
      * @var OAuthServiceInterface
      */
-    private $oauthService;
+    private $oAuthService;
 
     /**
      * @var RequestTokenStorageInterface
@@ -22,12 +22,12 @@ class OAuthController
     /**
      * @var OAuthUrlHelper
      */
-    private $oauthUrlHelper;
+    private $oAuthUrlHelper;
 
     /**
      * @var OAuthCallbackHandlerInterface
      */
-    private $oauthCallbackHandler;
+    private $oAuthCallbackHandler;
 
     /**
      * @param OAuthServiceInterface $oauthService
@@ -41,10 +41,10 @@ class OAuthController
         OAuthUrlHelper $oauthUrlHelper,
         OAuthCallbackHandlerInterface $oauthCallbackHandler
     ) {
-        $this->oauthService = $oauthService;
+        $this->oAuthService = $oauthService;
         $this->requestTokenStorage = $requestTokenStorage;
-        $this->oauthUrlHelper = $oauthUrlHelper;
-        $this->oauthCallbackHandler = $oauthCallbackHandler;
+        $this->oAuthUrlHelper = $oauthUrlHelper;
+        $this->oAuthCallbackHandler = $oauthCallbackHandler;
     }
 
     /**
@@ -54,15 +54,15 @@ class OAuthController
     public function connect(Request $request)
     {
         try {
-            $callbackUrl = (string) $this->oauthUrlHelper->createCallbackUri($request);
+            $callbackUrl = (string) $this->oAuthUrlHelper->createCallbackUri($request);
         } catch (\InvalidArgumentException $e) {
             return new Response($e->getMessage(), 400);
         }
 
-        $requestToken = $this->oauthService->getRequestToken($callbackUrl);
+        $requestToken = $this->oAuthService->getRequestToken($callbackUrl);
         $this->requestTokenStorage->storeRequestToken($requestToken);
 
-        $authorizeUrl = $this->oauthService->getAuthorizeUrl($requestToken);
+        $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken);
         return new RedirectResponse($authorizeUrl);
     }
 
@@ -75,22 +75,22 @@ class OAuthController
         $requestToken = $this->requestTokenStorage->getStoredRequestToken();
         $this->requestTokenStorage->removeStoredRequestToken();
 
-        if ($this->oauthUrlHelper->hasValidRequestToken($request, $requestToken)) {
+        if ($this->oAuthUrlHelper->hasValidRequestToken($request, $requestToken)) {
             return new Response('Invalid request token.', 500);
         }
 
-        $accessToken = $this->oauthService->getAccessToken(
+        $accessToken = $this->oAuthService->getAccessToken(
             $requestToken,
-            $this->oauthUrlHelper->getOAuthVerifier($request)
+            $this->oAuthUrlHelper->getOAuthVerifier($request)
         );
 
         try {
-            $destination = $this->oauthUrlHelper->getDestinationUri($request);
+            $destination = $this->oAuthUrlHelper->getDestinationUri($request);
         } catch (\InvalidArgumentException $e) {
             return new Response($e->getMessage(), 400);
         }
 
-        return $this->oauthCallbackHandler->handle(
+        return $this->oAuthCallbackHandler->handle(
             $accessToken,
             $destination
         );
