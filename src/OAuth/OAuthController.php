@@ -24,7 +24,12 @@ class OAuthController
     /**
      * @var OAuthUrlHelper
      */
-    private $OAuthUrlHelper;
+    private $oAuthUrlHelper;
+
+    /**
+     * @var OAuthResponseFactoryInterface
+     */
+    private $oAuthResponseFactory;
 
     /**
      * @var StringLiteral
@@ -34,14 +39,17 @@ class OAuthController
     public function __construct(
         OAuthServiceInterface $oAuthService,
         RequestTokenStorageInterface $requestTokenStorage,
-        OAuthUrlHelper $OAuthUrlHelper,
+        OAuthUrlHelper $oAuthUrlHelper,
+        OAuthResponseFactoryInterface $oAuthResponseFactory,
         StringLiteral $defaultDestination = null
     ) {
         $this->oAuthService = $oAuthService;
 
         $this->requestTokenStorage = $requestTokenStorage;
 
-        $this->OAuthUrlHelper = $OAuthUrlHelper;
+        $this->oAuthUrlHelper = $oAuthUrlHelper;
+
+        $this->oAuthResponseFactory = $oAuthResponseFactory;
 
         if ($defaultDestination === null) {
             $defaultDestination = new StringLiteral('/');
@@ -55,7 +63,7 @@ class OAuthController
      */
     public function connect(Request $request)
     {
-        $callbackUrl = $this->OAuthUrlHelper->createCallbackUrl($request);
+        $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
 
         $requestToken = $this->oAuthService->getRequestToken($callbackUrl);
         $this->requestTokenStorage->storeRequestToken($requestToken);
@@ -78,11 +86,9 @@ class OAuthController
             $this->requestTokenStorage->removeStoredRequestToken();
         }
 
-        return $this->OAuthUrlHelper->createAuthorizationResponse(
-            $request,
-            $this->defaultDestination,
-            $accessToken
-        );
+        $uri = $this->oAuthUrlHelper->createDestinationUri();
+
+        return $this->oAuthResponseFactory->create($accessToken, $uri);
     }
 
     /**
@@ -96,7 +102,7 @@ class OAuthController
     ) {
         $accessToken = null;
 
-        if ($this->OAuthUrlHelper->hasValidAccessToken($request, $requestToken)) {
+        if ($this->oAuthUrlHelper->hasValidAccessToken($request, $requestToken)) {
             $accessToken = $this->oAuthService->getAccessToken(
                 $requestToken,
                 $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER)
