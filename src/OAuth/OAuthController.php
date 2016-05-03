@@ -54,7 +54,7 @@ class OAuthController
     public function connect(Request $request)
     {
         try {
-            $callbackUrl = (string) $this->oauthUrlHelper->createCallbackUrl($request);
+            $callbackUrl = (string) $this->oauthUrlHelper->createCallbackUri($request);
         } catch (\InvalidArgumentException $e) {
             return new Response($e->getMessage(), 400);
         }
@@ -85,7 +85,7 @@ class OAuthController
         );
 
         try {
-            $destination = $this->oauthUrlHelper->getDestination($request);
+            $destination = $this->oauthUrlHelper->getDestinationUri($request);
         } catch (\InvalidArgumentException $e) {
             return new Response($e->getMessage(), 400);
         }

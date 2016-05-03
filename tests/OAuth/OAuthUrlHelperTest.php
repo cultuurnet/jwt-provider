@@ -46,31 +46,33 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_creates_callback_url_from_request()
+    public function it_creates_callback_uri_from_request()
     {
         $request = Request::create(
             'http://culudb-jwt-provider.dev/culturefeed/oauth/authorize',
             'GET',
             ['destination' => 'culudb-silex.dev']
         );
-        $expectedUrl = 'http://localhost//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
+        $expectedUri = 'http://localhost//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
 
-        $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
+        $callbackUri = $this->oAuthUrlHelper->createCallbackUri($request);
 
-        $this->assertEquals($expectedUrl, $callbackUrl->toNative());
+        $this->assertEquals($expectedUri, (string) $callbackUri);
     }
 
     /**
      * @test
      */
-    public function it_returns_null_for_callback_url_when_destination_is_missing()
+    public function it_throws_invalid_argument_exception_when_destination_is_missing_in_request()
     {
         $request = Request::create(
             '/culturefeed/oauth/authorize',
             'GET'
         );
 
-        $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
         
         $this->assertNull($callbackUrl);
     }
@@ -87,7 +89,7 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create($url);
 
-        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
             $this->requestToken
         );

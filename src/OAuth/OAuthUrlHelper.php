@@ -2,6 +2,7 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
@@ -30,14 +31,14 @@ class OAuthUrlHelper
 
     /**
      * @param Request $request
-     * @return Uri
+     * @return UriInterface
      */
-    public function createCallbackUrl(Request $request)
+    public function createCallbackUri(Request $request)
     {
         $url = $this->urlGenerator->generate(
             self::AUTHORISATION_ROUTE_NAME,
             [
-                self::DESTINATION => (string) $this->getDestination($request),
+                self::DESTINATION => (string) $this->getDestinationUri($request),
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
@@ -75,9 +76,9 @@ class OAuthUrlHelper
 
     /**
      * @param Request $request
-     * @return Uri
+     * @return UriInterface
      */
-    public function getDestination(Request $request)
+    public function getDestinationUri(Request $request)
     {
         $destination = $request->query->get(self::DESTINATION);
 
