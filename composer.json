@@ -11,8 +11,9 @@
         "knplabs/console-service-provider": "~1.0",
         "monolog/monolog": "~1.11",
         "lcobucci/jwt": "~3.1",
-        "nicolopignatelli/valueobjects": "~2.0",
-        "cultuurnet/udb3-jwt": "dev-feature/III-890 as 0.1"
+        "cultuurnet/udb3-jwt": "dev-feature/III-890 as 0.1",
+        "cultuurnet/culturefeed-php": "^1.6",
+        "guzzlehttp/psr7": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8",
