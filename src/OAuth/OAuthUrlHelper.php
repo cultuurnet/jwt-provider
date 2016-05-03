@@ -1,11 +1,8 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use CultuurNet\Auth\User;
 use GuzzleHttp\Psr7\Uri;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use ValueObjects\String\String as StringLiteral;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 
@@ -23,38 +20,29 @@ class OAuthUrlHelper
     private $urlGenerator;
 
     /**
-     * @var OAuthCallbackHandlerInterface
+     * @param UrlGeneratorInterface $urlGenerator
      */
-    private $oAuthResponseFactory;
-
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        OAuthCallbackHandlerInterface $oAuthResponseFactory = null
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->urlGenerator = $urlGenerator;
-
-        $this->oAuthResponseFactory = $oAuthResponseFactory;
     }
 
     /**
      * @param Request $request
-     * @return StringLiteral|null
+     * @return Uri
      */
     public function createCallbackUrl(Request $request)
     {
-        $destination = $this->getDestination($request);
-        $params = [];
-        if ($destination) {
-            $params[self::DESTINATION] = $destination->toNative();
-        }
-
         $url = $this->urlGenerator->generate(
             self::AUTHORISATION_ROUTE_NAME,
-            $params,
+            [
+                self::DESTINATION => (string) $this->getDestination($request),
+            ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return new StringLiteral($url);
+        return new Uri($url);
     }
 
     /**
@@ -62,14 +50,14 @@ class OAuthUrlHelper
      * @param RequestToken $requestToken
      * @return bool
      */
-    public function hasValidAccessToken(
+    public function hasValidRequestToken(
         Request $request,
         RequestToken $requestToken
     ) {
         $token = $requestToken->getToken();
 
         $actualToken = $request->query->get(self::OAUTH_TOKEN);
-        $actualVerifier = $request->query->get(self::OAUTH_VERIFIER);
+        $actualVerifier = $this->getOAuthVerifier($request);
 
         $hasAccessToken = ($actualToken === $token) && (bool) $actualVerifier;
 
@@ -77,41 +65,28 @@ class OAuthUrlHelper
     }
 
     /**
-     * @param StringLiteral $defaultDestination
-     * @return Uri
+     * @param Request $request
+     * @return string|null
      */
-    public function createDefaultUri(StringLiteral $defaultDestination)
+    public function getOAuthVerifier(Request $request)
     {
-        return new Uri(
-            $this->urlGenerator->generate(
-                $defaultDestination->toNative()
-            )
-        );
-    }
-
-    /**
-     * @param StringLiteral $destination
-     * @return Uri
-     */
-    public function createDestinationUri(StringLiteral $destination)
-    {
-        return new Uri($destination->toNative());
+        return $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER);
     }
 
     /**
      * @param Request $request
-     * @return StringLiteral|null
+     * @return Uri
      */
-    private function getDestination(Request $request)
+    public function getDestination(Request $request)
     {
-        $destination = null;
+        $destination = $request->query->get(self::DESTINATION);
 
-        if ($request->query->get(self::DESTINATION)) {
-            $destination = new StringLiteral(
-                $request->query->get(self::DESTINATION)
+        if (empty($destination)) {
+            throw new \InvalidArgumentException(
+                'Request does not contain a destination parameter to redirect to after login.'
             );
         }
 
-        return $destination;
+        return new Uri($destination);
     }
 }

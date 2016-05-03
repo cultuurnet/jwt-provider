@@ -2,12 +2,10 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\ServiceInterface as OAuthServiceInterface;
-use CultuurNet\Auth\TokenCredentials as RequestToken;
-use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\String\String as StringLiteral;
+use Symfony\Component\HttpFoundation\Response;
 
 class OAuthController
 {
@@ -32,26 +30,21 @@ class OAuthController
     private $oauthCallbackHandler;
 
     /**
-     * @var StringLiteral
+     * @param OAuthServiceInterface $oauthService
+     * @param RequestTokenStorageInterface $requestTokenStorage
+     * @param OAuthUrlHelper $oauthUrlHelper
+     * @param OAuthCallbackHandlerInterface $oauthCallbackHandler
      */
-    private $defaultDestination;
-
     public function __construct(
         OAuthServiceInterface $oauthService,
         RequestTokenStorageInterface $requestTokenStorage,
         OAuthUrlHelper $oauthUrlHelper,
-        OAuthCallbackHandlerInterface $oauthCallbackHandler,
-        StringLiteral $defaultDestination = null
+        OAuthCallbackHandlerInterface $oauthCallbackHandler
     ) {
         $this->oauthService = $oauthService;
         $this->requestTokenStorage = $requestTokenStorage;
         $this->oauthUrlHelper = $oauthUrlHelper;
         $this->oauthCallbackHandler = $oauthCallbackHandler;
-
-        if ($defaultDestination === null) {
-            $defaultDestination = new StringLiteral('/');
-        }
-        $this->defaultDestination = $defaultDestination;
     }
 
     /**
@@ -60,7 +53,11 @@ class OAuthController
      */
     public function connect(Request $request)
     {
-        $callbackUrl = $this->oauthUrlHelper->createCallbackUrl($request);
+        try {
+            $callbackUrl = (string) $this->oauthUrlHelper->createCallbackUrl($request);
+        } catch (\InvalidArgumentException $e) {
+            return new Response($e->getMessage(), 400);
+        }
 
         $requestToken = $this->oauthService->getRequestToken($callbackUrl);
         $this->requestTokenStorage->storeRequestToken($requestToken);
@@ -76,36 +73,26 @@ class OAuthController
     public function authorize(Request $request)
     {
         $requestToken = $this->requestTokenStorage->getStoredRequestToken();
+        $this->requestTokenStorage->removeStoredRequestToken();
 
-        $accessToken = $this->getAccessToken($request, $requestToken);
-
-        if ($accessToken) {
-            $this->requestTokenStorage->removeStoredRequestToken();
+        if ($this->oauthUrlHelper->hasValidRequestToken($request, $requestToken)) {
+            return new Response('Invalid request token.', 500);
         }
 
-        $uri = $this->oauthUrlHelper->createDestinationUri();
+        $accessToken = $this->oauthService->getAccessToken(
+            $requestToken,
+            $this->oauthUrlHelper->getOAuthVerifier($request)
+        );
 
-        return $this->oauthCallbackHandler->handle($accessToken, $uri);
-    }
-
-    /**
-     * @param Request $request
-     * @param RequestToken $requestToken
-     * @return AccessToken|null
-     */
-    private function getAccessToken(
-        Request $request,
-        RequestToken $requestToken
-    ) {
-        $accessToken = null;
-
-        if ($this->oauthUrlHelper->hasValidAccessToken($request, $requestToken)) {
-            $accessToken = $this->oauthService->getAccessToken(
-                $requestToken,
-                $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER)
-            );
+        try {
+            $destination = $this->oauthUrlHelper->getDestination($request);
+        } catch (\InvalidArgumentException $e) {
+            return new Response($e->getMessage(), 400);
         }
 
-        return $accessToken;
+        return $this->oauthCallbackHandler->handle(
+            $accessToken,
+            $destination
+        );
     }
 }
