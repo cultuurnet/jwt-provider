@@ -60,9 +60,9 @@ class OAuthUrlHelper
         $actualToken = $request->query->get(self::OAUTH_TOKEN);
         $actualVerifier = $this->getOAuthVerifier($request);
 
-        $hasAccessToken = ($actualToken === $token) && (bool) $actualVerifier;
-
-        return $hasAccessToken;
+        $hasRequestToken = ($actualToken === $token) && (bool) $actualVerifier;
+        
+        return $hasRequestToken;
     }
 
     /**

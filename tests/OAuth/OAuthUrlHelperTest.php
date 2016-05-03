@@ -80,7 +80,7 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function access_token_is_valid_when_token_match_and_verifier_is_present()
+    public function request_token_is_valid_when_token_match_and_verifier_is_present()
     {
         $url = $this->createUrlWithTokenAndVerifier(
             self::TEST_TOKEN,
@@ -89,18 +89,18 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create($url);
 
-        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidRequestToken(
+        $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
             $this->requestToken
         );
 
-        $this->assertTrue($hasValidAccessToken);
+        $this->assertTrue($hasValidRequestToken);
     }
 
     /**
      * @test
      */
-    public function access_token_is_not_valid_when_token_does_not_match()
+    public function request_token_is_not_valid_when_token_does_not_match()
     {
         $url = $this->createUrlWithTokenAndVerifier(
             'wrongToken',
@@ -109,18 +109,18 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create($url);
 
-        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+        $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
             $this->requestToken
         );
 
-        $this->assertFalse($hasValidAccessToken);
+        $this->assertFalse($hasValidRequestToken);
     }
 
     /**
      * @test
      */
-    public function access_token_is_not_valid_when_verifier_is_missing()
+    public function request_token_is_not_valid_when_verifier_is_missing()
     {
         $url = $this->createUrlWithTokenAndVerifier(
             self::TEST_TOKEN,
@@ -129,28 +129,12 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 
         $request = Request::create($url);
 
-        $hasValidAccessToken = $this->oAuthUrlHelper->hasValidAccessToken(
+        $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
             $this->requestToken
         );
 
-        $this->assertFalse($hasValidAccessToken);
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_default_uri()
-    {
-        $this->assertTrue(false);
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_destination_uri()
-    {
-        $this->assertTrue(false);
+        $this->assertFalse($hasValidRequestToken);
     }
 
     /**
