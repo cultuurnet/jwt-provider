@@ -75,7 +75,7 @@ class OAuthController
         $requestToken = $this->requestTokenStorage->getStoredRequestToken();
         $this->requestTokenStorage->removeStoredRequestToken();
 
-        if ($this->oAuthUrlHelper->hasValidRequestToken($request, $requestToken)) {
+        if (!$this->oAuthUrlHelper->hasValidRequestToken($request, $requestToken)) {
             return new Response('Invalid request token.', 500);
         }
 
