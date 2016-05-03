@@ -67,7 +67,7 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
 
         $jwt = new Jwt(
             [
-                'alg' => 'mocked'
+                'alg' => 'mocked',
             ],
             $userClaims->toArray(),
             new Signature('gibberish'),
