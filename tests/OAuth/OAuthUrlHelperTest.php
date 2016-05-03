@@ -53,7 +53,7 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
             'GET',
             ['destination' => 'culudb-silex.dev']
         );
-        $expectedUrl = '//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
+        $expectedUrl = 'http://localhost//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
 
         $callbackUrl = $this->oAuthUrlHelper->createCallbackUrl($request);
 
@@ -133,6 +133,22 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertFalse($hasValidAccessToken);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_default_uri()
+    {
+        $this->assertTrue(false);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_destination_uri()
+    {
+        $this->assertTrue(false);
     }
 
     /**

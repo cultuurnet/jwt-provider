@@ -2,6 +2,7 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\User;
+use GuzzleHttp\Psr7\Uri;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use ValueObjects\String\String as StringLiteral;
@@ -22,47 +23,17 @@ class OAuthUrlHelper
     private $urlGenerator;
 
     /**
-     * @var DestinationModifierInterface
+     * @var OAuthResponseFactoryInterface
      */
-    private $destinationModifier;
+    private $oAuthResponseFactory;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        DestinationModifierInterface $destinationModifier = null
+        OAuthResponseFactoryInterface $oAuthResponseFactory = null
     ) {
         $this->urlGenerator = $urlGenerator;
 
-        $this->destinationModifier = $destinationModifier;
-    }
-
-    /**
-     * @param Request $request
-     * @param StringLiteral $defaultDestination
-     * @param User $user
-     * @return RedirectResponse
-     */
-    public function createAuthorizationResponse(
-        Request $request,
-        StringLiteral $defaultDestination,
-        User $user
-    ) {
-        $destination = $this->getDestination($request);
-
-        $realDestination = $destination ? $destination : $defaultDestination;
-        if ($this->destinationModifier) {
-            $realDestination = $this->destinationModifier->modify(
-                $realDestination,
-                $user
-            );
-        }
-
-        if ($destination) {
-            $redirectResponse = $this->createRedirect($realDestination);
-        } else {
-            $redirectResponse = $this->createDefaultRedirect($realDestination);
-        }
-
-        return $redirectResponse;
+        $this->oAuthResponseFactory = $oAuthResponseFactory;
     }
     
     /**
@@ -71,21 +42,19 @@ class OAuthUrlHelper
      */
     public function createCallbackUrl(Request $request)
     {
-        $callbackUrl = null;
-
         $destination = $this->getDestination($request);
-
+        $params = [];
         if ($destination) {
-            $url = $this->urlGenerator->generate(
-                self::AUTHORISATION_ROUTE_NAME,
-                [self::DESTINATION => $destination->toNative()],
-                UrlGeneratorInterface::ABSOLUTE_PATH
-            );
-
-            $callbackUrl = new StringLiteral($url);
+            $params[self::DESTINATION] = $destination->toNative();
         }
 
-        return $callbackUrl;
+        $url = $this->urlGenerator->generate(
+            self::AUTHORISATION_ROUTE_NAME,
+            $params,
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        return new StringLiteral($url);
     }
     
     /**
@@ -109,13 +78,11 @@ class OAuthUrlHelper
 
     /**
      * @param StringLiteral $defaultDestination
-     * @return RedirectResponse
+     * @return Uri
      */
-    private function createDefaultRedirect(StringLiteral $defaultDestination)
+    public function createDefaultUri(StringLiteral $defaultDestination)
     {
-        /* not sure why we need urlGenerator here, but not in createRedirect
-           this is taken from the old implementation */
-        return new RedirectResponse(
+        return new Uri(
             $this->urlGenerator->generate(
                 $defaultDestination->toNative()
             )
@@ -124,11 +91,11 @@ class OAuthUrlHelper
 
     /**
      * @param StringLiteral $destination
-     * @return RedirectResponse
+     * @return Uri
      */
-    private function createRedirect(StringLiteral $destination)
+    public function createDestinationUri(StringLiteral $destination)
     {
-        return new RedirectResponse($destination->toNative());
+        return new Uri($destination->toNative());
     }
 
     /**
