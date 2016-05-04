@@ -82,7 +82,7 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->userService->expects($this->once())
             ->method('getUserClaims')
-            ->with($userId)
+            ->with($accessToken)
             ->willReturn($userClaims);
 
         $this->encoder->expects($this->once())
