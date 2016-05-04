@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 use CultuurNet\Auth\ConsumerCredentials;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\String\String as StringLiteral;
 
 class CultureFeedServiceProvider implements ServiceProviderInterface
 {
@@ -16,7 +17,8 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
         $app['culturefeed_factory'] = $app->share(
             function (Application $app) {
                 return new CultureFeedFactory(
-                    $app['culturefeed_consumer_credentials']
+                    $app['culturefeed_consumer_credentials'],
+                    new StringLiteral($app['config']['uitid']['base_url'])
                 );
             }
         );

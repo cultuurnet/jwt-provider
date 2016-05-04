@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\User as AccessToken;
+use ValueObjects\String\String as StringLiteral;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface
 {
@@ -13,12 +14,21 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
     private $consumerCredentials;
 
     /**
+     * @var StringLiteral
+     */
+    private $baseUrl;
+
+    /**
      * @param ConsumerCredentials $consumerCredentials
+     * @param StringLiteral $baseUrl
      */
     public function __construct(
-        ConsumerCredentials $consumerCredentials
+        ConsumerCredentials $consumerCredentials,
+        StringLiteral $baseUrl
     ) {
         $this->consumerCredentials = $consumerCredentials;
+
+        $this->baseUrl = $baseUrl;
     }
 
     /**
@@ -41,8 +51,11 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
      */
     public function createForUser(AccessToken $userAccessToken)
     {
+        $client = $this->createOAuthClient($userAccessToken);
+        $client->setEndpoint($this->baseUrl->toNative());
+
         return new \CultureFeed(
-            $this->createOAuthClient($userAccessToken)
+            $client
         );
     }
 }
