@@ -30,21 +30,21 @@ class OAuthController
     private $oAuthCallbackHandler;
 
     /**
-     * @param OAuthServiceInterface $oauthService
+     * @param OAuthServiceInterface $oAuthService
      * @param RequestTokenStorageInterface $requestTokenStorage
-     * @param OAuthUrlHelper $oauthUrlHelper
-     * @param OAuthCallbackHandlerInterface $oauthCallbackHandler
+     * @param OAuthUrlHelper $oAuthUrlHelper
+     * @param OAuthCallbackHandlerInterface $oAuthCallbackHandler
      */
     public function __construct(
-        OAuthServiceInterface $oauthService,
+        OAuthServiceInterface $oAuthService,
         RequestTokenStorageInterface $requestTokenStorage,
-        OAuthUrlHelper $oauthUrlHelper,
-        OAuthCallbackHandlerInterface $oauthCallbackHandler
+        OAuthUrlHelper $oAuthUrlHelper,
+        OAuthCallbackHandlerInterface $oAuthCallbackHandler
     ) {
-        $this->oAuthService = $oauthService;
+        $this->oAuthService = $oAuthService;
         $this->requestTokenStorage = $requestTokenStorage;
-        $this->oAuthUrlHelper = $oauthUrlHelper;
-        $this->oAuthCallbackHandler = $oauthCallbackHandler;
+        $this->oAuthUrlHelper = $oAuthUrlHelper;
+        $this->oAuthCallbackHandler = $oAuthCallbackHandler;
     }
 
     /**
