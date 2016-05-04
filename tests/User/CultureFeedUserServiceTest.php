@@ -2,16 +2,23 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ICultureFeed;
+use CultuurNet\Auth\TokenCredentials;
+use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
 use ValueObjects\String\String as StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ICultureFeed|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ICultureFeed|\PHPUnit_Framework_MockObject_MockObject
      */
     private $cultureFeed;
+
+    /**
+     * @var CultureFeedFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $cultureFeedFactory;
 
     /**
      * @var CultureFeedUserService
@@ -20,29 +27,38 @@ class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->cultureFeed = $this->getMock(ICultureFeed::class);
-        $this->service = new CultureFeedUserService($this->cultureFeed);
+        $this->cultureFeed = $this->getMock(\ICultureFeed::class);
+
+        $this->cultureFeedFactory = $this->getMock(CultureFeedFactoryInterface::class);
+
+        $this->service = new CultureFeedUserService($this->cultureFeedFactory);
     }
 
     /**
      * @test
      * @dataProvider userServiceDataProvider
      *
-     * @param StringLiteral $id
+     * @param AccessToken $accessToken
      * @param \CultureFeed_User $cfUser
      * @param UserClaims $expectedClaims
+     * @internal param StringLiteral $id
      */
     public function it_returns_all_claims_for_a_user_by_user_id(
-        StringLiteral $id,
+        AccessToken $accessToken,
         \CultureFeed_User $cfUser,
         UserClaims $expectedClaims
     ) {
         $this->cultureFeed->expects($this->once())
             ->method('getUser')
-            ->with($id->toNative())
+            ->with($accessToken->getId())
             ->willReturn($cfUser);
 
-        $actualClaims = $this->service->getUserClaims($id);
+        $this->cultureFeedFactory->expects($this->once())
+            ->method('createForUser')
+            ->with($accessToken)
+            ->willReturn($this->cultureFeed);
+
+        $actualClaims = $this->service->getUserClaims($accessToken);
 
         $this->assertEquals($expectedClaims, $actualClaims);
     }
@@ -62,7 +78,10 @@ class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
 
         return [
             [
-                new StringLiteral('id-1'),
+                new AccessToken(
+                    'id-1',
+                    new TokenCredentials('token1', 'secret1')
+                ),
                 $cfUserWithoutEmail,
                 new UserClaims(
                     new StringLiteral('id-1'),
@@ -70,7 +89,10 @@ class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
                 ),
             ],
             [
-                new StringLiteral('id-2'),
+                new AccessToken(
+                    'id-2',
+                    new TokenCredentials('token2', 'secret2')
+                ),
                 $cfUserWithEmail,
                 new UserClaims(
                     new StringLiteral('id-2'),
