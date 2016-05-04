@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ValueObjects\String\String as StringLiteral;
+use CultuurNet\Auth\User as AccessToken;
 
 interface UserServiceInterface
 {
     /**
-     * @param StringLiteral $id
+     * @param AccessToken $userAccessToken
      * @return UserClaims
      */
-    public function getUserClaims(StringLiteral $id);
+    public function getUserClaims(AccessToken $userAccessToken);
 }

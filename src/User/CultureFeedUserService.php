@@ -2,28 +2,32 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
+use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\Jwt\CultureFeed\CultureFeedFactoryInterface;
 use ValueObjects\String\String as StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class CultureFeedUserService implements UserServiceInterface
 {
     /**
-     * @var \ICultureFeed
+     * @var CultureFeedFactoryInterface
      */
-    private $cultureFeed;
+    private $cultureFeedFactory;
 
-    public function __construct(\ICultureFeed $cultureFeed)
+    public function __construct(CultureFeedFactoryInterface $cultureFeedFactory)
     {
-        $this->cultureFeed = $cultureFeed;
+        $this->cultureFeedFactory = $cultureFeedFactory;
     }
 
     /**
      * @inheritdoc
      */
-    public function getUserClaims(StringLiteral $id)
+    public function getUserClaims(AccessToken $userAccessToken)
     {
         /* @var \CultureFeed_User $cfUser */
-        $cfUser = $this->cultureFeed->getUser($id->toNative());
+        $cfUser = $this->cultureFeedFactory
+            ->createForUser($userAccessToken)
+            ->getUser($userAccessToken->getId());
 
         return new UserClaims(
             new StringLiteral((string) $cfUser->id),

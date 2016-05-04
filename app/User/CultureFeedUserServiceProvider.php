@@ -9,7 +9,7 @@ use Silex\ServiceProviderInterface;
 class CultureFeedUserServiceProvider implements ServiceProviderInterface
 {
     const CULTURE_FEED_USER_SERVICE = 'culture_feed_user_service';
-    
+
     /**
      * @inheritdoc
      */
@@ -35,53 +35,8 @@ class CultureFeedUserServiceProvider implements ServiceProviderInterface
      */
     private function createCultureFeedUserService(Application $app)
     {
-        $cultureFeed = $this->createCultureFeed($app);
-
         return new CultureFeedUserService(
-            $cultureFeed
-        );
-    }
-
-    /**
-     * @param Application $app
-     * @return \CultureFeed
-     */
-    private function createCultureFeed(Application $app)
-    {
-        $oAuthClient = $this->createCultureFeedOAuthClient($app);
-
-        return new \CultureFeed(
-            $oAuthClient
-        );
-    }
-
-    /**
-     * @param Application $app
-     * @return \CultureFeed_DefaultOAuthClient
-     */
-    private function createCultureFeedOAuthClient(Application $app)
-    {
-        $consumerCredentials = $this->createConsumerCredentials($app);
-
-        // TODO: How to pass the user information?
-        return new \CultureFeed_DefaultOAuthClient(
-            $consumerCredentials->getKey(),
-            $consumerCredentials->getSecret()
-        );
-    }
-
-    /**
-     * @param Application $app
-     * @return ConsumerCredentials
-     */
-    private function createConsumerCredentials(Application $app)
-    {
-        $key = $app['config']['uitid']['consumer']['key'];
-        $secret = $app['config']['uitid']['consumer']['secret'];
-
-        return new ConsumerCredentials(
-            $key,
-            $secret
+            $app['culturefeed_factory']
         );
     }
 }

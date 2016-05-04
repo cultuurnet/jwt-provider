@@ -9,7 +9,6 @@ use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\String\String as StringLiteral;
 
 class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
 {
@@ -43,9 +42,7 @@ class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
     public function handle(AccessToken $accessToken, UriInterface $destination)
     {
         $claims = $this->userService
-            ->getUserClaims(
-                new StringLiteral($accessToken->getId())
-            )
+            ->getUserClaims($accessToken)
             ->toArray();
 
         $jwt = $this->encoderService->encode($claims);

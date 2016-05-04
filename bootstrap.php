@@ -1,6 +1,7 @@
 <?php
 
 use CultuurNet\Clock\SystemClock;
+use CultuurNet\UDB3\JwtProvider\Jwt\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Silex\Application;
@@ -34,6 +35,7 @@ $app['clock'] = $app->share(
     }
 );
 
+$app->register(new CultureFeedServiceProvider());
 $app->register(new JwtServiceProvider());
 
 return $app;
