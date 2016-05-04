@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandlerServiceProvider;
 use CultuurNet\UDB3\JwtProvider\OAuth\OAuthControllerProvider;
 use CultuurNet\UDB3\JwtProvider\OAuth\OAuthServiceProvider;
@@ -24,6 +25,7 @@ $app->register(new SessionServiceProvider());
 $app->register(new UrlGeneratorServiceProvider());
 
 $app->register(new JwtOAuthCallbackHandlerServiceProvider());
+$app->register(new CultureFeedServiceProvider());
 $app->register(new CultureFeedUserServiceProvider());
 $app->register(new RequestTokenStorageServiceProvider());
 $app->register(new OAuthUrlHelperServiceProvider());
