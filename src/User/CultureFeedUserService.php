@@ -27,7 +27,7 @@ class CultureFeedUserService implements UserServiceInterface
         /* @var \CultureFeed_User $cfUser */
         $cfUser = $this->cultureFeedFactory
             ->createForUser($userAccessToken)
-            ->getUser($userAccessToken->getId(), false, false);
+            ->getUser($userAccessToken->getId());
 
         return new UserClaims(
             new StringLiteral((string) $cfUser->id),
