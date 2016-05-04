@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\JwtProvider\Jwt\CultureFeed;
+namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
 use CultuurNet\Auth\ConsumerCredentials;
 use Silex\Application;
