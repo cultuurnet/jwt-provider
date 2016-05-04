@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderService;
+use CultuurNet\UDB3\Jwt\JwtEncoderService;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -10,6 +11,7 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\ValidationData;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\Number\Integer;
 
 class JwtServiceProvider implements ServiceProviderInterface
 {
@@ -19,8 +21,10 @@ class JwtServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['jwt.builder'] = $app->share(
-            function () {
-                return new Builder();
+            function (Application $app) {
+                $builder = new Builder();
+                $builder->setIssuer($app['config']['jwt']['iss']);
+                return $builder;
             }
         );
 
@@ -56,6 +60,19 @@ class JwtServiceProvider implements ServiceProviderInterface
                 $data = new ValidationData();
                 $data->setIssuer($app['config']['jwt']['iss']);
                 return $data;
+            }
+        );
+
+        $app['jwt.encoder'] = $app->share(
+            function (Application $app) {
+                return new JwtEncoderService(
+                    $app['jwt.builder'],
+                    $app['jwt.signer'],
+                    $app['jwt.keys.private'],
+                    $app['clock'],
+                    new Integer($app['config']['jwt']['exp']),
+                    new Integer($app['config']['jwt']['nbf'])
+                );
             }
         );
 
