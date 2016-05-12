@@ -78,7 +78,7 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $expectedDestination = 'http://bar.com/sub/directory?query=value#jwt=headers.body.gibberish';
+        $expectedDestination = 'http://bar.com/sub/directory?query=value&jwt=headers.body.gibberish';
 
         $this->userService->expects($this->once())
             ->method('getUserClaims')
