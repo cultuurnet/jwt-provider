@@ -48,9 +48,16 @@ class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
         \CultureFeed_User $cfUser,
         UserClaims $expectedClaims
     ) {
+        $includePrivateFields = true;
+        $useAuth = true;
+
         $this->cultureFeed->expects($this->once())
             ->method('getUser')
-            ->with($accessToken->getId())
+            ->with(
+                $accessToken->getId(),
+                $includePrivateFields,
+                $useAuth
+            )
             ->willReturn($cfUser);
 
         $this->cultureFeedFactory->expects($this->once())
