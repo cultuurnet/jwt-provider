@@ -47,8 +47,12 @@ class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
 
         $jwt = $this->encoderService->encode($claims);
 
+        $q = $destination->getQuery();
+
+        $q .= ($q?'&':'') . 'jwt=' . $jwt;
+
         return new RedirectResponse(
-            (string) $destination->withFragment('jwt=' . $jwt)
+            (string) $destination->withQuery($q)
         );
     }
 }
