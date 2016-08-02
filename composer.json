@@ -44,5 +44,6 @@
             "cultuurnet/*": "source",
             "2dotstwice/*": "source",
             "*": "dist"
+        }
     }
 }
