@@ -38,5 +38,12 @@
         "branch-alias": {
             "dev-master": "0.x-dev"
         }
+    },
+    "config": {
+        "preferred-install": {
+            "cultuurnet/*": "source",
+            "2dotstwice/*": "source",
+            "*": "dist"
+        }
     }
 }
