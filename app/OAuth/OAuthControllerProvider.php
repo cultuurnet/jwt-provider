@@ -20,6 +20,7 @@ class OAuthControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/connect', 'oauth_controller:connect');
+        $controllers->get('/register', 'oauth_controller:register');
         $controllers->get('/authorize', 'oauth_controller:authorize')
             ->bind(OAuthUrlHelper::AUTHORISATION_ROUTE_NAME);
 
