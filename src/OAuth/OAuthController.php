@@ -1,6 +1,7 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use CultuurNet\Auth\AuthorizeOptions;
 use CultuurNet\Auth\ServiceInterface as OAuthServiceInterface;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -63,6 +64,29 @@ class OAuthController
         $this->requestTokenStorage->storeRequestToken($requestToken);
 
         $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken);
+        return new RedirectResponse($authorizeUrl);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        try {
+            $callbackUrl = (string) $this->oAuthUrlHelper->createCallbackUri($request);
+        } catch (\InvalidArgumentException $e) {
+            return new Response($e->getMessage(), 400);
+        }
+
+        $requestToken = $this->oAuthService->getRequestToken($callbackUrl);
+        $this->requestTokenStorage->storeRequestToken($requestToken);
+
+        $options = new AuthorizeOptions();
+        $options->setTypeRegister();
+        $options->setSkipAuthorization();
+
+        $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken, $options);
         return new RedirectResponse($authorizeUrl);
     }
 
