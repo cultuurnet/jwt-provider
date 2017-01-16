@@ -63,7 +63,10 @@ class OAuthController
         $requestToken = $this->oAuthService->getRequestToken($callbackUrl);
         $this->requestTokenStorage->storeRequestToken($requestToken);
 
-        $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken);
+        $options = new AuthorizeOptions();
+        $options->setSkipConfirmation();
+
+        $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken, $options);
         return new RedirectResponse($authorizeUrl);
     }
 
