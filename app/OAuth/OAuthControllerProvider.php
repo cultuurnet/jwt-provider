@@ -37,8 +37,7 @@ class OAuthControllerProvider implements ControllerProviderInterface
                 $app[OAuthServiceProvider::OAUTH_SERVICE],
                 $app[RequestTokenStorageServiceProvider::REQUEST_TOKEN_STORAGE_SERVICE],
                 $app[OAuthUrlHelperServiceProvider::OAUTH_URL_HELPER_SERVICE],
-                $app[JwtOAuthCallbackHandlerServiceProvider::JWT_OAUTH_CALLBACK_HANDLER_SERVICE],
-                Url::factory($app['config']['uitid']['base_url'])
+                $app[JwtOAuthCallbackHandlerServiceProvider::JWT_OAUTH_CALLBACK_HANDLER_SERVICE]
             );
         });
     }

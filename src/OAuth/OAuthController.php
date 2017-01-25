@@ -2,10 +2,7 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\AuthorizeOptions;
-use CultuurNet\Auth\ServiceInterface as OAuthServiceInterface;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
-use Guzzle\Http\QueryString;
-use Guzzle\Http\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OAuthController
 {
     /**
-     * @var OAuthServiceInterface
+     * @var OAuthService
      */
     private $oAuthService;
 
@@ -33,29 +30,21 @@ class OAuthController
     private $oAuthCallbackHandler;
 
     /**
-     * @var Url
-     */
-    private $oAuthBaseUrl;
-
-    /**
-     * @param OAuthServiceInterface $oAuthService
+     * @param OAuthService $oAuthService
      * @param RequestTokenStorageInterface $requestTokenStorage
      * @param OAuthUrlHelper $oAuthUrlHelper
      * @param OAuthCallbackHandlerInterface $oAuthCallbackHandler
-     * @param Url $oAuthBaseUrl
      */
     public function __construct(
-        OAuthServiceInterface $oAuthService,
+        OAuthService $oAuthService,
         RequestTokenStorageInterface $requestTokenStorage,
         OAuthUrlHelper $oAuthUrlHelper,
-        OAuthCallbackHandlerInterface $oAuthCallbackHandler,
-        Url $oAuthBaseUrl
+        OAuthCallbackHandlerInterface $oAuthCallbackHandler
     ) {
         $this->oAuthService = $oAuthService;
         $this->requestTokenStorage = $requestTokenStorage;
         $this->oAuthUrlHelper = $oAuthUrlHelper;
         $this->oAuthCallbackHandler = $oAuthCallbackHandler;
-        $this->oAuthBaseUrl = $oAuthBaseUrl;
     }
 
     /**
@@ -142,11 +131,7 @@ class OAuthController
     {
         $destination = $this->oAuthUrlHelper->getDestinationUri($request);
 
-        $query = new QueryString(['destination' => $destination]);
-
-        $logoutUrl = clone $this->oAuthBaseUrl
-            ->addPath('auth/logout')
-            ->setQuery($query);
+        $logoutUrl = $this->oAuthService->getLogoutUrl($destination);
 
         return RedirectResponse::create((string) $logoutUrl);
     }
