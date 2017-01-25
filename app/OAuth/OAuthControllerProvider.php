@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\OAuth;
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandlerServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageServiceProvider;
 use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserServiceProvider;
+use Guzzle\Http\Url;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 
@@ -20,6 +21,8 @@ class OAuthControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/connect', 'oauth_controller:connect');
+        $controllers->get('/logout', 'oauth_controller:logout')
+            ->bind('uitid.oauth.logout');
         $controllers->get('/register', 'oauth_controller:register');
         $controllers->get('/authorize', 'oauth_controller:authorize')
             ->bind(OAuthUrlHelper::AUTHORISATION_ROUTE_NAME);
@@ -34,7 +37,8 @@ class OAuthControllerProvider implements ControllerProviderInterface
                 $app[OAuthServiceProvider::OAUTH_SERVICE],
                 $app[RequestTokenStorageServiceProvider::REQUEST_TOKEN_STORAGE_SERVICE],
                 $app[OAuthUrlHelperServiceProvider::OAUTH_URL_HELPER_SERVICE],
-                $app[JwtOAuthCallbackHandlerServiceProvider::JWT_OAUTH_CALLBACK_HANDLER_SERVICE]
+                $app[JwtOAuthCallbackHandlerServiceProvider::JWT_OAUTH_CALLBACK_HANDLER_SERVICE],
+                Url::factory($app['config']['uitid']['base_url'])
             );
         });
     }
