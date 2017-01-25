@@ -4,8 +4,6 @@ namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandlerServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageServiceProvider;
-use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserServiceProvider;
-use Guzzle\Http\Url;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 
