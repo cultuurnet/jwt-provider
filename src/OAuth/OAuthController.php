@@ -2,7 +2,6 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\AuthorizeOptions;
-use CultuurNet\Auth\ServiceInterface as OAuthServiceInterface;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OAuthController
 {
     /**
-     * @var OAuthServiceInterface
+     * @var OAuthService
      */
     private $oAuthService;
 
@@ -31,13 +30,13 @@ class OAuthController
     private $oAuthCallbackHandler;
 
     /**
-     * @param OAuthServiceInterface $oAuthService
+     * @param OAuthService $oAuthService
      * @param RequestTokenStorageInterface $requestTokenStorage
      * @param OAuthUrlHelper $oAuthUrlHelper
      * @param OAuthCallbackHandlerInterface $oAuthCallbackHandler
      */
     public function __construct(
-        OAuthServiceInterface $oAuthService,
+        OAuthService $oAuthService,
         RequestTokenStorageInterface $requestTokenStorage,
         OAuthUrlHelper $oAuthUrlHelper,
         OAuthCallbackHandlerInterface $oAuthCallbackHandler
@@ -122,5 +121,18 @@ class OAuthController
             $accessToken,
             $destination
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        $destination = $this->oAuthUrlHelper->getDestinationUri($request);
+
+        $logoutUrl = $this->oAuthService->getLogoutUrl($destination);
+
+        return RedirectResponse::create((string) $logoutUrl);
     }
 }

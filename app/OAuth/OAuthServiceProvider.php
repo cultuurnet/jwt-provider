@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\ConsumerCredentials;
-use CultuurNet\Auth\Guzzle\Service as OAuthService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

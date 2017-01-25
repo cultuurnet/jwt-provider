@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandlerServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageServiceProvider;
-use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserServiceProvider;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 
@@ -20,6 +19,8 @@ class OAuthControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/connect', 'oauth_controller:connect');
+        $controllers->get('/logout', 'oauth_controller:logout')
+            ->bind('uitid.oauth.logout');
         $controllers->get('/register', 'oauth_controller:register');
         $controllers->get('/authorize', 'oauth_controller:authorize')
             ->bind(OAuthUrlHelper::AUTHORISATION_ROUTE_NAME);
