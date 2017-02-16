@@ -11,7 +11,7 @@ use GuzzleHttp\Psr7\Uri;
 use Lcobucci\JWT\Signature;
 use Lcobucci\JWT\Token as Jwt;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase

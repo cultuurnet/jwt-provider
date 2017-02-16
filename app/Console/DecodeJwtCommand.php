@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Jwt\JWTDecoderServiceInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class DecodeJwtCommand extends AbstractCommand
 {
