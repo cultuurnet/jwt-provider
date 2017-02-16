@@ -70,7 +70,7 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
             'GET'
         );
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
         

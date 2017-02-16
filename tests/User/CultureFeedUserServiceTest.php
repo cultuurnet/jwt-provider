@@ -27,9 +27,9 @@ class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->cultureFeed = $this->getMock(\ICultureFeed::class);
+        $this->cultureFeed = $this->createMock(\ICultureFeed::class);
 
-        $this->cultureFeedFactory = $this->getMock(CultureFeedFactoryInterface::class);
+        $this->cultureFeedFactory = $this->createMock(CultureFeedFactoryInterface::class);
 
         $this->service = new CultureFeedUserService($this->cultureFeedFactory);
     }

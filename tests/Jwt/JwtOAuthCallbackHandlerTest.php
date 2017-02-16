@@ -33,8 +33,8 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->encoder = $this->getMock(JwtEncoderServiceInterface::class);
-        $this->userService = $this->getMock(UserServiceInterface::class);
+        $this->encoder = $this->createMock(JwtEncoderServiceInterface::class);
+        $this->userService = $this->createMock(UserServiceInterface::class);
 
         $this->callbackHandler = new JwtOAuthCallbackHandler(
             $this->encoder,
