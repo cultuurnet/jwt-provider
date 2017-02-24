@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
-use ValueObjects\String\String as StringLiteral;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,29 +20,29 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
      * @var OAuthUrlHelper
      */
     private $oAuthUrlHelper;
-    
+
     /**
      * @var StringLiteral
      */
     private $defaultDestination;
-    
+
     /**
      * @var RequestToken
      */
     private $requestToken;
-    
+
     public function setUp()
     {
         $this->requestToken = new RequestToken(
             self::TEST_TOKEN,
             self::TEST_SECRET
         );
-        
+
         $this->oAuthUrlHelper = new OAuthUrlHelper($this->createUrlGenerator());
 
         $this->defaultDestination = new StringLiteral(self::DEFAULT_DESTINATION);
     }
-    
+
     /**
      * @test
      */
@@ -70,13 +70,13 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
             'GET'
         );
 
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
-        
+
         $this->assertNull($callbackUrl);
     }
-    
+
     /**
      * @test
      */

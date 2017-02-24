@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\User;
 
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class CultureFeedUserService implements UserServiceInterface

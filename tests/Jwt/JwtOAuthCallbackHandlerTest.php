@@ -11,7 +11,7 @@ use GuzzleHttp\Psr7\Uri;
 use Lcobucci\JWT\Signature;
 use Lcobucci\JWT\Token as Jwt;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
@@ -33,8 +33,8 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->encoder = $this->getMock(JwtEncoderServiceInterface::class);
-        $this->userService = $this->getMock(UserServiceInterface::class);
+        $this->encoder = $this->createMock(JwtEncoderServiceInterface::class);
+        $this->userService = $this->createMock(UserServiceInterface::class);
 
         $this->callbackHandler = new JwtOAuthCallbackHandler(
             $this->encoder,

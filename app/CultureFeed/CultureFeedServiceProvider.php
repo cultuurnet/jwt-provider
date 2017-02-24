@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 use CultuurNet\Auth\ConsumerCredentials;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedServiceProvider implements ServiceProviderInterface
 {

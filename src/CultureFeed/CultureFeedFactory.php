@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\User as AccessToken;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface
 {

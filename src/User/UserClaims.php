@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class UserClaims
