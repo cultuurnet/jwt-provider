@@ -1,8 +1,11 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use CultuurNet\Auth\TokenCredentials;
+use CultuurNet\Auth\User;
 use Silex\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
@@ -138,6 +141,38 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_redirect_to_the_default_destination_when_creating_an_authorisation_response_without_a_destination()
+    {
+        $oAuthUrlHelper = new OAuthUrlHelper($this->createUrlGenerator(true));
+
+        $url = $this->createUrlWithTokenAndVerifier(self::TEST_TOKEN, self::TEST_VERIFIER);
+        $request = Request::create($url);
+        $user = new User('dirk007', new TokenCredentials(self::TEST_TOKEN, self::TEST_SECRET));
+        $destination = new StringLiteral(OAuthUrlHelper::AUTHORISATION_ROUTE_NAME);
+
+        $response = $oAuthUrlHelper->createAuthorizationResponse($request, $destination, $user);
+
+        $this->assertEquals('//culturefeed/oauth/authorize', $response->getTargetUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_redirect_to_the_provided_destination_when_creating_an_authorisation_response()
+    {
+        $url = $this->createUrlWithTokenAndVerifier(self::TEST_TOKEN, self::TEST_VERIFIER);
+        $request = Request::create($url, Request::METHOD_GET, [OAuthUrlHelper::DESTINATION => 'http://du.de']);
+        $user = new User('dirk007', new TokenCredentials(self::TEST_TOKEN, self::TEST_SECRET));
+        $destination = new StringLiteral(OAuthUrlHelper::AUTHORISATION_ROUTE_NAME);
+
+        $response = $this->oAuthUrlHelper->createAuthorizationResponse($request, $destination, $user);
+
+        $this->assertEquals('http://du.de', $response->getTargetUrl());
+    }
+
+    /**
      * @param string $token
      * @param string $verifier
      * @return string
@@ -162,12 +197,16 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @return UrlGenerator
      */
-    private function createUrlGenerator()
+    private function createUrlGenerator($withoutDestination = null)
     {
         $routes = new RouteCollection();
+        $path = '/culturefeed/oauth/authorize';
+        if (!$withoutDestination) {
+            $path = $path . '?destination={destination}';
+        }
         $routes->add(
             OAuthUrlHelper::AUTHORISATION_ROUTE_NAME,
-            new Route('/culturefeed/oauth/authorize?destination={destination}')
+            new Route($path)
         );
 
         $context = new RequestContext('/');
