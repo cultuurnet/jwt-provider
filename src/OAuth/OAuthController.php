@@ -64,6 +64,7 @@ class OAuthController
 
         $options = new AuthorizeOptions();
         $options->setSkipConfirmation();
+        $options->setLang($request->query->get('lang'));
 
         $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken, $options);
         return new RedirectResponse($authorizeUrl);
@@ -87,6 +88,7 @@ class OAuthController
         $options = new AuthorizeOptions();
         $options->setTypeRegister();
         $options->setSkipAuthorization();
+        $options->setLang($request->query->get('lang'));
 
         $authorizeUrl = $this->oAuthService->getAuthorizeUrl($requestToken, $options);
         return new RedirectResponse($authorizeUrl);
