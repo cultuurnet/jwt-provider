@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\CommandServiceProvider;
+use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -32,6 +33,8 @@ class ContainerFactory
             Config::class,
             $config
         );
+
+        $container->addServiceProvider(CultureFeedServiceProvider::class);
 
         return $container;
     }
