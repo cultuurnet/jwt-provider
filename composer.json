@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "authors": [],
     "require": {
+        "aura/session": "^2.1",
         "cultuurnet/auth": "~1.2",
         "cultuurnet/culturefeed-php": "^1.6",
         "cultuurnet/udb3-jwt": "~0.1",
