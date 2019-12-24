@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
 use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-class RequestTokenSessionStorageTest extends \PHPUnit_Framework_TestCase
+class RequestTokenSessionStorageTest extends TestCase
 {
     /**
      * @var Segment|PHPUnit_Framework_MockObject_MockObject

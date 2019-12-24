@@ -2,10 +2,11 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\TokenCredentials as RequestToken;
+use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
+class OAuthUrlHelperTest extends TestCase
 {
     const TEST_TOKEN = 'testToken';
     const TEST_SECRET = 'testSecret';

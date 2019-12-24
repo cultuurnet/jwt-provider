@@ -11,10 +11,11 @@ use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use GuzzleHttp\Psr7\Uri;
 use Lcobucci\JWT\Signature;
 use Lcobucci\JWT\Token as Jwt;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
+class JwtOAuthCallbackHandlerTest extends TestCase
 {
     /**
      * @var JwtEncoderServiceInterface|\PHPUnit_Framework_MockObject_MockObject
