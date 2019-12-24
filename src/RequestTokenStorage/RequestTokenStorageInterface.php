@@ -8,7 +8,7 @@ interface RequestTokenStorageInterface
 {
     public function storeRequestToken(RequestToken $requestToken);
     
-    public function getStoredRequestToken();
+    public function getStoredRequestToken(): ?RequestToken;
     
-    public function removeStoredRequestToken();
+    public function removeStoredRequestToken(): void;
 }

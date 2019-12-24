@@ -2,8 +2,11 @@
 
 namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
+use CultureFeed;
+use CultureFeed_DefaultOAuthClient;
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\User as AccessToken;
+use ICultureFeed;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface
@@ -18,10 +21,6 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
      */
     private $baseUrl;
 
-    /**
-     * @param ConsumerCredentials $consumerCredentials
-     * @param StringLiteral $baseUrl
-     */
     public function __construct(
         ConsumerCredentials $consumerCredentials,
         StringLiteral $baseUrl
@@ -31,13 +30,9 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
         $this->baseUrl = $baseUrl;
     }
 
-    /**
-     * @param AccessToken $userAccessToken
-     * @return \CultureFeed_DefaultOAuthClient
-     */
-    private function createOAuthClient(AccessToken $userAccessToken)
+    private function createOAuthClient(AccessToken $userAccessToken): CultureFeed_DefaultOAuthClient
     {
-        return new \CultureFeed_DefaultOAuthClient(
+        return new CultureFeed_DefaultOAuthClient(
             $this->consumerCredentials->getKey(),
             $this->consumerCredentials->getSecret(),
             $userAccessToken->getTokenCredentials()->getToken(),
@@ -45,16 +40,12 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
         );
     }
 
-    /**
-     * @param AccessToken $userAccessToken
-     * @return \CultureFeed
-     */
-    public function createForUser(AccessToken $userAccessToken)
+    public function createForUser(AccessToken $userAccessToken): ICultureFeed
     {
         $client = $this->createOAuthClient($userAccessToken);
         $client->setEndpoint($this->baseUrl->toNative());
 
-        return new \CultureFeed(
+        return new CultureFeed(
             $client
         );
     }

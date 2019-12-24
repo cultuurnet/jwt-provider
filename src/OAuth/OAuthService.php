@@ -8,17 +8,12 @@ use Guzzle\Http\Url;
 
 class OAuthService extends BaseService
 {
-    /**
-     * @param string $destination
-     * @return Url
-     */
-    public function getLogoutUrl($destination)
+    public function getLogoutUrl(string $destination): Url
     {
-        $url = parent::getUrlForPath('/auth/logout');
+        $url = $this->getUrlForPath('/auth/logout');
         $url->setQuery(
             new QueryString(['destination' => $destination])
         );
-
         return $url;
     }
 }

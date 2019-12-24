@@ -7,9 +7,5 @@ use ICultureFeed;
 
 interface CultureFeedFactoryInterface
 {
-    /**
-     * @param AccessToken $userAccessToken
-     * @return ICultureFeed
-     */
-    public function createForUser(AccessToken $userAccessToken);
+    public function createForUser(AccessToken $userAccessToken): ICultureFeed;
 }

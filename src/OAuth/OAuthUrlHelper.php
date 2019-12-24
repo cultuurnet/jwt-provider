@@ -2,92 +2,84 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use GuzzleHttp\Psr7\Uri;
+use InvalidArgumentException;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 
 class OAuthUrlHelper
 {
-    const DESTINATION = 'destination';
-    const AUTHORISATION_ROUTE_NAME = 'uitid.oauth.authorize';
-
-    const OAUTH_TOKEN = 'oauth_token';
-    const OAUTH_VERIFIER = 'oauth_verifier';
+    private const DESTINATION = 'destination';
+    private const OAUTH_TOKEN = 'oauth_token';
+    private const OAUTH_VERIFIER = 'oauth_verifier';
 
     /**
-     * @var UrlGeneratorInterface
+     * @var string
      */
-    private $urlGenerator;
+    private $authorizationPath;
 
     /**
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param string $authorizationPath
      */
     public function __construct(
-        UrlGeneratorInterface $urlGenerator
+        string $authorizationPath
     ) {
-        $this->urlGenerator = $urlGenerator;
+        $this->authorizationPath = trim($authorizationPath, '/');
     }
 
-    /**
-     * @param Request $request
-     * @return UriInterface
-     */
-    public function createCallbackUri(Request $request)
+    public function createCallbackUri(ServerRequestInterface $request): UriInterface
     {
-        $url = $this->urlGenerator->generate(
-            self::AUTHORISATION_ROUTE_NAME,
-            [
-                self::DESTINATION => (string) $this->getDestinationUri($request),
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $baseUrl = $this->getBaseUrlFromRequest($request);
+        $query = http_build_query([self::DESTINATION => (string) $this->getDestinationUri($request)]);
+
+        $url = $baseUrl . '/' . $this->authorizationPath . '?' . $query;
 
         return new Uri($url);
     }
 
-    /**
-     * @param Request $request
-     * @param RequestToken $requestToken
-     * @return bool
-     */
     public function hasValidRequestToken(
-        Request $request,
+        ServerRequestInterface $request,
         RequestToken $requestToken
-    ) {
+    ): bool {
         $token = $requestToken->getToken();
 
-        $actualToken = $request->query->get(self::OAUTH_TOKEN);
+        $actualToken = $request->getQueryParams()[self::OAUTH_TOKEN] ?? null;
         $actualVerifier = $this->getOAuthVerifier($request);
 
-        $hasRequestToken = ($actualToken === $token) && (bool) $actualVerifier;
-        
-        return $hasRequestToken;
+        return ($actualToken === $token) && (bool) $actualVerifier;
     }
 
-    /**
-     * @param Request $request
-     * @return string|null
-     */
-    public function getOAuthVerifier(Request $request)
+    public function getOAuthVerifier(ServerRequestInterface $request): ?string
     {
-        return $request->query->get(OAuthUrlHelper::OAUTH_VERIFIER);
+        $verifier = $request->getQueryParams()[self::OAUTH_VERIFIER] ?? null;
+
+        if ($verifier === null) {
+            return $verifier;
+        }
+
+        return (string) $verifier;
     }
 
-    /**
-     * @param Request $request
-     * @return UriInterface
-     */
-    public function getDestinationUri(Request $request)
+    public function getDestinationUri(ServerRequestInterface $request): UriInterface
     {
-        $destination = $request->query->get(self::DESTINATION);
+        $destination = $request->getQueryParams()[self::DESTINATION] ?? null;
 
         if (empty($destination)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Request does not contain a destination parameter to redirect to after login.'
             );
         }
 
         return new Uri($destination);
+    }
+
+    private function getBaseUrlFromRequest(ServerRequestInterface $request): string
+    {
+        // Inspired by
+        // https://github.com/slimphp/Slim/blob/200c6143f15baa477601879b64ab2326847aac0b/Slim/Http/Uri.php#L825
+        $uri = $request->getUri();
+        $scheme = $uri->getScheme();
+        $authority = $uri->getAuthority();
+        return ($scheme !== '' ? $scheme . ':' : '') . ($authority ? '//' . $authority : '');
     }
 }
