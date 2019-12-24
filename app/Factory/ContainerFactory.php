@@ -4,6 +4,9 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\CommandServiceProvider;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
+use CultuurNet\UDB3\JwtProvider\OAuth\OAuthServiceProvider;
+use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -35,6 +38,9 @@ class ContainerFactory
         );
 
         $container->addServiceProvider(CultureFeedServiceProvider::class);
+        $container->addServiceProvider(JwtServiceProvider::class);
+        $container->addServiceProvider(OAuthServiceProvider::class);
+        $container->addServiceProvider(RequestTokenStorageServiceProvider::class);
 
         return $container;
     }
