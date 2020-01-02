@@ -2,40 +2,25 @@
 
 namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Aura\Session\SessionFactory;
+use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 
-class RequestTokenStorageServiceProvider implements ServiceProviderInterface
+class RequestTokenStorageServiceProvider extends BaseServiceProvider
 {
-    const REQUEST_TOKEN_STORAGE_SERVICE = 'request_token_storage_service';
+    protected $provides = [
+        RequestTokenStorageInterface::class,
+    ];
 
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(): void
     {
-        $app[self::REQUEST_TOKEN_STORAGE_SERVICE] = $app->share(
-            function ($app) {
-                return $this->createRequestTokenStorageService($app);
+        $this->addShared(
+            RequestTokenStorageInterface::class,
+            function () {
+                $sessionFactory = new SessionFactory;
+                $session = $sessionFactory->newInstance($_COOKIE);
+                $segment = $session->getSegment(RequestTokenSessionStorage::class);
+                return new RequestTokenSessionStorage($segment);
             }
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
-    {
-    }
-
-    /**
-     * @param Application $app
-     * @return RequestTokenSessionStorage
-     */
-    private function createRequestTokenStorageService(Application $app)
-    {
-        return new RequestTokenSessionStorage(
-            $app['session']
         );
     }
 }

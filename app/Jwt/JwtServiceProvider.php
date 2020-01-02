@@ -2,52 +2,67 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
+use CultuurNet\Clock\SystemClock;
 use CultuurNet\UDB3\Jwt\JwtDecoderService;
+use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
 use CultuurNet\UDB3\Jwt\JwtEncoderService;
+use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
+use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
+use DateTimeZone;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\ValidationData;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
 use ValueObjects\Number\Integer;
 
-class JwtServiceProvider implements ServiceProviderInterface
+class JwtServiceProvider extends BaseServiceProvider
 {
-    /**
-     * @param Application $app
-     */
-    public function register(Application $app)
+    protected $provides = [
+        Builder::class,
+        Signer::class,
+        'jwt.keys.private',
+        'jwt.keys.public',
+        ValidationData::class,
+        JwtEncoderServiceInterface::class,
+        JwtDecoderServiceInterface::class,
+    ];
+
+    public function register(): void
     {
-        $app['jwt.builder'] = $app->share(
-            function (Application $app) {
+        $this->addShared(
+            Builder::class,
+            function () {
                 $builder = new Builder();
-                $builder->setIssuer($app['config']['jwt']['iss']);
+                $builder->setIssuer($this->parameter('jwt.iss'));
                 return $builder;
             }
         );
 
-        $app['jwt.signer'] = $app->share(
+        $this->addShared(
+            Signer::class,
             function () {
                 return new Sha256();
             }
         );
 
-        $app['jwt.keys.private'] = $app->share(
-            function (Application $app) {
-                $file = __DIR__ . '/../../' . $app['config']['jwt']['keys']['private']['file'];
+        $this->addShared(
+            'jwt.keys.private',
+            function () {
+                $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.private.file');
 
                 return new Key(
                     'file://' . $file,
-                    $app['config']['jwt']['keys']['private']['passphrase']
+                    $this->parameter('jwt.keys.private.passphrase')
                 );
             }
         );
 
-        $app['jwt.keys.public'] = $app->share(
-            function (Application $app) {
-                $file = __DIR__ . '/../../' . $app['config']['jwt']['keys']['public']['file'];
+        $this->addShared(
+            'jwt.keys.public',
+            function () {
+                $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.public.file');
 
                 return new Key(
                     'file://' . $file
@@ -55,43 +70,41 @@ class JwtServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['jwt.validation_data'] = $app->share(
-            function (Application $app) {
+        $this->addShared(
+            ValidationData::class,
+            function () {
                 $data = new ValidationData();
-                $data->setIssuer($app['config']['jwt']['iss']);
+                $data->setIssuer($this->parameter('jwt.iss'));
                 return $data;
             }
         );
 
-        $app['jwt.encoder'] = $app->share(
-            function (Application $app) {
+        $this->addShared(
+            JwtEncoderServiceInterface::class,
+            function () {
                 return new JwtEncoderService(
-                    $app['jwt.builder'],
-                    $app['jwt.signer'],
-                    $app['jwt.keys.private'],
-                    $app['clock'],
-                    new Integer($app['config']['jwt']['exp']),
-                    new Integer($app['config']['jwt']['nbf'])
+                    $this->get(Builder::class),
+                    $this->get(Signer::class),
+                    $this->get('jwt.keys.private'),
+                    new SystemClock(
+                        new DateTimeZone('Europe/Brussels')
+                    ),
+                    new Integer($this->parameter('jwt.exp')),
+                    new Integer($this->parameter('jwt.nbf'))
                 );
             }
         );
 
-        $app['jwt.decoder'] = $app->share(
-            function (Application $app) {
+        $this->addShared(
+            JwtDecoderServiceInterface::class,
+            function () {
                 return new JwtDecoderService(
                     new Parser(),
-                    $app['jwt.validation_data'],
-                    $app['jwt.signer'],
-                    $app['jwt.keys.public']
+                    $this->get(ValidationData::class),
+                    $this->get(Signer::class),
+                    $this->get('jwt.keys.public')
                 );
             }
         );
-    }
-
-    /**
-     * @param Application $app
-     */
-    public function boot(Application $app)
-    {
     }
 }

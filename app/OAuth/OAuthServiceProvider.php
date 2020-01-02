@@ -3,59 +3,45 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use CultuurNet\Auth\ConsumerCredentials;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandler;
+use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 
-class OAuthServiceProvider implements ServiceProviderInterface
+class OAuthServiceProvider extends BaseServiceProvider
 {
-    const OAUTH_SERVICE = 'oauth_service';
+    protected $provides = [
+        OAuthService::class,
+        OAuthCallbackHandlerInterface::class,
+        OAuthUrlHelper::class,
+    ];
 
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(): void
     {
-        $app[self::OAUTH_SERVICE] = $app->share(
-            function ($app) {
-                return $this->createOAuthService($app);
+        $this->addShared(
+            OAuthService::class,
+            function () {
+                $baseUrl = $this->parameter('uitid.base_url');
+                $consumerCredentials = $this->get(ConsumerCredentials::class);
+
+                return new OAuthService(
+                    $baseUrl,
+                    $consumerCredentials
+                );
             }
         );
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
-    {
-    }
-
-    /**
-     * @param Application $app
-     * @return OAuthService
-     */
-    private function createOAuthService(Application $app)
-    {
-        $baseUrl = $app['config']['uitid']['base_url'];
-        $consumerCredentials = $this->createConsumerCredentials($app);
-
-        return new OAuthService(
-            $baseUrl,
-            $consumerCredentials
+        $this->addShared(
+            OAuthCallbackHandlerInterface::class,
+            function () {
+                return $this->get(JwtOAuthCallbackHandler::class);
+            }
         );
-    }
 
-    /**
-     * @param Application $app
-     * @return ConsumerCredentials
-     */
-    private function createConsumerCredentials(Application $app)
-    {
-        $key = $app['config']['uitid']['consumer']['key'];
-        $secret = $app['config']['uitid']['consumer']['secret'];
-
-        return new ConsumerCredentials(
-            $key,
-            $secret
+        $this->addShared(
+            OAuthUrlHelper::class,
+            function () {
+                return new OAuthUrlHelper(RoutingServiceProvider::AUTHORIZATION_PATH);
+            }
         );
     }
 }

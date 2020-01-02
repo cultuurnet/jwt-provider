@@ -19,10 +19,7 @@ class CultureFeedUserService implements UserServiceInterface
         $this->cultureFeedFactory = $cultureFeedFactory;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUserClaims(AccessToken $userAccessToken)
+    public function getUserClaims(AccessToken $userAccessToken): UserClaims
     {
         /* @var \CultureFeed_User $cfUser */
         $cfUser = $this->cultureFeedFactory
@@ -32,7 +29,7 @@ class CultureFeedUserService implements UserServiceInterface
         return new UserClaims(
             new StringLiteral((string) $cfUser->id),
             new StringLiteral((string) $cfUser->nick),
-            !is_null($cfUser->mbox) ? new EmailAddress($cfUser->mbox) : null
+            $cfUser->mbox !== null ? new EmailAddress($cfUser->mbox) : null
         );
     }
 }

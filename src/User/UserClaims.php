@@ -22,25 +22,17 @@ class UserClaims
      */
     private $email;
 
-    /**
-     * @param StringLiteral $uid
-     * @param StringLiteral $nick
-     * @param EmailAddress|null $email
-     */
     public function __construct(
         StringLiteral $uid,
         StringLiteral $nick,
-        EmailAddress $email = null
+        ?EmailAddress $email = null
     ) {
         $this->uid = $uid;
         $this->nick = $nick;
         $this->email = $email;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         // Always set the email claim, but could be empty in some cases.
         return [

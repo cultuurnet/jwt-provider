@@ -3,30 +3,36 @@
 namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
 use CultuurNet\Auth\ConsumerCredentials;
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
+use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserService;
+use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CultureFeedServiceProvider implements ServiceProviderInterface
+class CultureFeedServiceProvider extends BaseServiceProvider
 {
-    /**
-     * @param Application $app
-     */
-    public function register(Application $app)
+    protected $provides = [
+        ConsumerCredentials::class,
+        CultureFeedFactoryInterface::class,
+        UserServiceInterface::class,
+    ];
+
+    public function register(): void
     {
-        $app['culturefeed_factory'] = $app->share(
-            function (Application $app) {
+        $this->addShared(
+            CultureFeedFactoryInterface::class,
+            function () {
                 return new CultureFeedFactory(
-                    $app['culturefeed_consumer_credentials'],
-                    new StringLiteral($app['config']['uitid']['base_url'])
+                    $this->get(ConsumerCredentials::class),
+                    new StringLiteral($this->parameter('uitid.base_url'))
                 );
             }
         );
 
-        $app['culturefeed_consumer_credentials'] = $app->share(
-            function (Application $app) {
-                $key = $app['config']['uitid']['consumer']['key'];
-                $secret = $app['config']['uitid']['consumer']['secret'];
+        $this->addShared(
+            ConsumerCredentials::class,
+            function () {
+                $key = $this->parameter('uitid.consumer.key');
+                $secret = $this->parameter('uitid.consumer.secret');
 
                 return new ConsumerCredentials(
                     $key,
@@ -34,12 +40,12 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
                 );
             }
         );
-    }
 
-    /**
-     * @param Application $app
-     */
-    public function boot(Application $app)
-    {
+        $this->addShared(
+            UserServiceInterface::class,
+            function () {
+                return $this->get(CultureFeedUserService::class);
+            }
+        );
     }
 }

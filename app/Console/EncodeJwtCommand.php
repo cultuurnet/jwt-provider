@@ -3,28 +3,25 @@
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
 use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class EncodeJwtCommand extends AbstractCommand
+class EncodeJwtCommand extends Command
 {
     /**
-     * @var string
+     * @var JwtEncoderServiceInterface
      */
-    private $encoderServiceName;
+    private $encoder;
 
-    /**
-     * @param string $encoderServiceName
-     *   Name of the JWT encoder service in the Silex application
-     */
-    public function __construct($encoderServiceName)
+    public function __construct(JwtEncoderServiceInterface $encoder)
     {
         parent::__construct();
-        $this->encoderServiceName = $encoderServiceName;
+        $this->encoder = $encoder;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('jwt:encode')
@@ -46,12 +43,7 @@ class EncodeJwtCommand extends AbstractCommand
             );
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return null|int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $claims = array_filter(
             $input->getArguments(),
@@ -61,17 +53,10 @@ class EncodeJwtCommand extends AbstractCommand
             ARRAY_FILTER_USE_KEY
         );
 
-        $token = $this->getEncoderService()
-            ->encode($claims);
+        $token = $this->encoder->encode($claims);
 
         $output->writeln(['', $token]);
-    }
 
-    /**
-     * @return JwtEncoderServiceInterface
-     */
-    private function getEncoderService()
-    {
-        return $this->getService($this->encoderServiceName, JwtEncoderServiceInterface::class);
+        return 0;
     }
 }

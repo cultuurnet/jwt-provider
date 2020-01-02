@@ -1,15 +1,12 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use Silex\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
+use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
+class OAuthUrlHelperTest extends TestCase
 {
     const TEST_TOKEN = 'testToken';
     const TEST_SECRET = 'testSecret';
@@ -38,22 +35,20 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
             self::TEST_SECRET
         );
 
-        $this->oAuthUrlHelper = new OAuthUrlHelper($this->createUrlGenerator());
-
+        $this->oAuthUrlHelper = new OAuthUrlHelper('/authorize');
         $this->defaultDestination = new StringLiteral(self::DEFAULT_DESTINATION);
     }
 
     /**
      * @test
      */
-    public function it_creates_callback_uri_from_request()
+    public function it_creates_callback_uri_from_request(): void
     {
-        $request = Request::create(
-            'http://culudb-jwt-provider.dev/culturefeed/oauth/authorize',
+        $request = (new ServerRequestFactory())->createServerRequest(
             'GET',
-            ['destination' => 'culudb-silex.dev']
+            'http://culudb-jwt-provider.dev/connect?destination=culudb-silex.dev'
         );
-        $expectedUri = 'http://localhost//culturefeed/oauth/authorize%3Fdestination=culudb-silex.dev';
+        $expectedUri = 'http://culudb-jwt-provider.dev/authorize?destination=culudb-silex.dev';
 
         $callbackUri = $this->oAuthUrlHelper->createCallbackUri($request);
 
@@ -63,11 +58,11 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_destination_is_missing_in_request()
+    public function it_throws_invalid_argument_exception_when_destination_is_missing_in_request(): void
     {
-        $request = Request::create(
-            '/culturefeed/oauth/authorize',
-            'GET'
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'GET',
+            '/connect'
         );
 
         $this->expectException(\InvalidArgumentException::class);
@@ -80,14 +75,14 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function request_token_is_valid_when_token_match_and_verifier_is_present()
+    public function request_token_is_valid_when_token_match_and_verifier_is_present(): void
     {
         $url = $this->createUrlWithTokenAndVerifier(
             self::TEST_TOKEN,
             self::TEST_VERIFIER
         );
 
-        $request = Request::create($url);
+        $request = (new ServerRequestFactory())->createServerRequest('GET', $url);
 
         $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
@@ -100,14 +95,14 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function request_token_is_not_valid_when_token_does_not_match()
+    public function request_token_is_not_valid_when_token_does_not_match(): void
     {
         $url = $this->createUrlWithTokenAndVerifier(
             'wrongToken',
             self::TEST_VERIFIER
         );
 
-        $request = Request::create($url);
+        $request = (new ServerRequestFactory())->createServerRequest('GET', $url);
 
         $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
@@ -120,14 +115,14 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function request_token_is_not_valid_when_verifier_is_missing()
+    public function request_token_is_not_valid_when_verifier_is_missing(): void
     {
         $url = $this->createUrlWithTokenAndVerifier(
             self::TEST_TOKEN,
             ''
         );
 
-        $request = Request::create($url);
+        $request = (new ServerRequestFactory())->createServerRequest('GET', $url);
 
         $hasValidRequestToken = $this->oAuthUrlHelper->hasValidRequestToken(
             $request,
@@ -137,15 +132,10 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($hasValidRequestToken);
     }
 
-    /**
-     * @param string $token
-     * @param string $verifier
-     * @return string
-     */
     private function createUrlWithTokenAndVerifier(
-        $token,
-        $verifier
-    ) {
+        string $token,
+        string $verifier
+    ): string {
         $baseUrl = 'http://www.example.com?';
 
         if (!empty($token)) {
@@ -157,21 +147,5 @@ class OAuthUrlHelperTest extends \PHPUnit_Framework_TestCase
         }
 
         return $baseUrl;
-    }
-
-    /**
-     * @return UrlGenerator
-     */
-    private function createUrlGenerator()
-    {
-        $routes = new RouteCollection();
-        $routes->add(
-            OAuthUrlHelper::AUTHORISATION_ROUTE_NAME,
-            new Route('/culturefeed/oauth/authorize?destination={destination}')
-        );
-
-        $context = new RequestContext('/');
-
-        return new UrlGenerator($routes, $context);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class UserClaimsTest extends \PHPUnit_Framework_TestCase
+class UserClaimsTest extends TestCase
 {
     /**
      * @test

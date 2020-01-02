@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
+use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class RequestTokenSessionStorage
@@ -11,40 +11,42 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class RequestTokenSessionStorage implements RequestTokenStorageInterface
 {
-    const REQUEST_TOKEN = 'RequestToken';
+    private const REQUEST_TOKEN_KEY = 'RequestToken';
     
     /**
-     * @var SessionInterface
+     * @var Segment
      */
-    private $session;
-    
-    /**
-     * RequestTokenSessionStorage constructor.
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
+    private $sessionSegment;
+
+    public function __construct(Segment $sessionSegment)
     {
-        $this->session = $session;
+        $this->sessionSegment = $sessionSegment;
     }
 
-    /**
-     * @param RequestToken $requestToken
-     */
-    public function storeRequestToken(RequestToken $requestToken)
+    public function storeRequestToken(RequestToken $requestToken): void
     {
-        $this->session->set(self::REQUEST_TOKEN, $requestToken);
+        $this->sessionSegment->set(
+            self::REQUEST_TOKEN_KEY,
+            [
+                'token' => $requestToken->getToken(),
+                'secret' => $requestToken->getSecret(),
+            ]
+        );
     }
 
-    /**
-     * @return RequestToken|null
-     */
-    public function getStoredRequestToken()
+    public function getStoredRequestToken(): ?RequestToken
     {
-        return $this->session->get(self::REQUEST_TOKEN);
+        $tokenData = $this->sessionSegment->get(self::REQUEST_TOKEN_KEY);
+
+        if (!$tokenData) {
+            return null;
+        }
+
+        return new RequestToken($tokenData['token'], $tokenData['secret']);
     }
 
-    public function removeStoredRequestToken()
+    public function removeStoredRequestToken(): void
     {
-        $this->session->remove(self::REQUEST_TOKEN);
+        $this->sessionSegment->clear();
     }
 }

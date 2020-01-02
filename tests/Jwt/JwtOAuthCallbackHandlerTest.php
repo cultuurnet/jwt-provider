@@ -5,16 +5,17 @@ namespace CultuurNet\UDB3\JwtProvider\Jwt;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
 use CultuurNet\UDB3\JwtProvider\User\UserClaims;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use GuzzleHttp\Psr7\Uri;
 use Lcobucci\JWT\Signature;
 use Lcobucci\JWT\Token as Jwt;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
+class JwtOAuthCallbackHandlerTest extends TestCase
 {
     /**
      * @var JwtEncoderServiceInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -91,9 +92,10 @@ class JwtOAuthCallbackHandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($jwt);
 
         $response = $this->callbackHandler->handle($accessToken, $destination);
+        $location = $response->getHeader('Location');
 
         /* @var RedirectResponse $response */
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals($expectedDestination, $response->getTargetUrl());
+        $this->assertEquals($expectedDestination, reset($location));
     }
 }

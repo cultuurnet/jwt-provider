@@ -1,19 +1,19 @@
 <?php
 
+use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
+use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
+use League\Route\Router;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\JwtProvider\OAuth\OAuthControllerProvider;
-use Silex\Application;
-use Silex\Provider\ServiceControllerServiceProvider;
+$config = ConfigFactory::create(__DIR__ . '/../');
 
-/** @var Application $app */
-$app = require __DIR__ . '/../bootstrap.php';
+$container = ContainerFactory::forWeb($config);
 
-/**
- * Allow to use services as controllers.
- */
-$app->register(new ServiceControllerServiceProvider());
+$response = $container->get(Router::class)->dispatch(
+    ServerRequestFactory::createFromGlobals()
+);
 
-$app->mount('culturefeed/oauth', new OAuthControllerProvider());
-
-$app->run();
+(new SapiStreamEmitter())->emit($response);

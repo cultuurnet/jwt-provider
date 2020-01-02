@@ -5,10 +5,11 @@ namespace CultuurNet\UDB3\JwtProvider\User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class CultureFeedUserServiceTest extends \PHPUnit_Framework_TestCase
+class CultureFeedUserServiceTest extends TestCase
 {
     /**
      * @var \ICultureFeed|\PHPUnit_Framework_MockObject_MockObject

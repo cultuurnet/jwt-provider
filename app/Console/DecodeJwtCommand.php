@@ -3,29 +3,26 @@
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
 use CultuurNet\UDB3\Jwt\JWTDecoderServiceInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DecodeJwtCommand extends AbstractCommand
+class DecodeJwtCommand extends Command
 {
     /**
-     * @var string
+     * @var JWTDecoderServiceInterface
      */
-    private $decoderServiceName;
+    private $decoder;
 
-    /**
-     * @param string $decoderServiceName
-     */
-    public function __construct(
-        $decoderServiceName
-    ) {
+    public function __construct(JWTDecoderServiceInterface $decoder)
+    {
         parent::__construct();
-        $this->decoderServiceName = $decoderServiceName;
+        $this->decoder = $decoder;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('jwt:decode')
@@ -37,16 +34,9 @@ class DecodeJwtCommand extends AbstractCommand
             );
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return null|int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $decoder = $this->getDecoderService();
-
-        $token = $decoder->parse(
+        $token = $this->decoder->parse(
             new StringLiteral($input->getArgument('token'))
         );
 
@@ -56,21 +46,13 @@ class DecodeJwtCommand extends AbstractCommand
             $output->writeln("{$claim}: {$value}");
         }
 
-        $valid = $decoder->validateData($token);
-        $verified = $decoder->verifySignature($token);
+        $valid = $this->decoder->validateData($token);
+        $verified = $this->decoder->verifySignature($token);
 
         $output->writeln('Valid: ' . ($valid ? '✓' : '✕'));
         $output->writeln('Signature verification: ' . ($verified ? '✓' : '✕'));
 
         // Return 0 as exit code if verified & valid, otherwise 1.
         return !($valid && $verified);
-    }
-
-    /**
-     * @return JWTDecoderServiceInterface
-     */
-    private function getDecoderService()
-    {
-        return $this->getService($this->decoderServiceName, JWTDecoderServiceInterface::class);
     }
 }
