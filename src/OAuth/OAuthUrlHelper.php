@@ -79,7 +79,7 @@ class OAuthUrlHelper
         // https://github.com/slimphp/Slim/blob/200c6143f15baa477601879b64ab2326847aac0b/Slim/Http/Uri.php#L825
         $uri = $request->getUri();
         $scheme = $uri->getScheme();
-        $authority = $uri->getAuthority();
-        return ($scheme !== '' ? $scheme . ':' : '') . ($authority ? '//' . $authority : '');
+        $host = $uri->getHost();
+        return ($scheme !== '' ? $scheme . ':' : '') . ($host ? '//' . $host : '');
     }
 }
