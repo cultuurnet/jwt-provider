@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExternalAuthService;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -20,7 +20,7 @@ class RequestToken
     private $destinationUrlRepository;
 
     /**
-     * @var ExternalAuthService
+     * @var AuthService
      */
     private $externalAuthService;
 
@@ -28,7 +28,7 @@ class RequestToken
     public function __construct(
         ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
         DestinationUrlRepository $destinationUrlRepository,
-        ExternalAuthService $externalAuthService
+        AuthService $externalAuthService
     ) {
         $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
         $this->destinationUrlRepository = $destinationUrlRepository;

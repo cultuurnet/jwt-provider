@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-interface ExternalAuthService
+interface AuthService
 {
     public function redirectToLogin(): void;
 }
