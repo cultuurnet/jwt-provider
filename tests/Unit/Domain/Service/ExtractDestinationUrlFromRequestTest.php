@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Service;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
-use CultuurNet\UDB3\JwtProvider\Domain\DestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
@@ -23,7 +23,7 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
         $extractTargetUrlFromRequestTest = new ExtractDestinationUrlFromRequest();
         $extracted = $extractTargetUrlFromRequestTest->__invoke($serverRequest);
 
-        $this->assertEquals($extracted, DestinationUrl::fromString('https://culudb-silex.dev'));
+        $this->assertEquals($extracted, Url::fromString('https://culudb-silex.dev'));
     }
 
     /**

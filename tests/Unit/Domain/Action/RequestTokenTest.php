@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
-use CultuurNet\UDB3\JwtProvider\Domain\DestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
@@ -19,7 +19,7 @@ class RequestTokenTest extends TestCase
     public function it_requests_for_token()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $destinationUrl = DestinationUrl::fromString('http://foo-bar.com');
+        $destinationUrl = Url::fromString('http://foo-bar.com');
 
         $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
         $extractDestinationUrlFromRequest->__invoke($serverRequest)->willReturn($destinationUrl);

@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain;
 
 use Assert\Assertion;
 
-class DestinationUrl
+class Url
 {
 
     /**
@@ -16,9 +16,9 @@ class DestinationUrl
     {
     }
 
-    public static function fromString(string $value): DestinationUrl
+    public static function fromString(string $value): Url
     {
-        $instance = new DestinationUrl();
+        $instance = new Url();
         Assertion::url($value);
         $instance->value = $value;
         return $instance;
@@ -27,5 +27,10 @@ class DestinationUrl
     public function asString(): string
     {
         return $this->value;
+    }
+
+    public function withAppendix(string $appendix): Url
+    {
+        return self::fromString($this->value . $appendix);
     }
 }

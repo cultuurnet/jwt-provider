@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Unit\Infrastructure\Repository;
 
 use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
-use CultuurNet\UDB3\JwtProvider\Domain\DestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use PHPUnit\Framework\TestCase;
 
@@ -64,7 +64,7 @@ class SessionTest extends TestCase
         );
 
         $this->destinationUrl = new RequestToken('token', 'secret');
-        $this->destinationUrl = DestinationUrl::fromString('http://foo-bar.com');
+        $this->destinationUrl = Url::fromString('http://foo-bar.com');
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 
 use Aura\Session\Segment;
-use CultuurNet\UDB3\JwtProvider\Domain\DestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 
 class Session implements DestinationUrlRepository
@@ -20,7 +20,7 @@ class Session implements DestinationUrlRepository
         $this->sessionSegment = $segment;
     }
 
-    public function storeDestinationUrl(DestinationUrl $destinationUrl)
+    public function storeDestinationUrl(Url $destinationUrl)
     {
         $this->sessionSegment->set(
             self::DESTINATION_URL,
@@ -30,7 +30,7 @@ class Session implements DestinationUrlRepository
         );
     }
 
-    public function getDestinationUrl(): ?DestinationUrl
+    public function getDestinationUrl(): ?Url
     {
         $values = $this->sessionSegment->get(self::DESTINATION_URL);
 
@@ -38,7 +38,7 @@ class Session implements DestinationUrlRepository
             return null;
         }
 
-        return DestinationUrl::fromString($values['destination']);
+        return Url::fromString($values['destination']);
     }
 
     public function removeDestinationUrl(): void

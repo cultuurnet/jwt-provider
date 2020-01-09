@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\DestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Url;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -10,13 +10,13 @@ class ExtractDestinationUrlFromRequest
 {
     const DESTINATION = 'destination';
 
-    public function __invoke(ServerRequestInterface $serverRequest): DestinationUrl
+    public function __invoke(ServerRequestInterface $serverRequest): Url
     {
         $queryParams = $serverRequest->getQueryParams();
 
         $this->guardAgainstNoDestinationPresent($queryParams);
 
-        return DestinationUrl::fromString($queryParams[self::DESTINATION]);
+        return Url::fromString($queryParams[self::DESTINATION]);
     }
 
     private function guardAgainstNoDestinationPresent(array $queryParams): void
