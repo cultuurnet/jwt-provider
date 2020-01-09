@@ -2,11 +2,13 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoTokenPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
+use Fig\Http\Message\StatusCodeInterface;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Response;
 
 class Authorize
 {
@@ -35,13 +37,24 @@ class Authorize
         $this->generateAuthorizedDestinationUrl = $generateAuthorizedDestinationUrl;
     }
 
-    public function __invoke(): Url
+    public function __invoke(): ResponseInterface
     {
         $token = $this->authService->token();
 
         if ($token === null) {
-            throw new NoTokenPresent();
+            return new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
         }
-        return $this->generateAuthorizedDestinationUrl->__invoke($this->destinationUrlRepository->getDestinationUrl(), $token);
+
+        $destinationUrl = $this->destinationUrlRepository->getDestinationUrl();
+
+        $url = $this->generateAuthorizedDestinationUrl->__invoke($destinationUrl,
+            $token);
+
+        return new Response(
+            StatusCodeInterface::STATUS_MOVED_PERMANENTLY,
+            new Headers(
+                ['Location' => $url->asString()]
+            )
+        );
     }
 }

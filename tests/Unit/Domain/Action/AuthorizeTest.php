@@ -8,6 +8,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
 class AuthorizeTest extends TestCase
@@ -16,7 +17,7 @@ class AuthorizeTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_authorized_destination_url_for_successful_authorization()
+    public function it_returns_response_with_authorized_url_for_successful_authorization()
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
         $destinationUrl = Url::fromString('http://foo-bar.com');
@@ -36,14 +37,14 @@ class AuthorizeTest extends TestCase
             $generateDestinationUrl->reveal()
         );
 
-        $redirectResponse = $authorizeAction->__invoke();
-        $this->assertEquals('http://foo-bar.com?jwt=token', $redirectResponse->asString());
+        $response = $authorizeAction->__invoke();
+        $this->assertEquals('http://foo-bar.com?jwt=token', $response->getHeaderLine('Location'));
     }
 
     /**
      * @test
      */
-    public function it_throws_exception_for_un_successful_authorization()
+    public function it_returns_invalid_request_response_for_un_successful_authorization()
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
         $destinationUrl = Url::fromString('http://foo-bar.com');
@@ -61,8 +62,7 @@ class AuthorizeTest extends TestCase
             $generateDestinationUrl->reveal()
         );
 
-        $this->expectException(NoTokenPresent::class);
-        $authorizeAction->__invoke();
-    }
+        $response = $authorizeAction->__invoke();
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());    }
 
 }
