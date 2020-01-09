@@ -2,11 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Factory;
 
+use CultuurNet\UDB3\JwtProvider\ActionServiceProvider;
 use CultuurNet\UDB3\JwtProvider\CommandServiceProvider;
-use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedServiceProvider;
-use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
-use CultuurNet\UDB3\JwtProvider\OAuth\OAuthServiceProvider;
-use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -24,7 +21,10 @@ class ContainerFactory
     public static function forWeb(Config $config): Container
     {
         $container = self::build($config);
+
         $container->addServiceProvider(RoutingServiceProvider::class);
+        $container->addServiceProvider(ActionServiceProvider::class);
+
         return $container;
     }
 
@@ -36,11 +36,6 @@ class ContainerFactory
             Config::class,
             $config
         );
-
-        $container->addServiceProvider(CultureFeedServiceProvider::class);
-        $container->addServiceProvider(JwtServiceProvider::class);
-        $container->addServiceProvider(OAuthServiceProvider::class);
-        $container->addServiceProvider(RequestTokenStorageServiceProvider::class);
 
         return $container;
     }

@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use Auth0\SDK\Auth0;
-
-use CultuurNet\Auth\User;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 
 class Auth0Adapter implements AuthService
@@ -24,8 +22,14 @@ class Auth0Adapter implements AuthService
         $this->auth0->login();
     }
 
+    //@TODO: IMPLEMENT - return real token token
     public function token(): ?string
     {
-        // TODO: Implement token() method.
+        $user = $this->auth0->getUser();
+        if ($user === null) {
+            return null;
+        }
+
+        return $user['token'];
     }
 }
