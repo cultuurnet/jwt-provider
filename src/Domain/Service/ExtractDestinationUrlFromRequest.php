@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,9 +23,7 @@ class ExtractDestinationUrlFromRequest
     private function guardAgainstNoDestinationPresent(array $queryParams): void
     {
         if (!isset($queryParams[self::DESTINATION])) {
-            throw new \InvalidArgumentException(
-                'Request does not contain a destination parameter to redirect to after login.'
-            );
+            throw new NoDestinationPresent();
         }
     }
 }

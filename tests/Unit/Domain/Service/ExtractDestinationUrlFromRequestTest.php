@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Service;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
 
         $extractTargetUrlFromRequestTest = new ExtractDestinationUrlFromRequest();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(NoDestinationPresent::class);
         $extractTargetUrlFromRequestTest->__invoke($serverRequest);
     }
 
