@@ -47,6 +47,10 @@ class Authorize
 
         $destinationUrl = $this->destinationUrlRepository->getDestinationUrl();
 
+        if ($destinationUrl === null) {
+            return new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+        }
+
         $url = $this->generateAuthorizedDestinationUrl->__invoke($destinationUrl,
             $token);
 

@@ -63,6 +63,32 @@ class AuthorizeTest extends TestCase
         );
 
         $response = $authorizeAction->__invoke();
-        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());    }
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_returns_invalid_request_response_for_no_destination_url_present()
+    {
+        $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
+
+        $destinationUrlRepository->getDestinationUrl()->willReturn(null);
+
+        $authService = $this->prophesize(AuthService::class);
+        $authService->token()->willReturn('token');
+
+        $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
+
+        $authorizeAction = new Authorize(
+            $authService->reveal(),
+            $destinationUrlRepository->reveal(),
+            $generateDestinationUrl->reveal()
+        );
+
+        $response = $authorizeAction->__invoke();
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+    }
 
 }
