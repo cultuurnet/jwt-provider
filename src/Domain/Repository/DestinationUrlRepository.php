@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Repository;
 
-
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 
 interface DestinationUrlRepository

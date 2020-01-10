@@ -6,7 +6,6 @@ use Assert\Assertion;
 
 class Url
 {
-
     /**
      * @var string
      */

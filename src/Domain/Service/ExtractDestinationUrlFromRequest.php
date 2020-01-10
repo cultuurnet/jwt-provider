@@ -6,7 +6,6 @@ use Assert\AssertionFailedException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
-
 use Psr\Http\Message\ServerRequestInterface;
 
 class ExtractDestinationUrlFromRequest

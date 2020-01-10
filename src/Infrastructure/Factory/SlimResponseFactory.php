@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
-
 
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
