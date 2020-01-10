@@ -38,4 +38,28 @@ class RequestTokenTest extends TestCase
 
         $requestTokenAction->__invoke($serverRequest->reveal());
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_bad_request_for_no_destination_present()
+    {
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+
+        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
+        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(\InvalidArgumentException::class);
+
+        $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
+
+        $externalAuthService = $this->prophesize(AuthService::class);
+        $externalAuthService->redirectToLogin()->shouldNotBeCalled();
+
+        $requestTokenAction = new RequestToken(
+            $extractDestinationUrlFromRequest->reveal(),
+            $destinationUrlRepository->reveal(),
+            $externalAuthService->reveal()
+        );
+
+        $requestTokenAction->__invoke($serverRequest->reveal());
+    }
 }

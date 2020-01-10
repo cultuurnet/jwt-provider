@@ -5,7 +5,10 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
+use Fig\Http\Message\StatusCodeInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Response;
 
 class RequestToken
 {
@@ -35,12 +38,17 @@ class RequestToken
         $this->externalAuthService = $externalAuthService;
     }
 
-    public function __invoke(ServerRequestInterface $serverRequest): void
+    public function __invoke(ServerRequestInterface $serverRequest): ?ResponseInterface
     {
-        $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
-
-        $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
-
-        $this->externalAuthService->redirectToLogin();
+        try {
+            $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
+            $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
+            $this->externalAuthService->redirectToLogin();
+            return null;
+        } catch (\InvalidArgumentException $exception) {
+            $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+            $response->getBody()->write($exception->getMessage());
+            return $response;
+        }
     }
 }
