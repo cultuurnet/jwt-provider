@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
@@ -65,5 +66,32 @@ class RequestTokenTest extends TestCase
         $response = $requestTokenAction->__invoke($serverRequest->reveal());
         $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
         $this->assertEquals(NoDestinationPresent::MESSAGE, $response->getBody());
+    }
+
+
+    /**
+     * @test
+     */
+    public function it_returns_bad_request_for_no_invalid_destination()
+    {
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+
+        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
+        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(InvalidDestination::class);
+
+        $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
+
+        $externalAuthService = $this->prophesize(AuthService::class);
+        $externalAuthService->redirectToLogin()->shouldNotBeCalled();
+
+        $requestTokenAction = new RequestToken(
+            $extractDestinationUrlFromRequest->reveal(),
+            $destinationUrlRepository->reveal(),
+            $externalAuthService->reveal()
+        );
+
+        $response = $requestTokenAction->__invoke($serverRequest->reveal());
+
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
     }
 }

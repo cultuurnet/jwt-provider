@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Service;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
@@ -43,4 +44,19 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
         $extractTargetUrlFromRequestTest->__invoke($serverRequest);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_exception_if_destination_is_invalid_url()
+    {
+        $serverRequest = (new ServerRequestFactory())->createServerRequest(
+            'GET',
+            'http://culudb-jwt-provider.dev/connect?destination=foo-bar'
+        );
+
+        $extractTargetUrlFromRequestTest = new ExtractDestinationUrlFromRequest();
+
+        $this->expectException(InvalidDestination::class);
+        $extractTargetUrlFromRequestTest->__invoke($serverRequest);
+    }
 }

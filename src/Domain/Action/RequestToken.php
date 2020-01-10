@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
@@ -47,6 +48,10 @@ class RequestToken
             $this->externalAuthService->redirectToLogin();
             return null;
         } catch (NoDestinationPresent $exception) {
+            $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+            $response->getBody()->write($exception->getMessage());
+            return $response;
+        }catch (InvalidDestination $exception){
             $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
             $response->getBody()->write($exception->getMessage());
             return $response;

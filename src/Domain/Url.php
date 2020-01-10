@@ -16,6 +16,11 @@ class Url
     {
     }
 
+    /**
+     * @param string $value
+     * @return Url
+     * @throws \Assert\AssertionFailedException
+     */
     public static function fromString(string $value): Url
     {
         $instance = new Url();
