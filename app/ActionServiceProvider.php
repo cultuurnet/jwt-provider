@@ -6,10 +6,12 @@ use Aura\Session\SessionFactory;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
+use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenSessionStorage;
@@ -29,7 +31,8 @@ class ActionServiceProvider extends BaseServiceProvider
                 return new RequestToken(
                     new ExtractDestinationUrlFromRequest(),
                     $this->get(DestinationUrlRepository::class),
-                    $this->get(AuthService::class)
+                    $this->get(AuthService::class),
+                    $this->get(ResponseFactoryInterface::class)
                 );
             }
         );
@@ -40,8 +43,16 @@ class ActionServiceProvider extends BaseServiceProvider
                 return new Authorize(
                     $this->get(AuthService::class),
                     $this->get(DestinationUrlRepository::class),
-                    new GenerateAuthorizedDestinationUrl()
+                    new GenerateAuthorizedDestinationUrl(),
+                    $this->get(ResponseFactoryInterface::class)
                 );
+            }
+        );
+
+        $this->addShared(
+            ResponseFactoryInterface::class,
+            function (){
+                return new SlimResponseFactory();
             }
         );
 
