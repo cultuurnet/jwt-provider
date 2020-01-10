@@ -4,13 +4,12 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
+use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Psr7\Response;
 
 class RequestToken
 {
@@ -29,15 +28,22 @@ class RequestToken
      */
     private $externalAuthService;
 
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
 
     public function __construct(
         ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
         DestinationUrlRepository $destinationUrlRepository,
-        AuthService $externalAuthService
+        AuthService $externalAuthService,
+        ResponseFactoryInterface $responseFactory
     ) {
         $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
         $this->destinationUrlRepository = $destinationUrlRepository;
         $this->externalAuthService = $externalAuthService;
+        $this->responseFactory = $responseFactory;
     }
 
     public function __invoke(ServerRequestInterface $serverRequest): ?ResponseInterface
@@ -48,13 +54,9 @@ class RequestToken
             $this->externalAuthService->redirectToLogin();
             return null;
         } catch (NoDestinationPresent $exception) {
-            $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-            $response->getBody()->write($exception->getMessage());
-            return $response;
-        }catch (InvalidDestination $exception){
-            $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-            $response->getBody()->write($exception->getMessage());
-            return $response;
+            return  $this->responseFactory->badRequestWithMessage($exception->getMessage());
+        } catch (InvalidDestination $exception) {
+            return  $this->responseFactory->badRequestWithMessage($exception->getMessage());
         }
     }
 }

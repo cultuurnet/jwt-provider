@@ -4,10 +4,12 @@ namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoTokenPresent;
+use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +36,8 @@ class AuthorizeTest extends TestCase
         $authorizeAction = new Authorize(
             $authService->reveal(),
             $destinationUrlRepository->reveal(),
-            $generateDestinationUrl->reveal()
+            $generateDestinationUrl->reveal(),
+            new SlimResponseFactory()
         );
 
         $response = $authorizeAction->__invoke();
@@ -59,7 +62,8 @@ class AuthorizeTest extends TestCase
         $authorizeAction = new Authorize(
             $authService->reveal(),
             $destinationUrlRepository->reveal(),
-            $generateDestinationUrl->reveal()
+            $generateDestinationUrl->reveal(),
+            new SlimResponseFactory()
         );
 
         $response = $authorizeAction->__invoke();
@@ -84,7 +88,8 @@ class AuthorizeTest extends TestCase
         $authorizeAction = new Authorize(
             $authService->reveal(),
             $destinationUrlRepository->reveal(),
-            $generateDestinationUrl->reveal()
+            $generateDestinationUrl->reveal(),
+            new SlimResponseFactory()
         );
 
         $response = $authorizeAction->__invoke();

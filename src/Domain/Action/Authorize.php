@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
@@ -27,14 +28,21 @@ class Authorize
      */
     private $generateAuthorizedDestinationUrl;
 
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
     public function __construct(
         AuthService $authService,
         DestinationUrlRepository $destinationUrlRepository,
-        GenerateAuthorizedDestinationUrl $generateAuthorizedDestinationUrl
+        GenerateAuthorizedDestinationUrl $generateAuthorizedDestinationUrl,
+        ResponseFactoryInterface $responseFactory
     ) {
         $this->authService = $authService;
         $this->destinationUrlRepository = $destinationUrlRepository;
         $this->generateAuthorizedDestinationUrl = $generateAuthorizedDestinationUrl;
+        $this->responseFactory = $responseFactory;
     }
 
     public function __invoke(): ResponseInterface
@@ -42,23 +50,18 @@ class Authorize
         $token = $this->authService->token();
 
         if ($token === null) {
-            return new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+            return $this->responseFactory->badRequest();
         }
 
         $destinationUrl = $this->destinationUrlRepository->getDestinationUrl();
 
         if ($destinationUrl === null) {
-            return new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+            return $this->responseFactory->badRequest();
         }
 
         $url = $this->generateAuthorizedDestinationUrl->__invoke($destinationUrl,
             $token);
 
-        return new Response(
-            StatusCodeInterface::STATUS_MOVED_PERMANENTLY,
-            new Headers(
-                ['Location' => $url->asString()]
-            )
-        );
+        return  $this->responseFactory->redirectTo($url);
     }
 }

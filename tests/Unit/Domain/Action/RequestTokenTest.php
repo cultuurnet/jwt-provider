@@ -9,6 +9,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,7 +37,8 @@ class RequestTokenTest extends TestCase
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
-            $externalAuthService->reveal()
+            $externalAuthService->reveal(),
+            new SlimResponseFactory()
         );
 
         $requestTokenAction->__invoke($serverRequest->reveal());
@@ -60,7 +62,9 @@ class RequestTokenTest extends TestCase
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
-            $externalAuthService->reveal()
+            $externalAuthService->reveal(),
+            new SlimResponseFactory()
+
         );
 
         $response = $requestTokenAction->__invoke($serverRequest->reveal());
@@ -87,7 +91,8 @@ class RequestTokenTest extends TestCase
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
-            $externalAuthService->reveal()
+            $externalAuthService->reveal(),
+            new SlimResponseFactory()
         );
 
         $response = $requestTokenAction->__invoke($serverRequest->reveal());
