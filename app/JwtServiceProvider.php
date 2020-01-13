@@ -2,29 +2,18 @@
 
 namespace CultuurNet\UDB3\JwtProvider;
 
-use CultuurNet\Clock\SystemClock;
 use CultuurNet\UDB3\Jwt\JwtDecoderService;
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
-use CultuurNet\UDB3\Jwt\JwtEncoderService;
-use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
-use DateTimeZone;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\ValidationData;
-use ValueObjects\Number\Integer;
 
 class JwtServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Builder::class,
-        Signer::class,
-        'jwt.keys.private',
-        'jwt.keys.public',
-        ValidationData::class,
-        JwtEncoderServiceInterface::class,
         JwtDecoderServiceInterface::class,
     ];
 
@@ -47,18 +36,6 @@ class JwtServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            'jwt.keys.private',
-            function () {
-                $file = __DIR__ . '/../' . $this->parameter('jwt.keys.private.file');
-
-                return new Key(
-                    'file://' . $file,
-                    $this->parameter('jwt.keys.private.passphrase')
-                );
-            }
-        );
-
-        $this->addShared(
             'jwt.keys.public',
             function () {
                 $file = __DIR__ . '/../' . $this->parameter('jwt.keys.public.file');
@@ -75,22 +52,6 @@ class JwtServiceProvider extends BaseServiceProvider
                 $data = new ValidationData();
                 $data->setIssuer($this->parameter('jwt.iss'));
                 return $data;
-            }
-        );
-
-        $this->addShared(
-            JwtEncoderServiceInterface::class,
-            function () {
-                return new JwtEncoderService(
-                    $this->get(Builder::class),
-                    $this->get(Signer::class),
-                    $this->get('jwt.keys.private'),
-                    new SystemClock(
-                        new DateTimeZone('Europe/Brussels')
-                    ),
-                    new Integer($this->parameter('jwt.exp')),
-                    new Integer($this->parameter('jwt.nbf'))
-                );
             }
         );
 
