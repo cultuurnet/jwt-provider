@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoTokenPresent;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
@@ -96,4 +97,27 @@ class AuthorizeTest extends TestCase
         $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
     }
 
+
+    /**
+     * @test
+     */
+    public function it_returns_invalid_request_response_for_failed_authorization()
+    {
+        $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
+
+        $authService = $this->prophesize(AuthService::class);
+        $authService->token()->willThrow(UnSuccessfulAuth::class);
+
+        $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
+
+        $authorizeAction = new Authorize(
+            $authService->reveal(),
+            $destinationUrlRepository->reveal(),
+            $generateDestinationUrl->reveal(),
+            new SlimResponseFactory()
+        );
+
+        $response = $authorizeAction->__invoke();
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+    }
 }

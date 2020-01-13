@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
@@ -44,7 +45,11 @@ class Authorize
 
     public function __invoke(): ResponseInterface
     {
-        $token = $this->authService->token();
+        try {
+            $token = $this->authService->token();
+        } catch (UnSuccessfulAuth $unSuccessfulAuth) {
+            return $this->responseFactory->badRequest();
+        }
 
         if ($token === null) {
             return $this->responseFactory->badRequest();
@@ -59,6 +64,6 @@ class Authorize
         $url = $this->generateAuthorizedDestinationUrl->__invoke($destinationUrl,
             $token);
 
-        return  $this->responseFactory->redirectTo($url);
+        return $this->responseFactory->redirectTo($url);
     }
 }
