@@ -51,12 +51,11 @@ class RequestToken
         try {
             $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
             $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
-            $this->externalAuthService->redirectToLogin();
-            return null;
+            return $this->externalAuthService->redirectToLogin();
         } catch (NoDestinationPresent $exception) {
-            return  $this->responseFactory->badRequestWithMessage($exception->getMessage());
+            return $this->responseFactory->badRequestWithMessage($exception->getMessage());
         } catch (InvalidDestination $exception) {
-            return  $this->responseFactory->badRequestWithMessage($exception->getMessage());
+            return $this->responseFactory->badRequestWithMessage($exception->getMessage());
         }
     }
 }

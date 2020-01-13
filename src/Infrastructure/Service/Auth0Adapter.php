@@ -7,6 +7,7 @@ use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use Psr\Http\Message\ResponseInterface;
 
 class Auth0Adapter implements AuthService
 {
@@ -20,9 +21,10 @@ class Auth0Adapter implements AuthService
         $this->auth0 = $auth0;
     }
 
-    public function redirectToLogin(): void
+    public function redirectToLogin(): ?ResponseInterface
     {
         $this->auth0->login();
+        return null;
     }
 
     public function token(): ?string

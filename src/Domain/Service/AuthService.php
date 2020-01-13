@@ -2,9 +2,11 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
+use Psr\Http\Message\ResponseInterface;
+
 interface AuthService
 {
-    public function redirectToLogin(): void;
+    public function redirectToLogin(): ?ResponseInterface;
 
     public function token(): ?string;
 }

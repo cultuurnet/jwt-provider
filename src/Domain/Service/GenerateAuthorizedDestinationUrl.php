@@ -30,6 +30,6 @@ class GenerateAuthorizedDestinationUrl
      */
     private function hasQueryString(Url $destinationUrl): bool
     {
-        return strpos($destinationUrl->asString(), '?') == false;
+        return strpos($destinationUrl->asString(), '?') === false;
     }
 }
