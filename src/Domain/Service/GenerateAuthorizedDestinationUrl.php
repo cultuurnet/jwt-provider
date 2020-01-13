@@ -2,34 +2,15 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
+use Psr\Http\Message\UriInterface;
 
 class GenerateAuthorizedDestinationUrl
 {
-    public function __invoke(Url $destinationUrl, string $token): Url
+    public function __invoke(UriInterface $destinationUrl, string $token): UriInterface
     {
-        $prefix = $this->generateQueryParameterPrefix($destinationUrl);
-        return $destinationUrl->withAppendix($prefix . 'jwt=' . $token);
-    }
+        $query = $destinationUrl->getQuery();
+        $queryPrefix = $query !== '' ? '&' : '?';
 
-    /**
-     * @param Url $destinationUrl
-     * @return string
-     */
-    private function generateQueryParameterPrefix(Url $destinationUrl): string
-    {
-        if ($this->hasQueryString($destinationUrl)) {
-            return $prefix = '?';
-        }
-        return '&';
-    }
-
-    /**
-     * @param Url $destinationUrl
-     * @return bool
-     */
-    private function hasQueryString(Url $destinationUrl): bool
-    {
-        return strpos($destinationUrl->asString(), '?') === false;
+        return $destinationUrl->withQuery($query . $queryPrefix . 'jwt=' . $token);
     }
 }

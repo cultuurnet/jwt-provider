@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Repository;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
+use Psr\Http\Message\UriInterface;
 
 interface DestinationUrlRepository
 {
-    public function storeDestinationUrl(Url $destinationUrl);
+    public function storeDestinationUrl(UriInterface $destinationUrl);
 
-    public function getDestinationUrl(): ?Url;
+    public function getDestinationUrl(): ?UriInterface;
 
     public function removeDestinationUrl(): void;
 }

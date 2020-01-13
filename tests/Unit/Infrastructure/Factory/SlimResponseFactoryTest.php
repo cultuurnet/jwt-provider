@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Unit\Infrastructure\Factory;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 
 class SlimResponseFactoryTest extends TestCase
@@ -40,10 +40,10 @@ class SlimResponseFactoryTest extends TestCase
     public function it_creates_redirect_response_for_url()
     {
         $factory = new SlimResponseFactory();
-        $url = Url::fromString('http://foo-bar.com');
+        $url = (new UriFactory())->createUri('http://foo-bar.com/');
         $response = $factory->redirectTo($url);
         $this->assertEquals(StatusCodeInterface::STATUS_MOVED_PERMANENTLY, $response->getStatusCode());
         $this->assertTrue($response instanceof Response);
-        $this->assertEquals('http://foo-bar.com', $response->getHeaderLine('Location'));
+        $this->assertEquals('http://foo-bar.com/', $response->getHeaderLine('Location'));
     }
 }

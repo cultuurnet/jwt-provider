@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Uri;
 
 class GenerateAuthorizedDestinationUrlTest extends TestCase
 {
@@ -14,11 +14,18 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
      */
     public function it_appends_token_to_query_params_list()
     {
-        $destinationUrl = Url::fromString('http://bar.com/?query=value');
-        $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
-        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl,'token');
+        $destinationUrl = new Uri(
+            'https',
+            'bar.com',
+            null,
+            '',
+            '?query=value'
 
-        $this->assertEquals($result->asString(),'http://bar.com/?query=value&jwt=token');
+        );
+        $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
+        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');
+
+        $this->assertEquals('https://bar.com/?query=value&jwt=token', $result->__toString());
     }
 
     /**
@@ -26,10 +33,14 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
      */
     public function it_adds_token_as_query_param()
     {
-        $destinationUrl = Url::fromString('http://bar.com/');
-        $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
-        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl,'token');
+        $destinationUrl = new Uri(
+            'https',
+            'bar.com'
+        );
 
-        $this->assertEquals($result->asString(),'http://bar.com/?jwt=token');
+        $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
+        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');
+
+        $this->assertEquals('https://bar.com/?jwt=token', $result->__toString());
     }
 }

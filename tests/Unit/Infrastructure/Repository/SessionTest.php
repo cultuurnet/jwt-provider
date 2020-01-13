@@ -7,6 +7,8 @@ use CultuurNet\Auth\TokenCredentials as RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\ResponseFactory;
+use Slim\Psr7\Factory\UriFactory;
 
 class SessionTest extends TestCase
 {
@@ -60,11 +62,12 @@ class SessionTest extends TestCase
             );
 
         $this->session = new Session(
-            $this->sessionSegment
+            $this->sessionSegment,
+            new UriFactory()
         );
 
-        $this->destinationUrl = new RequestToken('token', 'secret');
-        $this->destinationUrl = Url::fromString('http://foo-bar.com');
+
+        $this->destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
     }
 
     /**

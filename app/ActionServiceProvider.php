@@ -14,6 +14,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
 {
@@ -28,7 +29,9 @@ class ActionServiceProvider extends BaseServiceProvider
             RequestToken::class,
             function() {
                 return new RequestToken(
-                    new ExtractDestinationUrlFromRequest(),
+                    new ExtractDestinationUrlFromRequest(
+                        new UriFactory()
+                    ),
                     $this->get(DestinationUrlRepository::class),
                     $this->get(AuthService::class),
                     $this->get(ResponseFactoryInterface::class)
@@ -60,8 +63,8 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 $sessionFactory = new SessionFactory;
                 $session = $sessionFactory->newInstance($_COOKIE);
-                $segment = $session->getSegment(RequestTokenSessionStorage::class);
-                return new Session($segment);
+                $segment = $session->getSegment(DestinationUrlRepository::class);
+                return new Session($segment, new UriFactory());
             }
         );
 

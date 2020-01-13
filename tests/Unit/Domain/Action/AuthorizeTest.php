@@ -3,16 +3,14 @@
 namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoTokenPresent;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
-use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\UriFactory;
 
 class AuthorizeTest extends TestCase
 {
@@ -23,7 +21,7 @@ class AuthorizeTest extends TestCase
     public function it_returns_response_with_authorized_url_for_successful_authorization()
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
-        $destinationUrl = Url::fromString('http://foo-bar.com');
+        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
 
         $destinationUrlRepository->getDestinationUrl()->willReturn($destinationUrl);
 
@@ -32,7 +30,7 @@ class AuthorizeTest extends TestCase
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
         $generateDestinationUrl->__invoke($destinationUrl, 'token')
-            ->willReturn(Url::fromString('http://foo-bar.com?jwt=token'));
+            ->willReturn((new UriFactory())->createUri('http://foo-bar.com?jwt=token'));
 
         $authorizeAction = new Authorize(
             $authService->reveal(),
@@ -42,7 +40,7 @@ class AuthorizeTest extends TestCase
         );
 
         $response = $authorizeAction->__invoke();
-        $this->assertEquals('http://foo-bar.com?jwt=token', $response->getHeaderLine('Location'));
+        $this->assertEquals('http://foo-bar.com/?jwt=token', $response->getHeaderLine('Location'));
     }
 
     /**
@@ -51,7 +49,7 @@ class AuthorizeTest extends TestCase
     public function it_returns_invalid_request_response_for_un_successful_authorization()
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepository::class);
-        $destinationUrl = Url::fromString('http://foo-bar.com');
+        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
 
         $destinationUrlRepository->getDestinationUrl()->willReturn($destinationUrl);
 

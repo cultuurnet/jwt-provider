@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Factory;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 interface ResponseFactoryInterface
 {
@@ -11,5 +11,5 @@ interface ResponseFactoryInterface
 
     public function badRequest(): ResponseInterface;
 
-    public function redirectTo(Url $url): ResponseInterface;
+    public function redirectTo(UriInterface $url): ResponseInterface;
 }

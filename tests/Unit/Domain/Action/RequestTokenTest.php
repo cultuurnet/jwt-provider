@@ -13,6 +13,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Factory\UriFactory;
 
 class RequestTokenTest extends TestCase
 {
@@ -23,7 +24,7 @@ class RequestTokenTest extends TestCase
     public function it_requests_for_token()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $destinationUrl = Url::fromString('http://foo-bar.com');
+        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com');
 
         $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
         $extractDestinationUrlFromRequest->__invoke($serverRequest)->willReturn($destinationUrl);

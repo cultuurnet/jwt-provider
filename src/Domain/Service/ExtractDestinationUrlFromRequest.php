@@ -2,29 +2,38 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use Assert\AssertionFailedException;
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriFactoryInterface;
+use Psr\Http\Message\UriInterface;
 
 class ExtractDestinationUrlFromRequest
 {
     const DESTINATION = 'destination';
+    /**
+     * @var UriFactoryInterface
+     */
+    private $uriFactory;
+
+    public function __construct(UriFactoryInterface $uriFactory)
+    {
+        $this->uriFactory = $uriFactory;
+    }
 
     /**
      * @param ServerRequestInterface $serverRequest
-     * @return Url
+     * @return UriInterface
      * @throws NoDestinationPresent
-     * @throws InvalidDestination
+     * @throws InvalidArgumentException
      */
-    public function __invoke(ServerRequestInterface $serverRequest): Url
+    public function __invoke(ServerRequestInterface $serverRequest): UriInterface
     {
         $queryParams = $serverRequest->getQueryParams();
 
         $this->guardAgainstNoDestinationPresent($queryParams);
 
-        return $this->createDestinationUrl($queryParams);
+        return $this->uriFactory->createUri($queryParams[self::DESTINATION]);
     }
 
     /**
@@ -35,20 +44,6 @@ class ExtractDestinationUrlFromRequest
     {
         if (!isset($queryParams[self::DESTINATION])) {
             throw new NoDestinationPresent();
-        }
-    }
-
-    /**
-     * @param array $queryParams
-     * @return Url
-     * @throws InvalidDestination
-     */
-    private function createDestinationUrl(array $queryParams): Url
-    {
-        try {
-            return Url::fromString($queryParams[self::DESTINATION]);
-        } catch (AssertionFailedException $e) {
-            throw new InvalidDestination($queryParams[self::DESTINATION]);
         }
     }
 }

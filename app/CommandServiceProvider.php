@@ -20,7 +20,6 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 $commandMap = [
                     'jwt:decode' => DecodeJwtCommand::class,
-                    'jwt:encode' => EncodeJwtCommand::class,
                 ];
 
                 $application = new Application('udb3-search');
