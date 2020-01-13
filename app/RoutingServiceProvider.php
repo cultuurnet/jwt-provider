@@ -10,8 +10,6 @@ use League\Route\Strategy\ApplicationStrategy;
 
 class RoutingServiceProvider extends BaseServiceProvider
 {
-    private const AUTHORIZATION_PATH = '/authorize';
-    private const REQUEST_TOKEN_PATH = '/connect';
 
     protected $provides = [
         Router::class,
@@ -26,16 +24,16 @@ class RoutingServiceProvider extends BaseServiceProvider
                 $strategy = (new ApplicationStrategy())->setContainer($this->getContainer());
                 $router->setStrategy($strategy);
 
-                $router->get(self::REQUEST_TOKEN_PATH, [RequestToken::class, '__invoke']);
-                $router->get(self::AUTHORIZATION_PATH, [Authorize::class, '__invoke']);
+                $router->get('/connect', [RequestToken::class, '__invoke']);
+                $router->get('/authorize', [Authorize::class, '__invoke']);
 
-                //@TODO: transfer other routes
+                //@TODO: implement
 //                $router->get('/register', [OAuthController::class, 'register']);
 //                $router->get('/logout', [OAuthController::class, 'logout']);
 //
 //                 Maintain these old paths for backwards compatibility.
-//                $router->get('/culturefeed/oauth/connect', [OAuthController::class, 'connect']);
-//                $router->get('/culturefeed/oauth/authorize', [OAuthController::class, 'authorize']);
+                $router->get('/culturefeed/oauth/connect', [RequestToken::class, '__invoke']);
+                $router->get('/culturefeed/oauth/authorize', [Authorize::class, '__invoke']);
 //                $router->get('/culturefeed/oauth/register', [OAuthController::class, 'register']);
 //                $router->get('/culturefeed/oauth/logout', [OAuthController::class, 'logout']);
 
