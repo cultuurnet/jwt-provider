@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\ActionServiceProvider;
 use CultuurNet\UDB3\JwtProvider\CommandServiceProvider;
-use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
+use CultuurNet\UDB3\JwtProvider\JwtServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;

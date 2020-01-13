@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\JwtProvider\Jwt;
+namespace CultuurNet\UDB3\JwtProvider;
 
 use CultuurNet\Clock\SystemClock;
 use CultuurNet\UDB3\Jwt\JwtDecoderService;
@@ -50,7 +50,7 @@ class JwtServiceProvider extends BaseServiceProvider
         $this->addShared(
             'jwt.keys.private',
             function () {
-                $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.private.file');
+                $file = __DIR__ . '/../' . $this->parameter('jwt.keys.private.file');
 
                 return new Key(
                     'file://' . $file,
@@ -62,7 +62,7 @@ class JwtServiceProvider extends BaseServiceProvider
         $this->addShared(
             'jwt.keys.public',
             function () {
-                $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.public.file');
+                $file = __DIR__ . '/../' . $this->parameter('jwt.keys.public.file');
 
                 return new Key(
                     'file://' . $file
