@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\ActionServiceProvider;
 use CultuurNet\UDB3\JwtProvider\CommandServiceProvider;
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -15,6 +16,7 @@ class ContainerFactory
     {
         $container = self::build($config);
         $container->addServiceProvider(CommandServiceProvider::class);
+        $container->addServiceProvider(JwtServiceProvider::class);
         return $container;
     }
 
