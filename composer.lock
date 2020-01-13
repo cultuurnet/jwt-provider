@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2026af0ed2287f75ede11e913e2fb18",
+    "content-hash": "4c5664da7425c39ad088975d184e6bc6",
     "packages": [
         {
             "name": "aura/session",
@@ -505,41 +505,6 @@
             "time": "2018-04-23T12:11:11+00:00"
         },
         {
-            "name": "cultuurnet/cdb",
-            "version": "v2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "267541bb8e35993c7f7be99834cc549f496854c7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/267541bb8e35993c7f7be99834cc549f496854c7",
-                "reference": "267541bb8e35993c7f7be99834cc549f496854c7",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "CultureFeed_Cdb_": [
-                        "lib"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-02-16T08:33:45+00:00"
-        },
-        {
             "name": "cultuurnet/clock",
             "version": "dev-master",
             "source": {
@@ -579,74 +544,6 @@
             ],
             "description": "Clock abstraction library",
             "time": "2015-06-08T16:12:34+00:00"
-        },
-        {
-            "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9e90cd8b646dd598155da36c4c8835b03b3a13c8",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/cdb": "~2.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.4.0",
-                "satooshi/php-coveralls": "~0.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev",
-                    "dev-develop": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "CultureFeed",
-                    "OAuth"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Sven Houtmeyers",
-                    "email": "sven.houtmeyers@cultuurnet.be"
-                },
-                {
-                    "name": "Luk Dens",
-                    "email": "luk.dens@cultuurnet.be"
-                },
-                {
-                    "name": "Davy Van Den Bremt"
-                },
-                {
-                    "name": "Jochen Stals"
-                },
-                {
-                    "name": "Nils Destoop"
-                },
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Hans Langouche",
-                    "email": "hans@2dotstwice.be"
-                }
-            ],
-            "description": "Culturefeed PHP library",
-            "time": "2017-02-23T10:02:29+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
