@@ -14,7 +14,6 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
-use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenSessionStorage;
 
 class ActionServiceProvider extends BaseServiceProvider
 {

@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Jwt\JwtDecoderService;
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
 use CultuurNet\UDB3\Jwt\JwtEncoderService;
 use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
-use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 use DateTimeZone;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
