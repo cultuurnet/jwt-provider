@@ -5,8 +5,8 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0AdapterInterface;
 use PHPUnit\Framework\TestCase;
 
 class Auth0AdapterTest extends TestCase
@@ -19,7 +19,7 @@ class Auth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new Auth0AdapterInterface($auth0->reveal());
 
         $auth0->login()->shouldBeCalled();
 
@@ -33,7 +33,7 @@ class Auth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new Auth0AdapterInterface($auth0->reveal());
 
         $auth0->getIdToken()->willReturn('token');
 
@@ -49,11 +49,11 @@ class Auth0AdapterTest extends TestCase
 
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new Auth0AdapterInterface($auth0->reveal());
 
         $auth0->getIdToken()->willThrow($exception);
 
-        $this->expectException(UnSuccessfulAuth::class);
+        $this->expectException(UnSuccessfulAuthException::class);
 
         $auth0adapter->token();
 
@@ -63,7 +63,7 @@ class Auth0AdapterTest extends TestCase
     {
         return [
             [ApiException::class],
-            [CoreException::class]
+            [CoreException::class],
         ];
     }
 }

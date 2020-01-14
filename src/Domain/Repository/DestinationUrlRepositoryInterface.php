@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Repository;
 
 use Psr\Http\Message\UriInterface;
 
-interface DestinationUrlRepository
+interface DestinationUrlRepositoryInterface
 {
     public function storeDestinationUrl(UriInterface $destinationUrl);
 

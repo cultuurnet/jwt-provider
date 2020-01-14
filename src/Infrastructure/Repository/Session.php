@@ -3,11 +3,11 @@
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 
 use Aura\Session\Segment;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use Psr\Http\Message\UriInterface;
 use Slim\Psr7\Factory\UriFactory;
 
-class Session implements DestinationUrlRepository
+class Session implements DestinationUrlRepositoryInterface
 {
     private const DESTINATION_URL = 'DestinationUrl';
 
@@ -31,7 +31,7 @@ class Session implements DestinationUrlRepository
         $this->sessionSegment->set(
             self::DESTINATION_URL,
             [
-                'destination' => $destinationUrl->__toString()
+                'destination' => $destinationUrl->__toString(),
             ]
         );
     }

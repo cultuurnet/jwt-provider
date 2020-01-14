@@ -2,22 +2,22 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class Authorize
 {
     /**
-     * @var AuthService
+     * @var AuthServiceInterface
      */
     private $authService;
 
     /**
-     * @var DestinationUrlRepository
+     * @var DestinationUrlRepositoryInterface
      */
     private $destinationUrlRepository;
 
@@ -32,8 +32,8 @@ class Authorize
     private $responseFactory;
 
     public function __construct(
-        AuthService $authService,
-        DestinationUrlRepository $destinationUrlRepository,
+        AuthServiceInterface $authService,
+        DestinationUrlRepositoryInterface $destinationUrlRepository,
         GenerateAuthorizedDestinationUrl $generateAuthorizedDestinationUrl,
         ResponseFactoryInterface $responseFactory
     ) {
@@ -47,7 +47,7 @@ class Authorize
     {
         try {
             $token = $this->authService->token();
-        } catch (UnSuccessfulAuth $unSuccessfulAuth) {
+        } catch (UnSuccessfulAuthException $unSuccessfulAuth) {
             return $this->responseFactory->badRequest();
         }
 
@@ -61,8 +61,10 @@ class Authorize
             return $this->responseFactory->badRequest();
         }
 
-        $url = $this->generateAuthorizedDestinationUrl->__invoke($destinationUrl,
-            $token);
+        $url = $this->generateAuthorizedDestinationUrl->__invoke(
+            $destinationUrl,
+            $token
+        );
 
         return $this->responseFactory->redirectTo($url);
     }

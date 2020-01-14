@@ -20,7 +20,6 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
             null,
             '',
             '?query=value'
-
         );
         $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
         $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');

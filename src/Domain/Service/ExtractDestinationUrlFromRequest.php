@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriFactoryInterface;
@@ -24,7 +24,7 @@ class ExtractDestinationUrlFromRequest
     /**
      * @param ServerRequestInterface $serverRequest
      * @return UriInterface
-     * @throws NoDestinationPresent
+     * @throws NoDestinationPresentException
      * @throws InvalidArgumentException
      */
     public function __invoke(ServerRequestInterface $serverRequest): UriInterface
@@ -38,12 +38,12 @@ class ExtractDestinationUrlFromRequest
 
     /**
      * @param array $queryParams
-     * @throws NoDestinationPresent
+     * @throws NoDestinationPresentException
      */
     private function guardAgainstNoDestinationPresent(array $queryParams): void
     {
         if (!isset($queryParams[self::DESTINATION])) {
-            throw new NoDestinationPresent();
+            throw new NoDestinationPresentException();
         }
     }
 }

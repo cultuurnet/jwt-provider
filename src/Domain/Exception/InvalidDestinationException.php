@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
-class InvalidDestination extends \Exception
+class InvalidDestinationException extends \Exception
 {
     public const MESSAGE = 'Given destination url is invalid: ';
 

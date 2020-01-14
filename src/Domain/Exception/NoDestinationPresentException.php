@@ -4,14 +4,16 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
 use Throwable;
 
-class NoDestinationPresent extends \Exception
+class NoDestinationPresentException extends \Exception
 {
     public const MESSAGE = 'Request does not contain a destination parameter to redirect to after login.';
 
     public function __construct($code = 0, Throwable $previous = null)
     {
-        parent::__construct(self::MESSAGE, $code,
-            $previous);
+        parent::__construct(
+            self::MESSAGE,
+            $code,
+            $previous
+        );
     }
-
 }

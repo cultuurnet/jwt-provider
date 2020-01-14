@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
 use Psr\Http\Message\ResponseInterface;
 
-interface AuthService
+interface AuthServiceInterface
 {
     public function redirectToLogin(): ?ResponseInterface;
 

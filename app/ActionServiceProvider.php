@@ -7,13 +7,13 @@ use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepository;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0AdapterInterface;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
@@ -32,8 +32,8 @@ class ActionServiceProvider extends BaseServiceProvider
                     new ExtractDestinationUrlFromRequest(
                         new UriFactory()
                     ),
-                    $this->get(DestinationUrlRepository::class),
-                    $this->get(AuthService::class),
+                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->get(AuthServiceInterface::class),
                     $this->get(ResponseFactoryInterface::class)
                 );
             }
@@ -43,8 +43,8 @@ class ActionServiceProvider extends BaseServiceProvider
             Authorize::class,
             function (){
                 return new Authorize(
-                    $this->get(AuthService::class),
-                    $this->get(DestinationUrlRepository::class),
+                    $this->get(AuthServiceInterface::class),
+                    $this->get(DestinationUrlRepositoryInterface::class),
                     new GenerateAuthorizedDestinationUrl(),
                     $this->get(ResponseFactoryInterface::class)
                 );
@@ -59,19 +59,19 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            DestinationUrlRepository::class,
+            DestinationUrlRepositoryInterface::class,
             function () {
                 $sessionFactory = new SessionFactory;
                 $session = $sessionFactory->newInstance($_COOKIE);
-                $segment = $session->getSegment(DestinationUrlRepository::class);
+                $segment = $session->getSegment(DestinationUrlRepositoryInterface::class);
                 return new Session($segment, new UriFactory());
             }
         );
 
         $this->addShared(
-            AuthService::class,
+            AuthServiceInterface::class,
             function () {
-                return new Auth0Adapter(
+                return new Auth0AdapterInterface(
                     new Auth0(
                         [
                             'domain' => $this->parameter('auth0.domain'),

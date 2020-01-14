@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresent;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -44,7 +44,7 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
             new UriFactory()
         );
 
-        $this->expectException(NoDestinationPresent::class);
+        $this->expectException(NoDestinationPresentException::class);
         $extractTargetUrlFromRequestTest->__invoke($serverRequest);
     }
 }

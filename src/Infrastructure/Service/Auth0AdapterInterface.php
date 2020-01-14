@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuth;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthService;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Auth0Adapter implements AuthService
+class Auth0AdapterInterface implements AuthServiceInterface
 {
     /**
      * @var Auth0
@@ -32,9 +32,9 @@ class Auth0Adapter implements AuthService
         try {
             return $this->auth0->getIdToken();
         } catch (ApiException $e) {
-            throw new UnSuccessfulAuth();
+            throw new UnSuccessfulAuthException();
         } catch (CoreException $e) {
-            throw new UnSuccessfulAuth();
+            throw new UnSuccessfulAuthException();
         }
     }
 }
