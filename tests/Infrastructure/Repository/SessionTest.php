@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\JwtProvider\Unit\Infrastructure\Repository;
+namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 
 use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
@@ -13,7 +13,7 @@ use Slim\Psr7\Factory\UriFactory;
 class SessionTest extends TestCase
 {
     /**
-     * @var Segment|PHPUnit_Framework_MockObject_MockObject
+     * @var Segment|\PHPUnit_Framework_MockObject_MockObject
      */
     private $sessionSegment;
 

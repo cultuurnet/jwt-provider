@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\JwtProvider\Unit\Domain\Action;
+namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestination;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\JwtProvider\Unit\Infrastructure\Service;
+namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;

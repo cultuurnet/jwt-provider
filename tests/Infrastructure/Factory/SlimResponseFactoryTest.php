@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\JwtProvider\Unit\Infrastructure\Factory;
+namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
