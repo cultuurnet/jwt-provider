@@ -13,7 +13,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0AdapterInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
@@ -71,7 +71,7 @@ class ActionServiceProvider extends BaseServiceProvider
         $this->addShared(
             AuthServiceInterface::class,
             function () {
-                return new Auth0AdapterInterface(
+                return new Auth0Adapter(
                     new Auth0(
                         [
                             'domain' => $this->parameter('auth0.domain'),
