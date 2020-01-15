@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;

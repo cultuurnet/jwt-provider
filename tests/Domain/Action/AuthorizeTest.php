@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;

@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
-class NoTokenPresentException extends \Exception
+use Exception;
+
+class NoTokenPresentException extends Exception
 {
 
 }

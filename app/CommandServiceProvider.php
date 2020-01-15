@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider;
 
 use CultuurNet\UDB3\JwtProvider\Console\DecodeJwtCommand;
-use CultuurNet\UDB3\JwtProvider\Console\EncodeJwtCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 

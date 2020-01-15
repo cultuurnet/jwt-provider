@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Uri;
 

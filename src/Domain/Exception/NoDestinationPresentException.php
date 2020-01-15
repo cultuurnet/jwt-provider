@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
+use Exception;
 use Throwable;
 
-class NoDestinationPresentException extends \Exception
+class NoDestinationPresentException extends Exception
 {
     public const MESSAGE = 'Request does not contain a destination parameter to redirect to after login.';
 

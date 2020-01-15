@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestinationException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Url;

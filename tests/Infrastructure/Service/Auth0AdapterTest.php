@@ -6,7 +6,6 @@ use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
 use PHPUnit\Framework\TestCase;
 
 class Auth0AdapterTest extends TestCase

@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
-class UnSuccessfulAuthException extends \Exception
+use Exception;
+
+class UnSuccessfulAuthException extends Exception
 {
 
 }

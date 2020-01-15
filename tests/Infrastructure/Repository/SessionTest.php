@@ -4,10 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 
 use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use PHPUnit\Framework\TestCase;
-use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\UriFactory;
 
 class SessionTest extends TestCase
