@@ -26,15 +26,15 @@ class RoutingServiceProvider extends BaseServiceProvider
                 $router->get('/connect', [RequestToken::class, '__invoke']);
                 $router->get('/authorize', [Authorize::class, '__invoke']);
 
-                //@TODO: implement
-//                $router->get('/register', [OAuthController::class, 'register']);
-//                $router->get('/logout', [OAuthController::class, 'logout']);
-//
-//                 Maintain these old paths for backwards compatibility.
+                // @TODO: implement
+                // $router->get('/register', [OAuthController::class, 'register']);
+                // $router->get('/logout', [OAuthController::class, 'logout']);
+
+                // Maintain these old paths for backwards compatibility.
                 $router->get('/culturefeed/oauth/connect', [RequestToken::class, '__invoke']);
                 $router->get('/culturefeed/oauth/authorize', [Authorize::class, '__invoke']);
-//                $router->get('/culturefeed/oauth/register', [OAuthController::class, 'register']);
-//                $router->get('/culturefeed/oauth/logout', [OAuthController::class, 'logout']);
+                // $router->get('/culturefeed/oauth/register', [OAuthController::class, 'register']);
+                // $router->get('/culturefeed/oauth/logout', [OAuthController::class, 'logout']);
 
                 return $router;
             }
