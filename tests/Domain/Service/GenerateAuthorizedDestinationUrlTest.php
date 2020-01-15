@@ -10,7 +10,7 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
     /**
      * @test
      */
-    public function it_appends_token_to_query_params_list()
+    public function it_appends_token_to_query_params_list(): void
     {
         $destinationUrl = new Uri(
             'https',
@@ -28,7 +28,7 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_token_as_query_param()
+    public function it_adds_token_as_query_param(): void
     {
         $destinationUrl = new Uri(
             'https',

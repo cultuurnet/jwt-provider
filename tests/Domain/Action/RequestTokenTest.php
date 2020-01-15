@@ -20,7 +20,7 @@ class RequestTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_requests_for_token()
+    public function it_requests_for_token(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com');
@@ -47,7 +47,7 @@ class RequestTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_bad_request_for_no_destination_present()
+    public function it_returns_bad_request_for_no_destination_present(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 
@@ -75,7 +75,7 @@ class RequestTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_bad_request_for_no_invalid_destination()
+    public function it_returns_bad_request_for_no_invalid_destination(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 

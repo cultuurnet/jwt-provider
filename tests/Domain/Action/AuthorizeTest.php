@@ -17,7 +17,7 @@ class AuthorizeTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_response_with_authorized_url_for_successful_authorization()
+    public function it_returns_response_with_authorized_url_for_successful_authorization(): void
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
         $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
@@ -45,7 +45,7 @@ class AuthorizeTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_invalid_request_response_for_un_successful_authorization()
+    public function it_returns_invalid_request_response_for_un_successful_authorization(): void
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
         $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
@@ -72,7 +72,7 @@ class AuthorizeTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_invalid_request_response_for_no_destination_url_present()
+    public function it_returns_invalid_request_response_for_no_destination_url_present(): void
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
@@ -98,7 +98,7 @@ class AuthorizeTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_invalid_request_response_for_failed_authorization()
+    public function it_returns_invalid_request_response_for_failed_authorization(): void
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 

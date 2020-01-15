@@ -13,7 +13,7 @@ class Auth0AdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_redirects_to_login_page()
+    public function it_redirects_to_login_page(): void
     {
         $auth0 = $this->prophesize(Auth0::class);
 
@@ -27,7 +27,7 @@ class Auth0AdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_token()
+    public function it_returns_token(): void
     {
         $auth0 = $this->prophesize(Auth0::class);
 
@@ -41,15 +41,17 @@ class Auth0AdapterTest extends TestCase
     /**
      * @test
      * @dataProvider auth0_exceptions()
+     * @param string $exceptionClassName
+     * @throws UnSuccessfulAuthException
      */
-    public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception($exception)
+    public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(string $exceptionClassName): void
     {
 
         $auth0 = $this->prophesize(Auth0::class);
 
         $auth0adapter = new Auth0Adapter($auth0->reveal());
 
-        $auth0->getIdToken()->willThrow($exception);
+        $auth0->getIdToken()->willThrow($exceptionClassName);
 
         $this->expectException(UnSuccessfulAuthException::class);
 

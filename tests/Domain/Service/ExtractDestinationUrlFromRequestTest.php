@@ -12,7 +12,7 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_extracts_target_url_from_request()
+    public function it_extracts_target_url_from_request(): void
     {
         $serverRequest = (new ServerRequestFactory())->createServerRequest(
             'GET',
@@ -31,7 +31,7 @@ class ExtractDestinationUrlFromRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_url_does_not_contain_destination()
+    public function it_throws_exception_if_url_does_not_contain_destination(): void
     {
         $serverRequest = (new ServerRequestFactory())->createServerRequest(
             'GET',
