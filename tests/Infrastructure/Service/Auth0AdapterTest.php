@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class Auth0AdapterTest extends TestCase
 {
-
     /**
      * @test
      */

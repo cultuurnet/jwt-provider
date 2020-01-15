@@ -7,7 +7,6 @@ use Slim\Psr7\Uri;
 
 class GenerateAuthorizedDestinationUrlTest extends TestCase
 {
-
     /**
      * @test
      */

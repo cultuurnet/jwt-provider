@@ -7,7 +7,6 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 
-
 class RoutingServiceProvider extends BaseServiceProvider
 {
 

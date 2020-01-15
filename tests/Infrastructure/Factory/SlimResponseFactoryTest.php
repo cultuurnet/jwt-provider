@@ -9,7 +9,6 @@ use Slim\Psr7\Response;
 
 class SlimResponseFactoryTest extends TestCase
 {
-
     /**
      * @test
      */

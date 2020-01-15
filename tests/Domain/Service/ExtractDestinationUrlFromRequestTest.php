@@ -9,7 +9,6 @@ use Slim\Psr7\Factory\UriFactory;
 
 class ExtractDestinationUrlFromRequestTest extends TestCase
 {
-
     /**
      * @test
      */
