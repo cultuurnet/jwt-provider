@@ -12,8 +12,13 @@ $config = ConfigFactory::create(__DIR__ . '/../');
 
 $container = ContainerFactory::forWeb($config);
 
-$response = $container->get(Router::class)->dispatch(
-    ServerRequestFactory::createFromGlobals()
-);
+try{
+    $response = $container->get(Router::class)->dispatch(
+        ServerRequestFactory::createFromGlobals()
+    );
+}catch(Throwable $throwable){
+    var_dump($throwable);
+}
+
 
 (new SapiStreamEmitter())->emit($response);

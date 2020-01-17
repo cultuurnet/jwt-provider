@@ -37,4 +37,9 @@ class Auth0Adapter implements AuthServiceInterface
             throw new UnSuccessfulAuthException();
         }
     }
+
+    public function logout(): void
+    {
+        $this->auth0->logout();
+    }
 }

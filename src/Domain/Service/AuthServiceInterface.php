@@ -14,4 +14,6 @@ interface AuthServiceInterface
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string;
+
+    public function logout(): void;
 }

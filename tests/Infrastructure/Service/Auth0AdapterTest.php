@@ -40,6 +40,16 @@ class Auth0AdapterTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_logs_out_user()
+    {
+        $auth0 = $this->prophesize(Auth0::class);
+        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter->logout();
+        $auth0->logout()->shouldHaveBeenCalled();
+    }
+    /**
+     * @test
      * @dataProvider auth0_exceptions()
      * @param string $exceptionClassName
      * @throws UnSuccessfulAuthException

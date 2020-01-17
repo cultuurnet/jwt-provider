@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestinationException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
@@ -32,7 +31,6 @@ class RequestToken
      * @var ResponseFactoryInterface
      */
     private $responseFactory;
-
 
     public function __construct(
         ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,

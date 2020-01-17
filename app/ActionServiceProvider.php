@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider;
 use Aura\Session\SessionFactory;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\Logout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
@@ -20,18 +21,18 @@ class ActionServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         RequestToken::class,
-        Authorize::class
+        Authorize::class,
+        Logout::class,
     ];
 
     public function register(): void
     {
         $this->add(
             RequestToken::class,
-            function() {
+            function () {
                 return new RequestToken(
-                    new ExtractDestinationUrlFromRequest(
-                        new UriFactory()
-                    ),
+                    $this->get(ExtractDestinationUrlFromRequest::class),
+
                     $this->get(DestinationUrlRepositoryInterface::class),
                     $this->get(AuthServiceInterface::class),
                     $this->get(ResponseFactoryInterface::class)
@@ -41,7 +42,7 @@ class ActionServiceProvider extends BaseServiceProvider
 
         $this->add(
             Authorize::class,
-            function (){
+            function () {
                 return new Authorize(
                     $this->get(AuthServiceInterface::class),
                     $this->get(DestinationUrlRepositoryInterface::class),
@@ -52,8 +53,19 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
+            Logout::class,
+            function () {
+                return new Logout(
+                    $this->get(ExtractDestinationUrlFromRequest::class),
+                    $this->get(AuthServiceInterface::class),
+                    $this->get(ResponseFactoryInterface::class)
+                );
+            }
+        );
+
+        $this->addShared(
             ResponseFactoryInterface::class,
-            function (){
+            function () {
                 return new SlimResponseFactory();
             }
         );
@@ -82,6 +94,15 @@ class ActionServiceProvider extends BaseServiceProvider
                             'persist_id_token' => true,
                         ]
                     )
+                );
+            }
+        );
+
+        $this->add(
+            ExtractDestinationUrlFromRequest::class,
+            function () {
+                return new ExtractDestinationUrlFromRequest(
+                    new UriFactory()
                 );
             }
         );
