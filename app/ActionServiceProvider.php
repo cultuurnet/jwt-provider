@@ -14,10 +14,15 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use Firebase\JWT\JWT;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
 {
+    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
+    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
+    private const JWT_IAT_LEEWAY = 30;
+
     protected $provides = [
         RequestToken::class,
         Authorize::class
@@ -71,6 +76,8 @@ class ActionServiceProvider extends BaseServiceProvider
         $this->addShared(
             AuthServiceInterface::class,
             function () {
+                JWT::$leeway = self::JWT_IAT_LEEWAY;
+
                 return new Auth0Adapter(
                     new Auth0(
                         [
