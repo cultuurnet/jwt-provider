@@ -54,7 +54,7 @@ class RequestToken
             return $this->externalAuthService->redirectToLogin();
         } catch (NoDestinationPresentException $exception) {
             return $this->responseFactory->badRequestWithMessage($exception->getMessage());
-        } catch (InvalidDestinationException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             return $this->responseFactory->badRequestWithMessage($exception->getMessage());
         }
     }

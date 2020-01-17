@@ -80,7 +80,7 @@ class RequestTokenTest extends TestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 
         $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(InvalidDestinationException::class);
+        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(\InvalidArgumentException::class);
 
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
