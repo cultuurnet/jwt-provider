@@ -12,4 +12,6 @@ interface ResponseFactoryInterface
     public function badRequest(): ResponseInterface;
 
     public function redirectTo(UriInterface $url): ResponseInterface;
+
+    public function responseWithToken(string $token): ResponseInterface;
 }

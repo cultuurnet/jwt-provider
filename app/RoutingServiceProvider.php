@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use League\Route\Router;
@@ -30,6 +31,9 @@ class RoutingServiceProvider extends BaseServiceProvider
 
                 $router->get('/logout', [RequestLogout::class, '__invoke']);
                 $router->get('/logout-confirm', [LogOut::class, '__invoke']);
+
+                $router->get('/refresh', [Refresh::class, '__invoke']);
+
 
                 // Maintain these old paths for backwards compatibility.
                 $router->get('/culturefeed/oauth/connect', [RequestToken::class, '__invoke']);

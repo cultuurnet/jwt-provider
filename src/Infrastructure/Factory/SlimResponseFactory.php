@@ -33,4 +33,14 @@ class SlimResponseFactory implements ResponseFactoryInterface
             )
         );
     }
+
+    public function responseWithToken(string $token): ResponseInterface
+    {
+        $response = new Response(
+            StatusCodeInterface::STATUS_OK
+        );
+        $body = $response->getBody();
+        $body->write($token);
+        return $response->withBody($body);
+    }
 }

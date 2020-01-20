@@ -7,6 +7,7 @@ use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
@@ -15,13 +16,16 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use Firebase\JWT\JWT;
 use Slim\Psr7\Factory\UriFactory;
+use function foo\func;
 
 class ActionServiceProvider extends BaseServiceProvider
 {
@@ -33,7 +37,8 @@ class ActionServiceProvider extends BaseServiceProvider
         RequestToken::class,
         Authorize::class,
         RequestLogout::class,
-        LogOut::class
+        LogOut::class,
+        Refresh::class,
     ];
 
     public function register(): void
@@ -83,6 +88,16 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
+        $this->add(
+            Refresh::class,
+            function () {
+                return new Refresh(
+                    $this->get(ResponseFactoryInterface::class),
+                    $this->get(RefreshServiceInterface::class)
+                );
+            }
+        );
+
         $this->addShared(
             LogOutServiceInterface::class,
             function () {
@@ -122,6 +137,15 @@ class ActionServiceProvider extends BaseServiceProvider
             LoginServiceInterface::class,
             function () {
                 return new LoginAuth0Adapter(
+                    $this->get(Auth0::class)
+                );
+            }
+        );
+
+        $this->addShared(
+            RefreshServiceInterface::class,
+            function () {
+                return new RefreshAuth0Adapter(
                     $this->get(Auth0::class)
                 );
             }
