@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ class AuthorizeTest extends TestCase
 
         $destinationUrlRepository->getDestinationUrl()->willReturn($destinationUrl);
 
-        $authService = $this->prophesize(AuthServiceInterface::class);
+        $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn('token');
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
@@ -52,7 +52,7 @@ class AuthorizeTest extends TestCase
 
         $destinationUrlRepository->getDestinationUrl()->willReturn($destinationUrl);
 
-        $authService = $this->prophesize(AuthServiceInterface::class);
+        $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn(null);
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
@@ -78,7 +78,7 @@ class AuthorizeTest extends TestCase
 
         $destinationUrlRepository->getDestinationUrl()->willReturn(null);
 
-        $authService = $this->prophesize(AuthServiceInterface::class);
+        $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn('token');
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
@@ -102,7 +102,7 @@ class AuthorizeTest extends TestCase
     {
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
-        $authService = $this->prophesize(AuthServiceInterface::class);
+        $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willThrow(UnSuccessfulAuthException::class);
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);

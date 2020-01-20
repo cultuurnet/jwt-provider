@@ -5,14 +5,14 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use Psr\Http\Message\ResponseInterface;
 
 class Authorize
 {
     /**
-     * @var AuthServiceInterface
+     * @var LoginServiceInterface
      */
     private $authService;
 
@@ -32,7 +32,7 @@ class Authorize
     private $responseFactory;
 
     public function __construct(
-        AuthServiceInterface $authService,
+        LoginServiceInterface $authService,
         DestinationUrlRepositoryInterface $destinationUrlRepository,
         GenerateAuthorizedDestinationUrl $generateAuthorizedDestinationUrl,
         ResponseFactoryInterface $responseFactory

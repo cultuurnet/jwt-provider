@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use Psr\Http\Message\ResponseInterface;
 
-interface AuthServiceInterface
+interface LoginServiceInterface
 {
     public function redirectToLogin(): ?ResponseInterface;
 
@@ -14,6 +14,4 @@ interface AuthServiceInterface
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string;
-
-    public function logout(): void;
 }

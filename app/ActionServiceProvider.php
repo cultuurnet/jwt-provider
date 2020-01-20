@@ -5,16 +5,16 @@ namespace CultuurNet\UDB3\JwtProvider;
 use Aura\Session\SessionFactory;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
-use CultuurNet\UDB3\JwtProvider\Domain\Action\Logout;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
@@ -22,7 +22,7 @@ class ActionServiceProvider extends BaseServiceProvider
     protected $provides = [
         RequestToken::class,
         Authorize::class,
-        Logout::class,
+        RequestLogout::class,
     ];
 
     public function register(): void
@@ -34,7 +34,7 @@ class ActionServiceProvider extends BaseServiceProvider
                     $this->get(ExtractDestinationUrlFromRequest::class),
 
                     $this->get(DestinationUrlRepositoryInterface::class),
-                    $this->get(AuthServiceInterface::class),
+                    $this->get(LoginServiceInterface::class),
                     $this->get(ResponseFactoryInterface::class)
                 );
             }
@@ -44,7 +44,7 @@ class ActionServiceProvider extends BaseServiceProvider
             Authorize::class,
             function () {
                 return new Authorize(
-                    $this->get(AuthServiceInterface::class),
+                    $this->get(LoginServiceInterface::class),
                     $this->get(DestinationUrlRepositoryInterface::class),
                     new GenerateAuthorizedDestinationUrl(),
                     $this->get(ResponseFactoryInterface::class)
@@ -53,12 +53,13 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            Logout::class,
+            RequestLogout::class,
             function () {
-                return new Logout(
+                return new RequestLogout(
                     $this->get(ExtractDestinationUrlFromRequest::class),
-                    $this->get(AuthServiceInterface::class),
-                    $this->get(ResponseFactoryInterface::class)
+                    $this->get(LoginServiceInterface::class),
+                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->parameter('auth0.log_out_uri')
                 );
             }
         );
@@ -81,9 +82,9 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            AuthServiceInterface::class,
+            LoginServiceInterface::class,
             function () {
-                return new Auth0Adapter(
+                return new LoginAuth0Adapter(
                     new Auth0(
                         [
                             'domain' => $this->parameter('auth0.domain'),
