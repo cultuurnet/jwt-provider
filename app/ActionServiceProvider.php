@@ -19,10 +19,16 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use Firebase\JWT\JWT;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
 {
+    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
+    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
+    private const JWT_IAT_LEEWAY = 30;
+
     protected $provides = [
         RequestToken::class,
         Authorize::class,
@@ -69,7 +75,7 @@ class ActionServiceProvider extends BaseServiceProvider
 
         $this->add(
             LogOut::class,
-            function() {
+            function () {
                 return new LogOut(
                     $this->get(DestinationUrlRepositoryInterface::class),
                     $this->get(ResponseFactoryInterface::class)
@@ -123,7 +129,8 @@ class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Auth0::class,
-            function() {
+            function () {
+                JWT::$leeway = self::JWT_IAT_LEEWAY;
                 return new Auth0(
                     [
                         'domain' => $this->parameter('auth0.domain'),
