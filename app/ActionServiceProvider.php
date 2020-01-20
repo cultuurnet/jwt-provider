@@ -89,7 +89,8 @@ class ActionServiceProvider extends BaseServiceProvider
                     ),
                     $this->get(ResponseFactoryInterface::class),
                     new UriFactory(),
-                    $this->parameter('auth0.log_out_uri')
+                    $this->parameter('auth0.log_out_uri'),
+                    $this->parameter('auth0.client_id')
                 );
             }
         );
