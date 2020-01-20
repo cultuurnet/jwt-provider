@@ -20,7 +20,7 @@ class LogOutAuth0AdapterTest extends TestCase
         $authentication = $this->prophesize(Authentication::class);
         $auth0LogOutUri = 'https://auth0/logout?destinationTo=http://foo-bar.com/';
 
-        $authentication->get_logout_link('http://foo-bar.com/','client-id')->willReturn($auth0LogOutUri);
+        $authentication->get_logout_link('http://foo-bar.com/', 'client-id')->willReturn($auth0LogOutUri);
 
         $auth0adapter = new LogOutAuth0Adapter(
             $auth0->reveal(),
