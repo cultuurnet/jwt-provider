@@ -6,6 +6,7 @@ use Aura\Session\SessionFactory;
 use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
@@ -26,6 +27,7 @@ class ActionServiceProvider extends BaseServiceProvider
         RequestToken::class,
         Authorize::class,
         RequestLogout::class,
+        LogOut::class
     ];
 
     public function register(): void
@@ -35,7 +37,6 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new RequestToken(
                     $this->get(ExtractDestinationUrlFromRequest::class),
-
                     $this->get(DestinationUrlRepositoryInterface::class),
                     $this->get(LoginServiceInterface::class),
                     $this->get(ResponseFactoryInterface::class)
@@ -62,6 +63,16 @@ class ActionServiceProvider extends BaseServiceProvider
                     $this->get(ExtractDestinationUrlFromRequest::class),
                     $this->get(LogOutServiceInterface::class),
                     $this->get(DestinationUrlRepositoryInterface::class)
+                );
+            }
+        );
+
+        $this->add(
+            LogOut::class,
+            function() {
+                return new LogOut(
+                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->get(ResponseFactoryInterface::class)
                 );
             }
         );
