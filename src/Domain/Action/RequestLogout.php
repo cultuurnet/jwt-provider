@@ -2,13 +2,14 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Logout
+class RequestLogout
 {
 
     /**
@@ -17,29 +18,30 @@ class Logout
     private $extractDestinationUrlFromRequest;
 
     /**
-     * @var AuthServiceInterface
+     * @var LoginServiceInterface
      */
-    private $authService;
+    private $logOutService;
 
     /**
-     * @var ResponseFactoryInterface
+     * @var DestinationUrlRepositoryInterface
      */
-    private $responseFactory;
+    private $destinationUrlRepository;
 
     public function __construct(
         ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
-        AuthServiceInterface $authService,
-        ResponseFactoryInterface $responseFactory
+        LogOutServiceInterface $authService,
+        DestinationUrlRepositoryInterface $destinationUrlRepository
     ) {
         $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
-        $this->authService = $authService;
-        $this->responseFactory = $responseFactory;
+        $this->logOutService = $authService;
+        $this->destinationUrlRepository = $destinationUrlRepository;
     }
 
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface
     {
         $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
-        $this->authService->logout();
-        return $this->responseFactory->redirectTo($destinationUrl);
+        $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
+
+        return $this->logOutService->logout();
     }
 }

@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider;
 
 use Aura\Session\SessionFactory;
+use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
@@ -12,9 +13,11 @@ use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterf
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
@@ -57,8 +60,24 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new RequestLogout(
                     $this->get(ExtractDestinationUrlFromRequest::class),
-                    $this->get(LoginServiceInterface::class),
-                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->get(LogOutServiceInterface::class),
+                    $this->get(DestinationUrlRepositoryInterface::class)
+                );
+            }
+        );
+
+        $this->addShared(
+            LogOutServiceInterface::class,
+            function () {
+                return new LogOutAuth0Adapter(
+                    $this->get(Auth0::class),
+                    new Authentication(
+                        $this->parameter('auth0.domain'),
+                        $this->parameter('auth0.client_id'),
+                        $this->parameter('auth0.client_secret')
+                    ),
+                    $this->get(ResponseFactoryInterface::class),
+                    new UriFactory(),
                     $this->parameter('auth0.log_out_uri')
                 );
             }
@@ -85,16 +104,23 @@ class ActionServiceProvider extends BaseServiceProvider
             LoginServiceInterface::class,
             function () {
                 return new LoginAuth0Adapter(
-                    new Auth0(
-                        [
-                            'domain' => $this->parameter('auth0.domain'),
-                            'client_id' => $this->parameter('auth0.client_id'),
-                            'client_secret' => $this->parameter('auth0.client_secret'),
-                            'redirect_uri' => $this->parameter('auth0.redirect_uri'),
-                            'scope' => 'openid email profile',
-                            'persist_id_token' => true,
-                        ]
-                    )
+                    $this->get(Auth0::class)
+                );
+            }
+        );
+
+        $this->addShared(
+            Auth0::class,
+            function() {
+                return new Auth0(
+                    [
+                        'domain' => $this->parameter('auth0.domain'),
+                        'client_id' => $this->parameter('auth0.client_id'),
+                        'client_secret' => $this->parameter('auth0.client_secret'),
+                        'redirect_uri' => $this->parameter('auth0.redirect_uri'),
+                        'scope' => 'openid email profile',
+                        'persist_id_token' => true,
+                    ]
                 );
             }
         );
