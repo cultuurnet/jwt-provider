@@ -7,6 +7,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
+use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AuthenticateRequest;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -33,7 +34,8 @@ class RoutingServiceProvider extends BaseServiceProvider
                     function (RouteGroup $router) {
                         $router->get('/connect', [RequestToken::class, '__invoke']);
                         $router->get('/logout', [RequestLogout::class, '__invoke']);
-                        $router->get('/refresh', [Refresh::class, '__invoke']);
+                        $router->get('/refresh', [Refresh::class, '__invoke'])
+                            ->middleware($this->get(AllowedRefresh::class));
 
                         $router->get('/culturefeed/oauth/connect', [RequestToken::class, '__invoke']);
                         $router->get('/culturefeed/oauth/logout', [RequestLogout::class, '__invoke']);
