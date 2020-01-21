@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02de67c65fa491ce9605455f6dc47315",
+    "content-hash": "12d454fe85e8cc899236f7fc69653dd0",
     "packages": [
         {
             "name": "aura/session",
@@ -503,6 +503,91 @@
             ],
             "description": "Authentication service for CultuurNet web services",
             "time": "2018-04-23T12:11:11+00:00"
+        },
+        {
+            "name": "cultuurnet/cdb",
+            "version": "v2.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/Cdb.git",
+                "reference": "514a9f9bec93f1222671e1bceea9b05ee3f30d33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/514a9f9bec93f1222671e1bceea9b05ee3f30d33",
+                "reference": "514a9f9bec93f1222671e1bceea9b05ee3f30d33",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CultureFeed_Cdb_": [
+                        "lib"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
+            "time": "2018-12-14T08:36:04+00:00"
+        },
+        {
+            "name": "cultuurnet/culturefeed-php",
+            "version": "1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/culturefeed-php.git",
+                "reference": "8b70c4a4d96450a8f292195dad78720496c14394"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/8b70c4a4d96450a8f292195dad78720496c14394",
+                "reference": "8b70c4a4d96450a8f292195dad78720496c14394",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/cdb": "~2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9.x-dev",
+                    "dev-develop": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CultureFeed",
+                    "OAuth"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Publiq vwz",
+                    "email": "dev@publiq.be"
+                }
+            ],
+            "description": "Culturefeed PHP library",
+            "time": "2019-11-25T12:28:46+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
