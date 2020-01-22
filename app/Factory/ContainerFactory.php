@@ -4,6 +4,8 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\ActionServiceProvider;
 use CultuurNet\UDB3\JwtProvider\ApiGuardServiceProvider;
+use CultuurNet\UDB3\JwtProvider\ErrorHandlerServiceProvider;
+use CultuurNet\UDB3\JwtProvider\MiddlewareServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -18,6 +20,8 @@ class ContainerFactory
         $container->addServiceProvider(RoutingServiceProvider::class);
         $container->addServiceProvider(ActionServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
+        $container->addServiceProvider(ErrorHandlerServiceProvider::class);
+        $container->addServiceProvider(MiddlewareServiceProvider::class);
 
         return $container;
     }

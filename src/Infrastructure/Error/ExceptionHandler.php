@@ -6,7 +6,6 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-
 class ExceptionHandler extends Handler
 {
 
@@ -36,5 +35,4 @@ class ExceptionHandler extends Handler
 
         return Handler::QUIT;
     }
-
 }
