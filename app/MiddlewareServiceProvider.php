@@ -19,11 +19,11 @@ class MiddlewareServiceProvider extends BaseServiceProvider
     {
         $this->add(
             AllowedRefresh::class,
-            function(){
+            function () {
                 return new AllowedRefresh(
                     $this->get(ConsumerReadRepositoryInterface::class),
                     $this->get(ApiKeyReaderInterface::class),
-                    $this->parameter('auth0.allowed_refresh_permission')
+                    (string) $this->parameter('auth0.allowed_refresh_permission')
                 );
             }
         );
