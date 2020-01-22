@@ -2,19 +2,18 @@
 
 use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
+use CultuurNet\UDB3\JwtProvider\Factory\ErrorHandlerFactory;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Whoops\RunInterface;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$whoops = ErrorHandlerFactory::create();
+$whoops->register();
+
 $config = ConfigFactory::create(__DIR__ . '/../');
-
 $container = ContainerFactory::forWeb($config);
-
-$errorHandler = $container->get(RunInterface::class);
-$errorHandler->register();
 
 $response = $container->get(Router::class)->dispatch(
     ServerRequestFactory::createFromGlobals()
