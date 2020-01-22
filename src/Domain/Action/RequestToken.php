@@ -2,11 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestinationException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +23,7 @@ class RequestToken
     private $destinationUrlRepository;
 
     /**
-     * @var AuthServiceInterface
+     * @var LoginServiceInterface
      */
     private $externalAuthService;
 
@@ -33,11 +32,10 @@ class RequestToken
      */
     private $responseFactory;
 
-
     public function __construct(
         ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
         DestinationUrlRepositoryInterface $destinationUrlRepository,
-        AuthServiceInterface $externalAuthService,
+        LoginServiceInterface $externalAuthService,
         ResponseFactoryInterface $responseFactory
     ) {
         $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
@@ -54,7 +52,7 @@ class RequestToken
             return $this->externalAuthService->redirectToLogin();
         } catch (NoDestinationPresentException $exception) {
             return $this->responseFactory->badRequestWithMessage($exception->getMessage());
-        } catch (InvalidDestinationException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             return $this->responseFactory->badRequestWithMessage($exception->getMessage());
         }
     }

@@ -16,4 +16,5 @@ $response = $container->get(Router::class)->dispatch(
     ServerRequestFactory::createFromGlobals()
 );
 
+
 (new SapiStreamEmitter())->emit($response);

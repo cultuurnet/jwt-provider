@@ -2,13 +2,17 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
+use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\UriFactory;
 
-class Auth0AdapterTest extends TestCase
+class LoginAuth0AdapterTest extends TestCase
 {
     /**
      * @test
@@ -17,7 +21,9 @@ class Auth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new LoginAuth0Adapter(
+            $auth0->reveal()
+        );
 
         $auth0->login()->shouldBeCalled();
 
@@ -31,12 +37,15 @@ class Auth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new LoginAuth0Adapter(
+            $auth0->reveal()
+        );
 
         $auth0->getIdToken()->willReturn('token');
 
         $this->assertEquals('token', $auth0adapter->token());
     }
+
 
     /**
      * @test
@@ -49,7 +58,9 @@ class Auth0AdapterTest extends TestCase
 
         $auth0 = $this->prophesize(Auth0::class);
 
-        $auth0adapter = new Auth0Adapter($auth0->reveal());
+        $auth0adapter = new LoginAuth0Adapter(
+            $auth0->reveal()
+        );
 
         $auth0->getIdToken()->willThrow($exceptionClassName);
 

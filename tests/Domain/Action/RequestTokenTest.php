@@ -2,11 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidDestinationException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
-use CultuurNet\UDB3\JwtProvider\Domain\Url;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\AuthServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
@@ -31,7 +29,7 @@ class RequestTokenTest extends TestCase
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
         $destinationUrlRepository->storeDestinationUrl($destinationUrl)->shouldBeCalled();
 
-        $externalAuthService = $this->prophesize(AuthServiceInterface::class);
+        $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldBeCalled();
 
         $requestTokenAction = new RequestToken(
@@ -56,7 +54,7 @@ class RequestTokenTest extends TestCase
 
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
-        $externalAuthService = $this->prophesize(AuthServiceInterface::class);
+        $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldNotBeCalled();
 
         $requestTokenAction = new RequestToken(
@@ -80,11 +78,11 @@ class RequestTokenTest extends TestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 
         $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(InvalidDestinationException::class);
+        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(\InvalidArgumentException::class);
 
         $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
-        $externalAuthService = $this->prophesize(AuthServiceInterface::class);
+        $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldNotBeCalled();
 
         $requestTokenAction = new RequestToken(

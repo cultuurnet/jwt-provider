@@ -18,3 +18,4 @@ auth0:
   client_id:
   client_secret:
   redirect_uri:
+  log_out_uri:

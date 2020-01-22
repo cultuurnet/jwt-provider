@@ -32,7 +32,6 @@ class ExtractDestinationUrlFromRequest
         $queryParams = $serverRequest->getQueryParams();
 
         $this->guardAgainstNoDestinationPresent($queryParams);
-
         return $this->uriFactory->createUri($queryParams[self::DESTINATION]);
     }
 
