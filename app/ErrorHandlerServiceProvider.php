@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider;
 
-use Whoops\Handler\Handler;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Error\ExceptionHandler;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Whoops\Run;

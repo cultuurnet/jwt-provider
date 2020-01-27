@@ -13,6 +13,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ApiKeyRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
@@ -21,6 +22,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\ApiKeySession;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
@@ -52,7 +54,9 @@ class ActionServiceProvider extends BaseServiceProvider
                     $this->get(ExtractDestinationUrlFromRequest::class),
                     $this->get(DestinationUrlRepositoryInterface::class),
                     $this->get(LoginServiceInterface::class),
-                    $this->get(ResponseFactoryInterface::class)
+                    $this->get(ResponseFactoryInterface::class),
+                    $this->get(ApiKeyReaderInterface::class),
+                    $this->get(ApiKeyRepositoryInterface::class)
                 );
             }
         );
@@ -128,8 +132,7 @@ class ActionServiceProvider extends BaseServiceProvider
         $this->addShared(
             DestinationUrlRepositoryInterface::class,
             function () {
-                $sessionFactory = new SessionFactory;
-                $session = $sessionFactory->newInstance($_COOKIE);
+                $session = $this->get(Session::class);
                 $segment = $session->getSegment(DestinationUrlRepositoryInterface::class);
                 return new Session($segment, new UriFactory());
             }
@@ -139,7 +142,9 @@ class ActionServiceProvider extends BaseServiceProvider
             LoginServiceInterface::class,
             function () {
                 return new LoginAuth0Adapter(
-                    $this->get(Auth0::class)
+                    $this->get(Auth0::class),
+                    $this->get(ApiKeyRepositoryInterface::class),
+                    $this->get(IsAllowedRefreshToken::class)
                 );
             }
         );
@@ -163,8 +168,9 @@ class ActionServiceProvider extends BaseServiceProvider
                         'client_id' => $this->parameter('auth0.client_id'),
                         'client_secret' => $this->parameter('auth0.client_secret'),
                         'redirect_uri' => $this->parameter('auth0.redirect_uri'),
-                        'scope' => 'openid email profile',
+                        'scope' => 'openid email profile offline_access',
                         'persist_id_token' => true,
+                        'persist_refresh_token' => true,
                     ]
                 );
             }
@@ -181,12 +187,30 @@ class ActionServiceProvider extends BaseServiceProvider
 
         $this->add(
             IsAllowedRefreshToken::class,
-            function (){
+            function () {
                 return new IsAllowedRefreshToken(
                     $this->get(ConsumerReadRepositoryInterface::class),
-                    $this->get(ApiKeyReaderInterface::class),
                     (string) $this->parameter('auth0.allowed_refresh_permission')
                 );
+            }
+        );
+
+        $this->add(
+            ApiKeyRepositoryInterface::class,
+            function () {
+                $session = $this->get(Session::class);
+                $segment = $session->getSegment(ApiKeyRepositoryInterface::class);
+                return new ApiKeySession(
+                    $segment
+                );
+            }
+        );
+
+        $this->add(
+            Session::class,
+            function () {
+                $sessionFactory = new SessionFactory;
+                return $sessionFactory->newInstance($_COOKIE);
             }
         );
     }
