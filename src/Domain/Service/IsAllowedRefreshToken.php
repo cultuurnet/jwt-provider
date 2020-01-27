@@ -2,12 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidApiKeyException;
-use InvalidArgumentException;
-use Psr\Http\Message\ServerRequestInterface;
 
 class IsAllowedRefreshToken
 {
@@ -17,11 +15,6 @@ class IsAllowedRefreshToken
     private $consumerReadRepository;
 
     /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
      * @var string
      */
     private $refreshGroupId;
@@ -29,28 +22,14 @@ class IsAllowedRefreshToken
 
     public function __construct(
         ConsumerReadRepositoryInterface $consumerReadRepository,
-        ApiKeyReaderInterface $apiKeyReader,
         string $refreshGroupId
     ) {
         $this->consumerReadRepository = $consumerReadRepository;
-        $this->apiKeyReader = $apiKeyReader;
         $this->refreshGroupId = $refreshGroupId;
     }
 
-    /**
-     * @param ServerRequestInterface $serverRequest
-     * @return bool
-     * @throws InvalidApiKeyException
-     * @throws InvalidArgumentException
-     */
-    public function __invoke(ServerRequestInterface $serverRequest): bool
+    public function __invoke(ApiKey $apiKey): bool
     {
-        $apiKey = $this->apiKeyReader->read($serverRequest);
-
-        if ($apiKey == null) {
-            throw new InvalidArgumentException();
-        }
-
         $consumer = $this->consumerReadRepository->getConsumer($apiKey);
 
         if ($consumer === null) {

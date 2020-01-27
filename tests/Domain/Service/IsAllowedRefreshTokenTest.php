@@ -3,28 +3,21 @@
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidApiKeyException;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class IsAllowedRefreshTokenTest extends TestCase
 {
-
     /**
      * @test
+     * @throws InvalidApiKeyException
      */
     public function it_returns_true_for_api_consumer_that_has_the_appropriate_permission()
     {
         $apiKey = new ApiKey('api-key');
-
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
-        $apiKeyReader->read($serverRequest)->willReturn($apiKey);
 
         $consumerReadRepository = $this->prophesize(ConsumerReadRepositoryInterface::class);
 
@@ -42,13 +35,11 @@ class IsAllowedRefreshTokenTest extends TestCase
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $consumerReadRepository->reveal(),
-            $apiKeyReader->reveal(),
             'refresh-group'
         );
 
-        $result = $isAllowedRefreshToken->__invoke($serverRequest->reveal());
+        $result = $isAllowedRefreshToken->__invoke($apiKey);
         $this->assertTrue($result);
-
     }
 
     /**
@@ -57,11 +48,6 @@ class IsAllowedRefreshTokenTest extends TestCase
     public function it_returns_false_for_api_consumer_that_does_not_have_the_appropriate_permission()
     {
         $apiKey = new ApiKey('api-key');
-
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
-        $apiKeyReader->read($serverRequest)->willReturn($apiKey);
 
         $consumerReadRepository = $this->prophesize(ConsumerReadRepositoryInterface::class);
 
@@ -78,11 +64,10 @@ class IsAllowedRefreshTokenTest extends TestCase
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $consumerReadRepository->reveal(),
-            $apiKeyReader->reveal(),
             'refresh-group'
         );
 
-        $result = $isAllowedRefreshToken->__invoke($serverRequest->reveal());
+        $result = $isAllowedRefreshToken->__invoke($apiKey);
         $this->assertFalse($result);
     }
 
@@ -93,47 +78,17 @@ class IsAllowedRefreshTokenTest extends TestCase
     {
         $apiKey = new ApiKey('api-key');
 
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
-        $apiKeyReader->read($serverRequest)->willReturn($apiKey);
-
         $consumerReadRepository = $this->prophesize(ConsumerReadRepositoryInterface::class);
 
         $consumerReadRepository->getConsumer($apiKey)->willReturn(null);
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $consumerReadRepository->reveal(),
-            $apiKeyReader->reveal(),
             'refresh-group'
         );
 
 
         $this->expectException(InvalidApiKeyException::class);
-        $isAllowedRefreshToken->__invoke($serverRequest->reveal());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_exception_if_request_does_not_contain_api_key()
-    {
-
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
-        $apiKeyReader->read($serverRequest)->willReturn(null);
-
-        $consumerReadRepository = $this->prophesize(ConsumerReadRepositoryInterface::class);
-
-        $isAllowedRefreshToken = new IsAllowedRefreshToken(
-            $consumerReadRepository->reveal(),
-            $apiKeyReader->reveal(),
-            'refresh-group'
-        );
-
-
-        $this->expectException(\InvalidArgumentException::class);
-        $isAllowedRefreshToken->__invoke($serverRequest->reveal());
+        $isAllowedRefreshToken->__invoke($apiKey);
     }
 }
