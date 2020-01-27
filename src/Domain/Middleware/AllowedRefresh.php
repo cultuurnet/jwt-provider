@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Middleware;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidApiKeyException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\RefreshTokenNotAllowedException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshToken;
@@ -16,11 +17,17 @@ class AllowedRefresh implements MiddlewareInterface
      * @var IsAllowedRefreshToken
      */
     private $isAllowedRefreshToken;
+    /**
+     * @var ApiKeyReaderInterface
+     */
+    private $apiKeyReader;
 
     public function __construct(
-        IsAllowedRefreshToken $isAllowedRefreshToken
+        IsAllowedRefreshToken $isAllowedRefreshToken,
+        ApiKeyReaderInterface $apiKeyReader
     ) {
         $this->isAllowedRefreshToken = $isAllowedRefreshToken;
+        $this->apiKeyReader = $apiKeyReader;
     }
 
     /**
@@ -30,8 +37,13 @@ class AllowedRefresh implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $apiKey = $this->apiKeyReader->read($request);
 
-        if (!$this->isAllowedRefreshToken->__invoke($request)) {
+        if ($apiKey === null) {
+            throw new \InvalidArgumentException();
+        }
+
+        if (!$this->isAllowedRefreshToken->__invoke($apiKey)) {
             throw new RefreshTokenNotAllowedException();
         }
 
