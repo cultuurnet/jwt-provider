@@ -26,10 +26,12 @@ class AuthorizeTest extends TestCase
 
         $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn('token');
+        $authService->refreshToken()->willReturn('refresh-token');
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
-        $generateDestinationUrl->__invoke($destinationUrl, 'token')
-            ->willReturn((new UriFactory())->createUri('http://foo-bar.com?jwt=token'));
+
+        $generateDestinationUrl->__invoke($destinationUrl, 'token', 'refresh-token')
+            ->willReturn((new UriFactory())->createUri('http://foo-bar.com/?jwt=token'));
 
         $authorizeAction = new Authorize(
             $authService->reveal(),
@@ -54,6 +56,8 @@ class AuthorizeTest extends TestCase
 
         $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn(null);
+        $authService->refreshToken()->willReturn(null);
+
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
 
@@ -80,6 +84,7 @@ class AuthorizeTest extends TestCase
 
         $authService = $this->prophesize(LoginServiceInterface::class);
         $authService->token()->willReturn('token');
+        $authService->refreshToken()->willReturn(null);
 
         $generateDestinationUrl = $this->prophesize(GenerateAuthorizedDestinationUrl::class);
 

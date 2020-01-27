@@ -47,6 +47,7 @@ class Authorize
     {
         try {
             $token = $this->authService->token();
+            $refreshToken = $this->authService->refreshToken();
         } catch (UnSuccessfulAuthException $unSuccessfulAuth) {
             return $this->responseFactory->badRequest();
         }
@@ -60,10 +61,10 @@ class Authorize
         if ($destinationUrl === null) {
             return $this->responseFactory->badRequest();
         }
-
         $url = $this->generateAuthorizedDestinationUrl->__invoke(
             $destinationUrl,
-            $token
+            $token,
+            $refreshToken
         );
 
         return $this->responseFactory->redirectTo($url);
