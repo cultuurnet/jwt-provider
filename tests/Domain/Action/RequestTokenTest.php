@@ -2,7 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ApiKeyRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
@@ -32,11 +35,21 @@ class RequestTokenTest extends TestCase
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldBeCalled();
 
+        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
+        $apiKeyRepository = $this->prophesize(ApiKeyRepositoryInterface::class);
+
+        $apiKey = new ApiKey('key');
+        $apiKeyReader->read($serverRequest)->willReturn($apiKey);
+
+        $apiKeyRepository->storeApiKey($apiKey)->shouldBeCalled();
+
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
             $externalAuthService->reveal(),
-            new SlimResponseFactory()
+            new SlimResponseFactory(),
+            $apiKeyReader->reveal(),
+            $apiKeyRepository->reveal()
         );
 
         $requestTokenAction->__invoke($serverRequest->reveal());
@@ -57,11 +70,16 @@ class RequestTokenTest extends TestCase
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldNotBeCalled();
 
+        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
+        $apiKeyRepository = $this->prophesize(ApiKeyRepositoryInterface::class);
+
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
             $externalAuthService->reveal(),
-            new SlimResponseFactory()
+            new SlimResponseFactory(),
+            $apiKeyReader->reveal(),
+            $apiKeyRepository->reveal()
         );
 
         $response = $requestTokenAction->__invoke($serverRequest->reveal());
@@ -85,11 +103,16 @@ class RequestTokenTest extends TestCase
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldNotBeCalled();
 
+        $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
+        $apiKeyRepository = $this->prophesize(ApiKeyRepositoryInterface::class);
+
         $requestTokenAction = new RequestToken(
             $extractDestinationUrlFromRequest->reveal(),
             $destinationUrlRepository->reveal(),
             $externalAuthService->reveal(),
-            new SlimResponseFactory()
+            new SlimResponseFactory(),
+            $apiKeyReader->reveal(),
+            $apiKeyRepository->reveal()
         );
 
         $response = $requestTokenAction->__invoke($serverRequest->reveal());
