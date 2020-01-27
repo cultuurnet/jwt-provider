@@ -2,11 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Middleware;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\InvalidApiKeyException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\RefreshTokenNotAllowedException;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshToken;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -15,30 +13,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 class AllowedRefresh implements MiddlewareInterface
 {
     /**
-     * @var ConsumerReadRepositoryInterface
+     * @var IsAllowedRefreshToken
      */
-    private $consumerReadRepository;
-
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var string
-     */
-    private $refreshPermissionGroup;
+    private $isAllowedRefreshToken;
 
     public function __construct(
-        ConsumerReadRepositoryInterface $consumerReadRepository,
-        ApiKeyReaderInterface $apiKeyReader,
-        string $refreshPermissionGroup
+        IsAllowedRefreshToken $isAllowedRefreshToken
     ) {
-        $this->consumerReadRepository = $consumerReadRepository;
-        $this->apiKeyReader = $apiKeyReader;
-        $this->refreshPermissionGroup = $refreshPermissionGroup;
+        $this->isAllowedRefreshToken = $isAllowedRefreshToken;
     }
-
 
     /**
      * @inheritDoc
@@ -47,33 +30,11 @@ class AllowedRefresh implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $apiKey = $this->apiKeyReader->read($request);
 
-        if ($apiKey === null) {
-            return $handler->handle($request);
-        }
-
-        $consumer = $this->consumerReadRepository->getConsumer($apiKey);
-
-        if ($consumer === null) {
-            throw new InvalidApiKeyException();
-        }
-
-        if (!$this->hasPermissionForRefresh($consumer)) {
+        if (!$this->isAllowedRefreshToken->__invoke($request)) {
             throw new RefreshTokenNotAllowedException();
         }
 
         return $handler->handle($request);
-    }
-
-    private function hasPermissionForRefresh(ConsumerInterface $consumer): bool
-    {
-        foreach ($consumer->getPermissionGroupIds() as $group) {
-            if ($group->toNative() === $this->refreshPermissionGroup) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

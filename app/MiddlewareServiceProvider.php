@@ -2,9 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshToken;
 
 class MiddlewareServiceProvider extends BaseServiceProvider
 {
@@ -21,9 +20,7 @@ class MiddlewareServiceProvider extends BaseServiceProvider
             AllowedRefresh::class,
             function () {
                 return new AllowedRefresh(
-                    $this->get(ConsumerReadRepositoryInterface::class),
-                    $this->get(ApiKeyReaderInterface::class),
-                    (string) $this->parameter('auth0.allowed_refresh_permission')
+                    $this->get(IsAllowedRefreshToken::class)
                 );
             }
         );

@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\JwtProvider;
 use Aura\Session\SessionFactory;
 use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
@@ -12,6 +14,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
@@ -21,11 +24,9 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use Firebase\JWT\JWT;
 use Slim\Psr7\Factory\UriFactory;
-use function foo\func;
 
 class ActionServiceProvider extends BaseServiceProvider
 {
@@ -39,6 +40,7 @@ class ActionServiceProvider extends BaseServiceProvider
         RequestLogout::class,
         LogOut::class,
         Refresh::class,
+        IsAllowedRefreshToken::class,
     ];
 
     public function register(): void
@@ -173,6 +175,17 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new ExtractDestinationUrlFromRequest(
                     new UriFactory()
+                );
+            }
+        );
+
+        $this->add(
+            IsAllowedRefreshToken::class,
+            function (){
+                return new IsAllowedRefreshToken(
+                    $this->get(ConsumerReadRepositoryInterface::class),
+                    $this->get(ApiKeyReaderInterface::class),
+                    (string) $this->parameter('auth0.allowed_refresh_permission')
                 );
             }
         );
