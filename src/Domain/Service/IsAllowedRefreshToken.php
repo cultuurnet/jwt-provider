@@ -28,6 +28,11 @@ class IsAllowedRefreshToken
         $this->refreshGroupId = $refreshGroupId;
     }
 
+    /**
+     * @param ApiKey $apiKey
+     * @return bool
+     * @throws InvalidApiKeyException
+     */
     public function __invoke(ApiKey $apiKey): bool
     {
         $consumer = $this->consumerReadRepository->getConsumer($apiKey);

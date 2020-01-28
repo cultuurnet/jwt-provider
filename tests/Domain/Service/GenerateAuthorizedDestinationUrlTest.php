@@ -54,7 +54,7 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
             '?query=value'
         );
         $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
-        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token','fresh');
+        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token', 'fresh');
 
         $this->assertEquals('https://bar.com/?query=value&jwt=token&refresh=fresh', $result->__toString());
     }
