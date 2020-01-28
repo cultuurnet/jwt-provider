@@ -2,21 +2,18 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestLogout
 {
-
-    /**
-     * @var ExtractDestinationUrlFromRequest
-     */
-    private $extractDestinationUrlFromRequest;
-
     /**
      * @var LoginServiceInterface
      */
@@ -25,22 +22,32 @@ class RequestLogout
     /**
      * @var DestinationUrlRepositoryInterface
      */
-    private $destinationUrlRepository;
+    private $clientInformationRepository;
+
+    /**
+     * @var ExtractClientInformationFromRequest
+     */
+    private $extractClientInformationFromRequest;
 
     public function __construct(
-        ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
+        ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,
         LogOutServiceInterface $authService,
-        DestinationUrlRepositoryInterface $destinationUrlRepository
+        ClientInformationRepositoryInterface $clientInformationRepository
     ) {
-        $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
         $this->logOutService = $authService;
-        $this->destinationUrlRepository = $destinationUrlRepository;
+        $this->clientInformationRepository = $clientInformationRepository;
+        $this->extractClientInformationFromRequest = $extractClientInformationFromRequest;
     }
 
+    /**
+     * @param ServerRequestInterface $serverRequest
+     * @return ResponseInterface
+     * @throws NoDestinationPresentException
+     */
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface
     {
-        $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
-        $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
+        $clientInformation = $this->extractClientInformationFromRequest->__invoke($serverRequest);
+        $this->clientInformationRepository->store($clientInformation);
 
         return $this->logOutService->logout();
     }
