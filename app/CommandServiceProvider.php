@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider;
 
 use CultuurNet\UDB3\JwtProvider\Console\DecodeJwtCommand;
-use CultuurNet\UDB3\JwtProvider\Console\EncodeJwtCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
@@ -20,7 +19,6 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 $commandMap = [
                     'jwt:decode' => DecodeJwtCommand::class,
-                    'jwt:encode' => EncodeJwtCommand::class,
                 ];
 
                 $application = new Application('udb3-search');

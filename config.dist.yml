@@ -11,8 +11,11 @@ jwt:
   nbf: 0
   exp: 3600
   keys:
-    private:
-      file: private.pem
-      passphrase: secret
     public:
       file: public.pem
+auth0:
+  domain:
+  client_id:
+  client_secret:
+  redirect_uri:
+  log_out_uri:
