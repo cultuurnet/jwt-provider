@@ -43,7 +43,7 @@ class RefreshAuth0Adapter implements RefreshServiceInterface
                 ]
             );
             $res = json_decode($response->getBody()->getContents(), true);
-            return $res['access_token'];
+            return $res['id_token'];
         } catch (ClientException $exception) {
             throw new UnSuccessfulRefreshException($exception->getMessage());
         }
