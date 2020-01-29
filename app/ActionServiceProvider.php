@@ -2,24 +2,29 @@
 
 namespace CultuurNet\UDB3\JwtProvider;
 
-use Aura\Session\SessionFactory;
+use Aura\Session\Session;
 use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
+use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\Session;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformation;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\Auth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use Firebase\JWT\JWT;
 use Slim\Psr7\Factory\UriFactory;
 
@@ -33,7 +38,9 @@ class ActionServiceProvider extends BaseServiceProvider
         RequestToken::class,
         Authorize::class,
         RequestLogout::class,
-        LogOut::class
+        LogOut::class,
+        Refresh::class,
+        IsAllowedRefreshToken::class,
     ];
 
     public function register(): void
@@ -42,10 +49,10 @@ class ActionServiceProvider extends BaseServiceProvider
             RequestToken::class,
             function () {
                 return new RequestToken(
-                    $this->get(ExtractDestinationUrlFromRequest::class),
-                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->get(ExtractClientInformationFromRequest::class),
                     $this->get(LoginServiceInterface::class),
-                    $this->get(ResponseFactoryInterface::class)
+                    $this->get(ResponseFactoryInterface::class),
+                    $this->get(ClientInformationRepositoryInterface::class)
                 );
             }
         );
@@ -55,9 +62,9 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new Authorize(
                     $this->get(LoginServiceInterface::class),
-                    $this->get(DestinationUrlRepositoryInterface::class),
                     new GenerateAuthorizedDestinationUrl(),
-                    $this->get(ResponseFactoryInterface::class)
+                    $this->get(ResponseFactoryInterface::class),
+                    $this->get(ClientInformationRepositoryInterface::class)
                 );
             }
         );
@@ -66,9 +73,9 @@ class ActionServiceProvider extends BaseServiceProvider
             RequestLogout::class,
             function () {
                 return new RequestLogout(
-                    $this->get(ExtractDestinationUrlFromRequest::class),
+                    $this->get(ExtractClientInformationFromRequest::class),
                     $this->get(LogOutServiceInterface::class),
-                    $this->get(DestinationUrlRepositoryInterface::class)
+                    $this->get(ClientInformationRepositoryInterface::class)
                 );
             }
         );
@@ -77,8 +84,18 @@ class ActionServiceProvider extends BaseServiceProvider
             LogOut::class,
             function () {
                 return new LogOut(
-                    $this->get(DestinationUrlRepositoryInterface::class),
+                    $this->get(ClientInformationRepositoryInterface::class),
                     $this->get(ResponseFactoryInterface::class)
+                );
+            }
+        );
+
+        $this->add(
+            Refresh::class,
+            function () {
+                return new Refresh(
+                    $this->get(ResponseFactoryInterface::class),
+                    $this->get(RefreshServiceInterface::class)
                 );
             }
         );
@@ -109,19 +126,18 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            DestinationUrlRepositoryInterface::class,
+            LoginServiceInterface::class,
             function () {
-                $sessionFactory = new SessionFactory;
-                $session = $sessionFactory->newInstance($_COOKIE);
-                $segment = $session->getSegment(DestinationUrlRepositoryInterface::class);
-                return new Session($segment, new UriFactory());
+                return new LoginAuth0Adapter(
+                    $this->get(Auth0::class)
+                );
             }
         );
 
         $this->addShared(
-            LoginServiceInterface::class,
+            RefreshServiceInterface::class,
             function () {
-                return new LoginAuth0Adapter(
+                return new RefreshAuth0Adapter(
                     $this->get(Auth0::class)
                 );
             }
@@ -137,8 +153,9 @@ class ActionServiceProvider extends BaseServiceProvider
                         'client_id' => $this->parameter('auth0.client_id'),
                         'client_secret' => $this->parameter('auth0.client_secret'),
                         'redirect_uri' => $this->parameter('auth0.redirect_uri'),
-                        'scope' => 'openid email profile',
+                        'scope' => 'openid email profile offline_access',
                         'persist_id_token' => true,
+                        'persist_refresh_token' => true,
                     ]
                 );
             }
@@ -149,6 +166,38 @@ class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new ExtractDestinationUrlFromRequest(
                     new UriFactory()
+                );
+            }
+        );
+
+        $this->add(
+            IsAllowedRefreshToken::class,
+            function () {
+                return new IsAllowedRefreshToken(
+                    $this->get(\ICultureFeed::class),
+                    (string) $this->parameter('auth0.allowed_refresh_permission')
+                );
+            }
+        );
+
+        $this->add(
+            ClientInformationRepositoryInterface::class,
+            function () {
+                $session = $this->get(Session::class);
+                $segment = $session->getSegment(ClientInformationRepositoryInterface::class);
+                return new SessionClientInformation(
+                    $segment
+                );
+            }
+        );
+
+        $this->add(
+            ExtractClientInformationFromRequest::class,
+            function () {
+                return new ExtractClientInformationFromRequest(
+                    new UriFactory(),
+                    $this->get(ApiKeyReaderInterface::class),
+                    $this->get(IsAllowedRefreshToken::class)
                 );
             }
         );
