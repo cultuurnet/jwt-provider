@@ -19,7 +19,7 @@ class RefreshTest extends TestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getParsedBody()->willReturn(
             [
-                'refresh' => 'refresh-token'
+                'refresh' => 'refresh-token',
             ]
         );
         $authService = $this->prophesize(RefreshServiceInterface::class);
@@ -50,7 +50,6 @@ class RefreshTest extends TestCase
             $authService->reveal()
         );
         $this->expectException(BadRequestException::class);
-        $response = $refreshAction->__invoke($serverRequest->reveal());
-
+        $refreshAction->__invoke($serverRequest->reveal());
     }
 }

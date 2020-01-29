@@ -16,7 +16,7 @@ class ClientInformation
      * @var StringLiteral
      */
     private $apiKey;
-    
+
     /**
      * @var bool
      */

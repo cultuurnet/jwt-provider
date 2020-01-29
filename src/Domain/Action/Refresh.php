@@ -37,7 +37,7 @@ class Refresh
     {
         $body = $serverRequest->getParsedBody();
 
-        if (!isset($body['refresh'])){
+        if (!isset($body['refresh'])) {
             throw BadRequestException::missingRefreshToken();
         }
 
