@@ -162,15 +162,6 @@ class ActionServiceProvider extends BaseServiceProvider
         );
 
         $this->add(
-            ExtractDestinationUrlFromRequest::class,
-            function () {
-                return new ExtractDestinationUrlFromRequest(
-                    new UriFactory()
-                );
-            }
-        );
-
-        $this->add(
             IsAllowedRefreshToken::class,
             function () {
                 return new IsAllowedRefreshToken(
