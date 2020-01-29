@@ -20,7 +20,7 @@ class ExtractClientInformationFromRequestTest extends TestCase
     {
         $serverRequest = $this->aServerRequestWithQueryParameters(
             [
-                'destination' => 'www.jwt.com'
+                'destination' => 'www.jwt.com',
             ]
         );
 
