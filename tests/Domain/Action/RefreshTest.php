@@ -17,7 +17,7 @@ class RefreshTest extends TestCase
     public function it_returns_new_token()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $serverRequest->getParsedBody()->willReturn(
+        $serverRequest->getQueryParams()->willReturn(
             [
                 'refresh' => 'refresh-token',
             ]
@@ -41,7 +41,7 @@ class RefreshTest extends TestCase
     public function it_throws_exception_if_request_is_missing_a_refresh_token()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $serverRequest->getParsedBody()->willReturn([]);
+        $serverRequest->getQueryParams()->willReturn([]);
 
         $authService = $this->prophesize(RefreshServiceInterface::class);
 

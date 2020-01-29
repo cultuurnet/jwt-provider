@@ -35,13 +35,14 @@ class Refresh
      */
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface
     {
-        $body = $serverRequest->getParsedBody();
 
-        if (!isset($body['refresh'])) {
+        $queryParams = $serverRequest->getQueryParams();
+
+        if (!isset($queryParams['refresh'])) {
             throw BadRequestException::missingRefreshToken();
         }
 
-        $token = $this->refreshService->token($body['refresh']);
+        $token = $this->refreshService->token($queryParams['refresh']);
 
         return $this->responseFactory->responseWithToken($token);
     }
