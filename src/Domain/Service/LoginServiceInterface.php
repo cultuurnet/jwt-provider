@@ -14,4 +14,10 @@ interface LoginServiceInterface
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string;
+
+    /**
+     * @return string|null
+     * @throws UnSuccessfulAuthException
+     */
+    public function refreshToken(): ?string;
 }
