@@ -50,6 +50,7 @@ class Authorize
     public function __invoke(): ResponseInterface
     {
         $clientInformation = $this->clientInformationRepository->get();
+
         $url = $this->generateAuthorizedDestinationUrl->__invoke(
             $clientInformation->uri(),
             $this->authService->token(),

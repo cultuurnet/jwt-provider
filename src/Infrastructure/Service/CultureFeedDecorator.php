@@ -15,5 +15,4 @@ class CultureFeedDecorator extends CultureFeed
     {
         return new CultureFeedConsumerAdapter(parent::getServiceConsumerByApiKey($apiKey, $includePermissions));
     }
-
 }
