@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -42,5 +43,17 @@ class SlimResponseFactory implements ResponseFactoryInterface
         $body = $response->getBody();
         $body->write($token);
         return $response->withBody($body);
+    }
+
+    public function forJwtProviderException(JwtProviderExceptionInterface $exception): ResponseInterface
+    {
+        $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
+        $response->getBody()->write($exception->getMessage());
+        return $response;
+    }
+
+    public function internalServerError(): ResponseInterface
+    {
+        return new Response(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
     }
 }
