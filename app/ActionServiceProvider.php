@@ -15,7 +15,6 @@ use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
@@ -26,6 +25,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use Firebase\JWT\JWT;
+use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
 class ActionServiceProvider extends BaseServiceProvider
@@ -138,7 +138,10 @@ class ActionServiceProvider extends BaseServiceProvider
             RefreshServiceInterface::class,
             function () {
                 return new RefreshAuth0Adapter(
-                    $this->get(Auth0::class)
+                    new Client(),
+                    $this->parameter('auth0.client_id'),
+                    $this->parameter('auth0.client_secret'),
+                    $this->parameter('auth0.domain')
                 );
             }
         );
