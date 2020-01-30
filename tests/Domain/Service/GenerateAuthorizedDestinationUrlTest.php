@@ -22,7 +22,7 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
         $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
         $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');
 
-        $this->assertEquals('https://bar.com/?query=value&jwt=token', $result->__toString());
+        $this->assertEquals('https://bar.com/?%3Fquery=value&jwt=token', $result->__toString());
     }
 
     /**
@@ -56,6 +56,6 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
         $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
         $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token', 'fresh');
 
-        $this->assertEquals('https://bar.com/?query=value&jwt=token&refresh=fresh', $result->__toString());
+        $this->assertEquals('https://bar.com/?%3Fquery=value&jwt=token&refresh=fresh', $result->__toString());
     }
 }

@@ -8,9 +8,17 @@ class GenerateAuthorizedDestinationUrl
 {
     public function __invoke(UriInterface $destinationUrl, string $token, string $refreshToken = null): UriInterface
     {
-        $query = $destinationUrl->getQuery();
-        $queryPrefix = $query !== '' ? '&' : '?';
-        $refreshAppendix = $refreshToken !== null ? '&refresh=' . $refreshToken : '';
-        return $destinationUrl->withQuery($query . $queryPrefix . 'jwt=' . $token . $refreshAppendix);
+
+        $query = [];
+        parse_str($destinationUrl->getQuery(), $query);
+
+        $query['jwt'] = $token;
+
+        if ($refreshToken) {
+            $query['refresh'] = $refreshToken;
+        }
+
+        $query = http_build_query($query);
+        return $destinationUrl->withQuery('?' . $query);
     }
 }
