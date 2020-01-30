@@ -45,7 +45,7 @@ class ActionServiceProvider extends BaseServiceProvider
 
     public function register(): void
     {
-        $this->add(
+        $this->addShared(
             RequestToken::class,
             function () {
                 return new RequestToken(
@@ -57,7 +57,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             Authorize::class,
             function () {
                 return new Authorize(
@@ -80,7 +80,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             LogOut::class,
             function () {
                 return new LogOut(
@@ -90,7 +90,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             Refresh::class,
             function () {
                 return new Refresh(
@@ -164,7 +164,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             IsAllowedRefreshToken::class,
             function () {
                 return new IsAllowedRefreshToken(
@@ -174,7 +174,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             ClientInformationRepositoryInterface::class,
             function () {
                 $session = $this->get(Session::class);
@@ -185,7 +185,7 @@ class ActionServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             ExtractClientInformationFromRequest::class,
             function () {
                 return new ExtractClientInformationFromRequest(

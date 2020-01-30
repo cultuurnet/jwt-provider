@@ -19,7 +19,7 @@ class ErrorHandlerServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add(
+        $this->addShared(
             RunInterface::class,
             function () {
                 $whoops = new Run();

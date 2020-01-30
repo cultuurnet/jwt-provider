@@ -17,7 +17,7 @@ class MiddlewareServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add(
+        $this->addShared(
             AllowedRefresh::class,
             function () {
                 return new AllowedRefresh(

@@ -16,7 +16,7 @@ class SessionServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add(
+        $this->addShared(
             Session::class,
             function () {
                 $sessionFactory = new SessionFactory;

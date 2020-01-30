@@ -23,7 +23,7 @@ class ApiGuardServiceProvider extends BaseServiceProvider
     public function register()
     {
 
-        $this->add(
+        $this->addShared(
             ApiKeyReaderInterface::class,
             function () {
                 $queryReader = new QueryParameterApiKeyReader('apiKey');
