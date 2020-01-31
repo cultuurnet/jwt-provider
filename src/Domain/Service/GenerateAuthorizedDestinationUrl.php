@@ -11,7 +11,6 @@ class GenerateAuthorizedDestinationUrl
 
         $query = [];
         parse_str($destinationUrl->getQuery(), $query);
-
         $query['jwt'] = $token;
 
         if ($refreshToken) {
@@ -19,6 +18,7 @@ class GenerateAuthorizedDestinationUrl
         }
 
         $query = http_build_query($query);
-        return $destinationUrl->withQuery('?' . $query);
+
+        return $destinationUrl->withQuery($query);
     }
 }
