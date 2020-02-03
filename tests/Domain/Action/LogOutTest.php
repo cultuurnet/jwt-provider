@@ -2,12 +2,13 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\ClientInformationNotPresentException;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
-use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 use Slim\Psr7\Factory\UriFactory;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class LogOutTest extends TestCase
 {
@@ -17,14 +18,13 @@ class LogOutTest extends TestCase
      */
     public function it_redirects_user_back_to_destination()
     {
-        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com');
-        /** @var DestinationUrlRepositoryInterface|ObjectProphecy $repository */
-        $repository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
-        $repository->getDestinationUrl()->willReturn($destinationUrl);
+        $clientInformation = $this->aClientInformation();
+        $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
+        $clientInformationRepository->get()->willReturn($clientInformation);
 
         $logOutAction = new LogOut(
-            $repository->reveal(),
+            $clientInformationRepository->reveal(),
             new SlimResponseFactory()
         );
         $response = $logOutAction->__invoke();
@@ -32,23 +32,30 @@ class LogOutTest extends TestCase
         $this->assertEquals('http://foo-bar.com/', $response->getHeaderLine('Location'));
     }
 
-
     /**
      * @test
      */
-    public function it_returns_bad_request_if_destination_url_not_present()
+    public function it_throws_exception_for_no_client_information()
     {
-        /** @var DestinationUrlRepositoryInterface|ObjectProphecy $repository */
-        $repository = $this->prophesize(DestinationUrlRepositoryInterface::class);
+        $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
+        $clientInformationRepository->get()->willReturn(null);
 
-        $repository->getDestinationUrl()->willReturn(null);
 
         $logOutAction = new LogOut(
-            $repository->reveal(),
+            $clientInformationRepository->reveal(),
             new SlimResponseFactory()
         );
-        $response = $logOutAction->__invoke();
 
-        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+        $this->expectException(ClientInformationNotPresentException::class);
+        $logOutAction->__invoke();
+
+    }
+
+    private function aClientInformation(): ClientInformation
+    {
+        return new ClientInformation(
+            (new UriFactory())->createUri('http://foo-bar.com'),
+            new StringLiteral('api-key')
+        );
     }
 }

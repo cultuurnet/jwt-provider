@@ -2,10 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
-use Exception;
 use Fig\Http\Message\StatusCodeInterface;
 
-class UnSuccessfulAuthException extends Exception implements JwtProviderExceptionInterface
+class RefreshTokenNotAllowedException extends \Exception implements JwtProviderExceptionInterface
 {
     public function getHttpCode(): int
     {

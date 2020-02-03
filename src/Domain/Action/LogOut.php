@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Exception\ClientInformationNotPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -11,28 +13,29 @@ class LogOut
     /**
      * @var DestinationUrlRepositoryInterface
      */
-    private $destinationUrlRepository;
+    private $clientInformationRepository;
+
     /**
      * @var ResponseFactoryInterface
      */
     private $responseFactory;
 
     public function __construct(
-        DestinationUrlRepositoryInterface $destinationUrlRepository,
+        ClientInformationRepositoryInterface $clientInformationRepository,
         ResponseFactoryInterface $responseFactory
     ) {
-        $this->destinationUrlRepository = $destinationUrlRepository;
+        $this->clientInformationRepository = $clientInformationRepository;
         $this->responseFactory = $responseFactory;
     }
 
     public function __invoke(): ResponseInterface
     {
-        $destinationUrl = $this->destinationUrlRepository->getDestinationUrl();
+        $clientInformation = $this->clientInformationRepository->get();
 
-        if ($destinationUrl === null) {
-            return $this->responseFactory->badRequest();
+        if ($clientInformation === null) {
+            throw new ClientInformationNotPresentException();
         }
 
-        return $this->responseFactory->redirectTo($destinationUrl);
+        return $this->responseFactory->redirectTo($clientInformation->uri());
     }
 }

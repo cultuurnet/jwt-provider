@@ -2,14 +2,15 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class RequestLogoutTest extends TestCase
 {
@@ -20,24 +21,22 @@ class RequestLogoutTest extends TestCase
     public function it_logs_out_user()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com/');
 
-        /** @var ExtractDestinationUrlFromRequest|ObjectProphecy $extractDestinationUrlFromRequest */
-        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willReturn($destinationUrl);
+        $clientInformation = $this->aClientInformation();
+        $extractClientInformationFromRequest = $this->prophesize(ExtractClientInformationFromRequestInterface::class);
+        $extractClientInformationFromRequest->__invoke($serverRequest)->willReturn($clientInformation);
 
-        /** @var LogOutServiceInterface|OAuth0AdapterTestbjectProphecy $authService */
-        $authService = $this->prophesize(LogOutServiceInterface::class);
+        $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
+
         $expectedResponse = new Response();
+        $authService = $this->prophesize(LogOutServiceInterface::class);
         $authService->logout()->willReturn($expectedResponse);
 
-        /** @var DestinationUrlRepositoryInterface|ObjectProphecy $repository */
-        $repository = $this->prophesize(DestinationUrlRepositoryInterface::class);
 
         $logoutAction = new RequestLogout(
-            $extractDestinationUrlFromRequest->reveal(),
+            $extractClientInformationFromRequest->reveal(),
             $authService->reveal(),
-            $repository->reveal()
+            $clientInformationRepository->reveal()
         );
 
         $response = $logoutAction->__invoke(
@@ -45,6 +44,15 @@ class RequestLogoutTest extends TestCase
         );
 
         $this->assertEquals($expectedResponse, $response);
-        $repository->storeDestinationUrl($destinationUrl)->shouldHaveBeenCalled();
+
+        $clientInformationRepository->store($clientInformation)->shouldHaveBeenCalled();
+    }
+
+    private function aClientInformation(): ClientInformation
+    {
+        return new ClientInformation(
+            (new UriFactory())->createUri('http://foo-bar.com'),
+            new StringLiteral('api-key')
+        );
     }
 }
