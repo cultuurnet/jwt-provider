@@ -4,23 +4,18 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestToken
 {
     /**
-     * @var ExtractDestinationUrlFromRequest
+     * @var ExtractClientInformationFromRequest
      */
-    private $extractDestinationUrlFromRequest;
-
-    /**
-     * @var DestinationUrlRepositoryInterface
-     */
-    private $destinationUrlRepository;
+    private $extractClientInformationFromRequest;
 
     /**
      * @var LoginServiceInterface
@@ -32,28 +27,32 @@ class RequestToken
      */
     private $responseFactory;
 
+    /**
+     * @var ClientInformationRepositoryInterface
+     */
+    private $clientInformationRepository;
+
     public function __construct(
-        ExtractDestinationUrlFromRequest $extractDestinationUrlFromRequest,
-        DestinationUrlRepositoryInterface $destinationUrlRepository,
+        ExtractClientInformationFromRequest $extractClientInformationFromRequest,
         LoginServiceInterface $externalAuthService,
-        ResponseFactoryInterface $responseFactory
+        ResponseFactoryInterface $responseFactory,
+        ClientInformationRepositoryInterface $clientInformationRepository
     ) {
-        $this->extractDestinationUrlFromRequest = $extractDestinationUrlFromRequest;
-        $this->destinationUrlRepository = $destinationUrlRepository;
+        $this->extractClientInformationFromRequest = $extractClientInformationFromRequest;
         $this->externalAuthService = $externalAuthService;
         $this->responseFactory = $responseFactory;
+        $this->clientInformationRepository = $clientInformationRepository;
     }
 
+    /**
+     * @param ServerRequestInterface $serverRequest
+     * @return ResponseInterface|null
+     * @throws NoDestinationPresentException
+     */
     public function __invoke(ServerRequestInterface $serverRequest): ?ResponseInterface
     {
-        try {
-            $destinationUrl = $this->extractDestinationUrlFromRequest->__invoke($serverRequest);
-            $this->destinationUrlRepository->storeDestinationUrl($destinationUrl);
-            return $this->externalAuthService->redirectToLogin();
-        } catch (NoDestinationPresentException $exception) {
-            return $this->responseFactory->badRequestWithMessage($exception->getMessage());
-        } catch (\InvalidArgumentException $exception) {
-            return $this->responseFactory->badRequestWithMessage($exception->getMessage());
-        }
+        $clientInformation = $this->extractClientInformationFromRequest->__invoke($serverRequest);
+        $this->clientInformationRepository->store($clientInformation);
+        return $this->externalAuthService->redirectToLogin();
     }
 }

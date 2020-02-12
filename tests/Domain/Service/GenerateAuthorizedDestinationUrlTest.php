@@ -17,7 +17,7 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
             'bar.com',
             null,
             '',
-            '?query=value'
+            'query=value'
         );
         $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
         $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');
@@ -39,5 +39,23 @@ class GenerateAuthorizedDestinationUrlTest extends TestCase
         $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token');
 
         $this->assertEquals('https://bar.com/?jwt=token', $result->__toString());
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_refresh_token_if_injected()
+    {
+        $destinationUrl = new Uri(
+            'https',
+            'bar.com',
+            null,
+            '',
+            'query=value'
+        );
+        $generateAuthorizedDestinationUrlTest = new GenerateAuthorizedDestinationUrl();
+        $result = $generateAuthorizedDestinationUrlTest->__invoke($destinationUrl, 'token', 'fresh');
+
+        $this->assertEquals('https://bar.com/?query=value&jwt=token&refresh=fresh', $result->__toString());
     }
 }

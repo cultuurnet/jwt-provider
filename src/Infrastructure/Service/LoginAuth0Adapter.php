@@ -2,16 +2,12 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
-use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
-use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
 
 class LoginAuth0Adapter implements LoginServiceInterface
 {
@@ -20,24 +16,8 @@ class LoginAuth0Adapter implements LoginServiceInterface
      */
     private $auth0;
 
-    /**
-     * @var Authentication
-     */
-    private $authentication;
-
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
-     * @var UriFactoryInterface
-     */
-    private $uriFactory;
-
-    public function __construct(
-        Auth0 $auth0
-    ) {
+    public function __construct(Auth0 $auth0)
+    {
         $this->auth0 = $auth0;
     }
 
@@ -47,6 +27,10 @@ class LoginAuth0Adapter implements LoginServiceInterface
         return null;
     }
 
+    /**
+     * @return string|null
+     * @throws UnSuccessfulAuthException
+     */
     public function token(): ?string
     {
         try {
@@ -58,15 +42,18 @@ class LoginAuth0Adapter implements LoginServiceInterface
         }
     }
 
-    public function logout(string $logOutUri): ?ResponseInterface
+    /**
+     * @return string|null
+     * @throws UnSuccessfulAuthException
+     */
+    public function refreshToken(): ?string
     {
-        $this->auth0->logout();
-        return $this->responseFactory->redirectTo($this->generateAuth0LogoutUri($logOutUri));
-    }
-
-    private function generateAuth0LogoutUri(string $logOutUri): UriInterface
-    {
-        $destination = $this->authentication->get_logout_link($logOutUri);
-        return $this->uriFactory->createUri($destination);
+        try {
+            return $this->auth0->getRefreshToken();
+        } catch (ApiException $e) {
+            throw new UnSuccessfulAuthException();
+        } catch (CoreException $e) {
+            throw new UnSuccessfulAuthException();
+        }
     }
 }

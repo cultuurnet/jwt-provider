@@ -16,6 +16,7 @@ class LogOutAuth0Adapter implements LogOutServiceInterface
      * @var ResponseFactoryInterface
      */
     private $responseFactory;
+
     /**
      * @var UriFactoryInterface
      */
@@ -25,14 +26,17 @@ class LogOutAuth0Adapter implements LogOutServiceInterface
      * @var string
      */
     private $logOutUri;
+
     /**
      * @var Authentication
      */
     private $authentication;
+
     /**
      * @var Auth0
      */
     private $auth0;
+
     /**
      * @var string
      */
@@ -52,14 +56,13 @@ class LogOutAuth0Adapter implements LogOutServiceInterface
         $this->authentication = $authentication;
         $this->auth0 = $auth0;
         $this->logOutUri = $logOutUri;
-
         $this->clientId = $clientId;
     }
 
     public function logout(): ?ResponseInterface
     {
         $this->auth0->logout();
-        return $this->responseFactory->redirectTo($this->generateAuth0LogoutUri($this->logOutUri));
+        return $this->responseFactory->redirectTo($this->generateAuth0LogoutUri());
     }
 
     private function generateAuth0LogoutUri(): UriInterface

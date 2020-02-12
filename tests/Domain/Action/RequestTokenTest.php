@@ -2,15 +2,15 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractDestinationUrlFromRequest;
+use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
-use Fig\Http\Message\StatusCodeInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class RequestTokenTest extends TestCase
 {
@@ -21,79 +21,33 @@ class RequestTokenTest extends TestCase
     public function it_requests_for_token(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
-        $destinationUrl = (new UriFactory())->createUri('http://foo-bar.com');
 
-        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willReturn($destinationUrl);
+        $clientInformation = $this->aClientInformation();
 
-        $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
-        $destinationUrlRepository->storeDestinationUrl($destinationUrl)->shouldBeCalled();
+        $extractClientInformationFromRequest = $this->prophesize(ExtractClientInformationFromRequest::class);
+        $extractClientInformationFromRequest->__invoke($serverRequest)->willReturn($clientInformation);
 
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin()->shouldBeCalled();
 
+        $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
+        $clientInformationRepository->store($clientInformation)->shouldBeCalled();
+
         $requestTokenAction = new RequestToken(
-            $extractDestinationUrlFromRequest->reveal(),
-            $destinationUrlRepository->reveal(),
+            $extractClientInformationFromRequest->reveal(),
             $externalAuthService->reveal(),
-            new SlimResponseFactory()
+            new SlimResponseFactory(),
+            $clientInformationRepository->reveal()
         );
 
         $requestTokenAction->__invoke($serverRequest->reveal());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_bad_request_for_no_destination_present(): void
+    private function aClientInformation() : ClientInformation
     {
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(NoDestinationPresentException::class);
-
-        $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
-
-        $externalAuthService = $this->prophesize(LoginServiceInterface::class);
-        $externalAuthService->redirectToLogin()->shouldNotBeCalled();
-
-        $requestTokenAction = new RequestToken(
-            $extractDestinationUrlFromRequest->reveal(),
-            $destinationUrlRepository->reveal(),
-            $externalAuthService->reveal(),
-            new SlimResponseFactory()
+        return new ClientInformation(
+            (new UriFactory())->createUri('http://foo-bar.com'),
+            new StringLiteral('api-key')
         );
-
-        $response = $requestTokenAction->__invoke($serverRequest->reveal());
-        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
-        $this->assertEquals(NoDestinationPresentException::MESSAGE, $response->getBody());
-    }
-
-
-    /**
-     * @test
-     */
-    public function it_returns_bad_request_for_no_invalid_destination(): void
-    {
-        $serverRequest = $this->prophesize(ServerRequestInterface::class);
-
-        $extractDestinationUrlFromRequest = $this->prophesize(ExtractDestinationUrlFromRequest::class);
-        $extractDestinationUrlFromRequest->__invoke($serverRequest)->willThrow(\InvalidArgumentException::class);
-
-        $destinationUrlRepository = $this->prophesize(DestinationUrlRepositoryInterface::class);
-
-        $externalAuthService = $this->prophesize(LoginServiceInterface::class);
-        $externalAuthService->redirectToLogin()->shouldNotBeCalled();
-
-        $requestTokenAction = new RequestToken(
-            $extractDestinationUrlFromRequest->reveal(),
-            $destinationUrlRepository->reveal(),
-            $externalAuthService->reveal(),
-            new SlimResponseFactory()
-        );
-
-        $response = $requestTokenAction->__invoke($serverRequest->reveal());
-
-        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
     }
 }
