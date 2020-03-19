@@ -20,7 +20,7 @@ class ExtractLocaleFromRequestTest extends TestCase
         $serverRequest->getQueryParams()
             ->willReturn(
                 [
-                    'lang' => $locale
+                    'lang' => $locale,
                 ]
             );
 
@@ -52,7 +52,7 @@ class ExtractLocaleFromRequestTest extends TestCase
         $serverRequest->getQueryParams()
             ->willReturn(
                 [
-                    'lang' => 'hr'
+                    'lang' => 'hr',
                 ]
             );
 
