@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +25,7 @@ class LoginAuth0AdapterTest extends TestCase
         $auth0->login(
             null,
             null,
-            ["ui_locales" => null]
+            ["ui_locales" => Locale::DUTCH]
         )->shouldBeCalled();
 
         $auth0adapter->redirectToLogin();
