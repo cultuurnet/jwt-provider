@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 
 interface LoginServiceInterface
 {
-    public function redirectToLogin(): ?ResponseInterface;
+    public function redirectToLogin(string $locale = null): ?ResponseInterface;
 
     /**
      * @return string|null
