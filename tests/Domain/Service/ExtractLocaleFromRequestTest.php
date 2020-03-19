@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -63,8 +64,8 @@ class ExtractLocaleFromRequestTest extends TestCase
     public function validLocalesProvider()
     {
         return [
-            ['nl'],
-            ['fr'],
+            [Locale::FRENCH],
+            [Locale::DUTCH],
         ];
     }
 }

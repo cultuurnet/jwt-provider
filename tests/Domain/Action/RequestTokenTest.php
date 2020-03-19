@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
@@ -32,7 +33,7 @@ class RequestTokenTest extends TestCase
         $clientInformationRepository->store($clientInformation)->shouldBeCalled();
 
         $extractLocaleFromRequest = $this->prophesize(ExtractLocaleFromRequest::class);
-        $extractLocaleFromRequest->__invoke($serverRequest)->willReturn('fr');
+        $extractLocaleFromRequest->__invoke($serverRequest)->willReturn(Locale::FRENCH);
 
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin('fr')->shouldBeCalled();

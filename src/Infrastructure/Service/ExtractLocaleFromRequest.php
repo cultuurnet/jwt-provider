@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ExtractLocaleFromRequest
@@ -10,7 +11,7 @@ class ExtractLocaleFromRequest
     {
         $lang = $this->extractParameter($serverRequest);
 
-        if (!in_array($lang, ['fr', 'nl'])) {
+        if (!in_array($lang, [Locale::DUTCH, Locale::FRENCH])) {
             return null;
         }
 
