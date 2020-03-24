@@ -7,6 +7,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -32,16 +33,23 @@ class RequestToken
      */
     private $clientInformationRepository;
 
+    /**
+     * @var ExtractLocaleFromRequest
+     */
+    private $extractLocaleFromRequest;
+
     public function __construct(
         ExtractClientInformationFromRequest $extractClientInformationFromRequest,
         LoginServiceInterface $externalAuthService,
         ResponseFactoryInterface $responseFactory,
-        ClientInformationRepositoryInterface $clientInformationRepository
+        ClientInformationRepositoryInterface $clientInformationRepository,
+        ExtractLocaleFromRequest $extractLocaleFromRequest
     ) {
         $this->extractClientInformationFromRequest = $extractClientInformationFromRequest;
         $this->externalAuthService = $externalAuthService;
         $this->responseFactory = $responseFactory;
         $this->clientInformationRepository = $clientInformationRepository;
+        $this->extractLocaleFromRequest = $extractLocaleFromRequest;
     }
 
     /**
@@ -53,6 +61,6 @@ class RequestToken
     {
         $clientInformation = $this->extractClientInformationFromRequest->__invoke($serverRequest);
         $this->clientInformationRepository->store($clientInformation);
-        return $this->externalAuthService->redirectToLogin();
+        return $this->externalAuthService->redirectToLogin($this->extractLocaleFromRequest->__invoke($serverRequest));
     }
 }

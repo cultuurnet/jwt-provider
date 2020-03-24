@@ -20,6 +20,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformation;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
@@ -52,7 +53,8 @@ class ActionServiceProvider extends BaseServiceProvider
                     $this->get(ExtractClientInformationFromRequest::class),
                     $this->get(LoginServiceInterface::class),
                     $this->get(ResponseFactoryInterface::class),
-                    $this->get(ClientInformationRepositoryInterface::class)
+                    $this->get(ClientInformationRepositoryInterface::class),
+                    $this->get(ExtractLocaleFromRequest::class)
                 );
             }
         );

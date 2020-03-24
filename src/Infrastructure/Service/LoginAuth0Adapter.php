@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 use Auth0\SDK\Auth0;
 use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -21,9 +22,9 @@ class LoginAuth0Adapter implements LoginServiceInterface
         $this->auth0 = $auth0;
     }
 
-    public function redirectToLogin(): ?ResponseInterface
+    public function redirectToLogin(string $locale = Locale::DUTCH): ?ResponseInterface
     {
-        $this->auth0->login();
+        $this->auth0->login(null, null, ['ui_locales' => $locale]);
         return null;
     }
 
