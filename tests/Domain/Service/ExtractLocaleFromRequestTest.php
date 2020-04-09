@@ -32,21 +32,21 @@ class ExtractLocaleFromRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_requests_with_no_locale()
+    public function it_returns_default_dutch_for_requests_with_no_locale()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getQueryParams()->willReturn([]);
 
         $extractLocaleFromRequest = new ExtractLocaleFromRequest();
         $result = $extractLocaleFromRequest->__invoke($serverRequest->reveal());
-        $this->assertEquals($result, null);
+        $this->assertEquals($result, Locale::DUTCH);
     }
 
     /**
      * @test
      */
 
-    public function it_returns_null_for_requests_with_invalid_locale()
+    public function it_returns_default_for_requests_with_invalid_locale()
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getQueryParams()
@@ -58,7 +58,7 @@ class ExtractLocaleFromRequestTest extends TestCase
 
         $extractLocaleFromRequest = new ExtractLocaleFromRequest();
         $result = $extractLocaleFromRequest->__invoke($serverRequest->reveal());
-        $this->assertEquals($result, null);
+        $this->assertEquals($result, Locale::DUTCH);
     }
 
     public function validLocalesProvider()

@@ -7,12 +7,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class ExtractLocaleFromRequest
 {
-    public function __invoke(ServerRequestInterface $serverRequest): ?string
+    public function __invoke(ServerRequestInterface $serverRequest): string
     {
         $lang = $this->extractParameter($serverRequest);
 
         if (!in_array($lang, [Locale::DUTCH, Locale::FRENCH])) {
-            return null;
+            return Locale::DUTCH;
         }
 
         return $lang;
