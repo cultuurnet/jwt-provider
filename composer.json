@@ -5,6 +5,7 @@
     "license": "Apache-2.0",
     "authors": [],
     "require": {
+        "php": "^7.1.27",
         "aura/session": "^2.1",
         "cultuurnet/auth": "~3.0",
         "filp/whoops": "^2.5",
@@ -12,15 +13,15 @@
         "hassankhan/config": "^2.1",
         "league/container": "^3.3",
         "league/route": "^4.3",
-        "monolog/monolog": "^2.0",
+        "monolog/monolog": "^1.11",
         "slim/psr7": "^0.5",
         "symfony/console": "^3.4",
         "symfony/yaml": "^4.3",
         "zendframework/zend-httphandlerrunner": "^1.1",
         "auth0/auth0-php": "^5.7",
         "beberlei/assert": "^3.2",
-        "cultuurnet/udb3-api-guard": "dev-master",
-        "cultuurnet/culturefeed-php": "^1.10"
+        "cultuurnet/culturefeed-php": "^1.10",
+        "cultuurnet/udb3-api-guard": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
