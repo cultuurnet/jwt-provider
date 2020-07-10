@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
@@ -20,7 +19,7 @@ class RequestLogout
     private $logOutService;
 
     /**
-     * @var DestinationUrlRepositoryInterface
+     * @var ClientInformationRepositoryInterface
      */
     private $clientInformationRepository;
 
