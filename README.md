@@ -3,7 +3,7 @@
 [![Travis](https://img.shields.io/travis/cultuurnet/jwt-provider.svg?maxAge=2592000?style=flat-square)](https://github.com/cultuurnet/jwt-provider)
 [![Coveralls](https://img.shields.io/coveralls/cultuurnet/jwt-provider.svg?maxAge=2592000?style=flat-square)](https://github.com/cultuurnet/jwt-provider)
 
-Application that provides JSON integration with Auth0
+Application that provides JSON Web Tokens from UiTID v2 (Auth0)
 
 # Architecture 
 Code is split into Domain and Infrastructure. 
