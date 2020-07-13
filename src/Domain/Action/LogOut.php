@@ -5,13 +5,12 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\ClientInformationNotPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Repository\DestinationUrlRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class LogOut
 {
     /**
-     * @var DestinationUrlRepositoryInterface
+     * @var ClientInformationRepositoryInterface
      */
     private $clientInformationRepository;
 
