@@ -8,7 +8,6 @@ use Sentry\State\HubInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = ConfigFactory::create(__DIR__ . '/../');
