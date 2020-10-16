@@ -35,9 +35,11 @@ class SentryExceptionHandler extends Handler
 
     public function handle(): void
     {
-        $this->sentryHub->configureScope(function (Scope $scope) {
-            $scope->setTags($this->createTags($this->apiKey, $this->console));
-        });
+        $this->sentryHub->configureScope(
+            function (Scope $scope) {
+                $scope->setTags($this->createTags($this->apiKey, $this->console));
+            }
+        );
 
         $exception = $this->getInspector()->getException();
         $this->sentryHub->captureException($exception);
