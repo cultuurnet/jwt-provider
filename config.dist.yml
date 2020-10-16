@@ -21,3 +21,6 @@ auth0:
   log_out_uri:
   allowed_refresh_permission:
 
+sentry:
+  dsn: ***
+  environment: development
