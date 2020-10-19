@@ -14,6 +14,7 @@
         "league/container": "^3.3",
         "league/route": "^4.3",
         "monolog/monolog": "^1.11",
+        "sentry/sdk": "2.2.0",
         "slim/psr7": "^0.5",
         "symfony/console": "^3.4",
         "symfony/yaml": "^4.3",
