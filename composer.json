@@ -54,5 +54,8 @@
             "2dotstwice/*": "source",
             "*": "dist"
         }
+    },
+    "scripts": {
+        "phing": "./vendor/bin/phing test"
     }
 }
