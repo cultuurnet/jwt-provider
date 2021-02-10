@@ -54,7 +54,6 @@ class ExceptionHandler extends Handler
     private function generateResponse(\Throwable $exception)
     {
         if ($exception instanceof JwtProviderExceptionInterface) {
-
             return $this->slimResponseFactory->forJwtProviderException($exception);
         }
 

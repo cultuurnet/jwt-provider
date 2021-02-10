@@ -86,7 +86,6 @@ class LoginAuth0AdapterTest extends TestCase
         $this->expectException(UnSuccessfulAuthException::class);
 
         $auth0adapter->token();
-
     }
 
     public function auth0_exceptions()
