@@ -8,7 +8,7 @@ use Aura\Session\SessionFactory;
 class SessionServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Session::class
+        Session::class,
     ];
 
     /**
