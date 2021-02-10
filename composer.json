@@ -28,7 +28,6 @@
         "phpunit/phpunit": "^7.5",
         "escapestudios/symfony2-coding-standard": "~2.9",
         "squizlabs/php_codesniffer": "~2.5.1",
-        "phing/phing": "~2.14",
         "php-coveralls/php-coveralls": "^2.1"
     },
     "autoload": {
