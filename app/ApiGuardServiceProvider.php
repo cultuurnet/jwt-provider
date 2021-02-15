@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider;
 
-use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
@@ -39,14 +38,9 @@ class ApiGuardServiceProvider extends BaseServiceProvider
         $this->addShared(
             ICultureFeed::class,
             function () {
-                $consumerCredentials = new ConsumerCredentials(
+                $oauthClient = new \CultureFeed_DefaultOAuthClient(
                     $this->parameter('uitid.consumer.key'),
                     $this->parameter('uitid.consumer.secret')
-                );
-
-                $oauthClient = new \CultureFeed_DefaultOAuthClient(
-                    $consumerCredentials->getKey(),
-                    $consumerCredentials->getSecret()
                 );
 
                 $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
