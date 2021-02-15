@@ -48,7 +48,6 @@ class LogOutTest extends TestCase
 
         $this->expectException(ClientInformationNotPresentException::class);
         $logOutAction->__invoke();
-
     }
 
     private function aClientInformation(): ClientInformation
