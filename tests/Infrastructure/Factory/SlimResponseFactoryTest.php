@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 
-class SlimResponseFactoryTest extends TestCase
+final class SlimResponseFactoryTest extends TestCase
 {
     /**
      * @test

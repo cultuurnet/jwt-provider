@@ -12,9 +12,8 @@ use Psr\Http\Message\UriInterface;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Response;
 
-class SlimResponseFactory implements ResponseFactoryInterface
+final class SlimResponseFactory implements ResponseFactoryInterface
 {
-
     public function badRequestWithMessage(string $message): ResponseInterface
     {
         $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);

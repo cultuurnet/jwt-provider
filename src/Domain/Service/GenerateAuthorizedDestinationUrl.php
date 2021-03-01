@@ -6,11 +6,10 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
 use Psr\Http\Message\UriInterface;
 
-class GenerateAuthorizedDestinationUrl
+final class GenerateAuthorizedDestinationUrl
 {
     public function __invoke(UriInterface $destinationUrl, string $token, string $refreshToken = null): UriInterface
     {
-
         $query = [];
         parse_str($destinationUrl->getQuery(), $query);
         $query['jwt'] = $token;

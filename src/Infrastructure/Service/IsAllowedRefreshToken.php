@@ -8,7 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
+final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
 {
     /**
      * @var string

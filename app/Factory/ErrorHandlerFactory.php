@@ -15,7 +15,7 @@ use Whoops\Run;
 use Whoops\RunInterface;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
-class ErrorHandlerFactory
+final class ErrorHandlerFactory
 {
     public static function create(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console) : RunInterface
     {

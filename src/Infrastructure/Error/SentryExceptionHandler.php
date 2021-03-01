@@ -9,7 +9,7 @@ use Sentry\State\HubInterface;
 use Sentry\State\Scope;
 use Whoops\Handler\Handler;
 
-class SentryExceptionHandler extends Handler
+final class SentryExceptionHandler extends Handler
 {
     /**
      * @var HubInterface

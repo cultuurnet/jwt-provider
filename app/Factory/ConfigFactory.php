@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 use Noodlehaus\Config;
 use Noodlehaus\Parser\Yaml;
 
-class ConfigFactory
+final class ConfigFactory
 {
     public static function create(string $configDir) : Config
     {

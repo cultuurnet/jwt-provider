@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Value;
 use Psr\Http\Message\UriInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ClientInformation
+final class ClientInformation
 {
     /**
      * @var UriInterface

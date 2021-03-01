@@ -9,7 +9,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ExtractLocaleFromRequestTest extends TestCase
+final class ExtractLocaleFromRequestTest extends TestCase
 {
     /**
      * @test

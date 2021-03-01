@@ -13,9 +13,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AllowedRefreshTest extends TestCase
+final class AllowedRefreshTest extends TestCase
 {
-
     /**
      * @test
      */

@@ -14,7 +14,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
 
-class ContainerFactory
+final class ContainerFactory
 {
     public static function forWeb(Config $config): Container
     {

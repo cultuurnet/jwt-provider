@@ -11,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Refresh
+final class Refresh
 {
     /**
      * @var ResponseFactoryInterface

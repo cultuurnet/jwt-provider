@@ -11,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use PHPUnit\Framework\TestCase;
 
-class LoginAuth0AdapterTest extends TestCase
+final class LoginAuth0AdapterTest extends TestCase
 {
     /**
      * @test

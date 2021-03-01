@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LogOutTest extends TestCase
+final class LogOutTest extends TestCase
 {
 
     /**

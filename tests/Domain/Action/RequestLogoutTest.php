@@ -14,9 +14,8 @@ use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RequestLogoutTest extends TestCase
+final class RequestLogoutTest extends TestCase
 {
-
     /**
      * @test
      */

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
-class RefreshAuth0Adapter implements RefreshServiceInterface
+final class RefreshAuth0Adapter implements RefreshServiceInterface
 {
     /** @var Client */
     private $httpClient;

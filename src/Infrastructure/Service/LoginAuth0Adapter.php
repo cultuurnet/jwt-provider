@@ -12,7 +12,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LoginAuth0Adapter implements LoginServiceInterface
+final class LoginAuth0Adapter implements LoginServiceInterface
 {
     /**
      * @var Auth0

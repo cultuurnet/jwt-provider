@@ -10,9 +10,8 @@ use Monolog\Logger;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-class ExceptionHandler extends Handler
+final class ExceptionHandler extends Handler
 {
-
     /**
      * @var EmitterInterface
      */

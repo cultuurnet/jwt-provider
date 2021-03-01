@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
@@ -15,9 +16,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RequestTokenTest extends TestCase
+final class RequestTokenTest extends TestCase
 {
-
     /**
      * @test
      */

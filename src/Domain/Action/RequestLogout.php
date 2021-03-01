@@ -13,7 +13,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestLogout
+final class RequestLogout
 {
     /**
      * @var LoginServiceInterface

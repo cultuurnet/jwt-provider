@@ -8,9 +8,8 @@ use Aura\Session\Segment;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 
-class SessionClientInformation implements ClientInformationRepositoryInterface
+final class SessionClientInformation implements ClientInformationRepositoryInterface
 {
-
     private const KEY = 'ClientInformation';
 
     /**

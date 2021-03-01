@@ -12,7 +12,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
-class ExtractClientInformationFromRequest implements ExtractClientInformationFromRequestInterface
+final class ExtractClientInformationFromRequest implements ExtractClientInformationFromRequestInterface
 {
     const DESTINATION = 'destination';
 

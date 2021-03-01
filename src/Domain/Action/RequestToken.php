@@ -13,7 +13,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RequestToken
+final class RequestToken
 {
     /**
      * @var ExtractClientInformationFromRequestInterface

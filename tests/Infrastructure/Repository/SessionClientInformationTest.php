@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SessionClientInformationTest extends TestCase
+final class SessionClientInformationTest extends TestCase
 {
     /**
      * @test

@@ -31,7 +31,7 @@ use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
-class ActionServiceProvider extends BaseServiceProvider
+final class ActionServiceProvider extends BaseServiceProvider
 {
     // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
     // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7

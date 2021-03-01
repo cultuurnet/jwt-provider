@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\CultureFeedDecorator;
 use ICultureFeed;
 
-class ApiGuardServiceProvider extends BaseServiceProvider
+final class ApiGuardServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         ApiKeyReaderInterface::class,

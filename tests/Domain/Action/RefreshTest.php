@@ -11,7 +11,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
-class RefreshTest extends TestCase
+final class RefreshTest extends TestCase
 {
     /**
      * @test

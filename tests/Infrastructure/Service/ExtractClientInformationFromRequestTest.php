@@ -12,9 +12,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 
-class ExtractClientInformationFromRequestTest extends TestCase
+final class ExtractClientInformationFromRequestTest extends TestCase
 {
-
     /**
      * @test
      */

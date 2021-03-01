@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AllowedRefresh implements MiddlewareInterface
+final class AllowedRefresh implements MiddlewareInterface
 {
     /**
      * @var IsAllowedRefreshTokenInterface

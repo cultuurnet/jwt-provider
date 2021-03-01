@@ -11,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use Psr\Http\Message\ResponseInterface;
 
-class Authorize
+final class Authorize
 {
     /**
      * @var LoginServiceInterface

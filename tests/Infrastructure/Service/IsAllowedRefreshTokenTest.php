@@ -8,7 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class IsAllowedRefreshTokenTest extends TestCase
+final class IsAllowedRefreshTokenTest extends TestCase
 {
     /**
      * @test

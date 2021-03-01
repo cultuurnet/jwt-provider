@@ -9,7 +9,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LogOut
+final class LogOut
 {
     /**
      * @var ClientInformationRepositoryInterface

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider;
 use Aura\Session\Session;
 use Aura\Session\SessionFactory;
 
-class SessionServiceProvider extends BaseServiceProvider
+final class SessionServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Session::class,
