@@ -21,7 +21,7 @@ final class SessionServiceProvider extends BaseServiceProvider
         $this->addShared(
             Session::class,
             function () {
-                $sessionFactory = new SessionFactory;
+                $sessionFactory = new SessionFactory();
                 return $sessionFactory->newInstance($_COOKIE);
             }
         );
