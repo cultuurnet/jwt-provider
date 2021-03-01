@@ -33,7 +33,7 @@ final class SentryExceptionHandler extends Handler
         $this->console = $console;
     }
 
-    public function handle(): void
+    public function handle(): int
     {
         $this->sentryHub->configureScope(
             function (Scope $scope) {
@@ -43,6 +43,8 @@ final class SentryExceptionHandler extends Handler
 
         $exception = $this->getInspector()->getException();
         $this->sentryHub->captureException($exception);
+
+        return Handler::DONE;
     }
 
     private function createTags(?ApiKey $apiKey, bool $console): array
