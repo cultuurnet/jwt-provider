@@ -25,7 +25,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
-        "publiq/php-cs-fixer-config": "^1.3"
+        "publiq/php-cs-fixer-config": "^1.3",
+        "phpstan/phpstan": "^0.12.80",
+        "jangregor/phpstan-prophecy": "^0.8.1"
     },
     "autoload": {
         "psr-4": {
@@ -53,10 +55,12 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan analyse",
         "cs": "php-cs-fixer fix -v --diff --dry-run",
         "cs-fix": "php-cs-fixer fix -v --diff",
         "ci": [
             "composer cs",
+            "composer phpstan",
             "composer test"
         ]
     }
