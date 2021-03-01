@@ -14,7 +14,7 @@ use Psr\Http\Message\UriFactoryInterface;
 
 final class ExtractClientInformationFromRequest implements ExtractClientInformationFromRequestInterface
 {
-    const DESTINATION = 'destination';
+    public const DESTINATION = 'destination';
 
     /**
      * @var UriFactoryInterface
