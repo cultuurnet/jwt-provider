@@ -9,7 +9,6 @@ use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInt
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -42,7 +41,6 @@ final class RequestTokenTest extends TestCase
         $requestTokenAction = new RequestToken(
             $extractClientInformationFromRequest->reveal(),
             $externalAuthService->reveal(),
-            new SlimResponseFactory(),
             $clientInformationRepository->reveal(),
             $extractLocaleFromRequest
         );

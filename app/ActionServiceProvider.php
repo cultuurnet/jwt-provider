@@ -54,7 +54,6 @@ final class ActionServiceProvider extends BaseServiceProvider
                 return new RequestToken(
                     $this->get(ExtractClientInformationFromRequest::class),
                     $this->get(LoginServiceInterface::class),
-                    $this->get(ResponseFactoryInterface::class),
                     $this->get(ClientInformationRepositoryInterface::class),
                     $this->get(ExtractLocaleFromRequest::class)
                 );

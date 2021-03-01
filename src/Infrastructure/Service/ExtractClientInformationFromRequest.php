@@ -27,7 +27,7 @@ final class ExtractClientInformationFromRequest implements ExtractClientInformat
     private $apiKeyReader;
 
     /**
-     * @var IsAllowedRefreshToken
+     * @var IsAllowedRefreshTokenInterface
      */
     private $isAllowedRefreshToken;
 
