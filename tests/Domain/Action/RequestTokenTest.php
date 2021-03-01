@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,17 +24,17 @@ class RequestTokenTest extends TestCase
     public function it_requests_for_token(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
+        $serverRequest->getQueryParams()->willReturn(['lang' => Locale::FRENCH]);
 
         $clientInformation = $this->aClientInformation();
 
-        $extractClientInformationFromRequest = $this->prophesize(ExtractClientInformationFromRequest::class);
+        $extractClientInformationFromRequest = $this->prophesize(ExtractClientInformationFromRequestInterface::class);
         $extractClientInformationFromRequest->__invoke($serverRequest)->willReturn($clientInformation);
 
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
         $clientInformationRepository->store($clientInformation)->shouldBeCalled();
 
-        $extractLocaleFromRequest = $this->prophesize(ExtractLocaleFromRequest::class);
-        $extractLocaleFromRequest->__invoke($serverRequest)->willReturn(Locale::FRENCH);
+        $extractLocaleFromRequest = new ExtractLocaleFromRequest();
 
         $externalAuthService = $this->prophesize(LoginServiceInterface::class);
         $externalAuthService->redirectToLogin('fr')->shouldBeCalled();
@@ -45,7 +44,7 @@ class RequestTokenTest extends TestCase
             $externalAuthService->reveal(),
             new SlimResponseFactory(),
             $clientInformationRepository->reveal(),
-            $extractLocaleFromRequest->reveal()
+            $extractLocaleFromRequest
         );
 
         $requestTokenAction->__invoke($serverRequest->reveal());

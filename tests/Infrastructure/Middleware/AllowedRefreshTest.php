@@ -8,7 +8,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\RefreshTokenNotAllowedException;
 use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -29,7 +29,7 @@ class AllowedRefreshTest extends TestCase
         $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
         $apiKeyReader->read($serverRequest)->willReturn($apiKey);
 
-        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshToken::class);
+        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshTokenInterface::class);
         $isAllowedRefreshService->__invoke($apiKey)->willReturn(true);
 
         $handler->handle($serverRequest)->shouldBeCalled();
@@ -55,7 +55,7 @@ class AllowedRefreshTest extends TestCase
         $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
         $apiKeyReader->read($serverRequest)->willReturn($apiKey);
 
-        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshToken::class);
+        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshTokenInterface::class);
         $isAllowedRefreshService->__invoke($apiKey)->willReturn(false);
 
         $handler->handle($serverRequest)->shouldNotBeCalled();
@@ -82,7 +82,7 @@ class AllowedRefreshTest extends TestCase
         $apiKeyReader = $this->prophesize(ApiKeyReaderInterface::class);
         $apiKeyReader->read($serverRequest)->willReturn(null);
 
-        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshToken::class);
+        $isAllowedRefreshService = $this->prophesize(IsAllowedRefreshTokenInterface::class);
 
         $handler->handle($serverRequest)->shouldNotBeCalled();
 

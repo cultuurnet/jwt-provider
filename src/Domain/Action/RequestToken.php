@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class RequestToken
 {
     /**
-     * @var ExtractClientInformationFromRequest
+     * @var ExtractClientInformationFromRequestInterface
      */
     private $extractClientInformationFromRequest;
 
@@ -41,7 +41,7 @@ class RequestToken
     private $extractLocaleFromRequest;
 
     public function __construct(
-        ExtractClientInformationFromRequest $extractClientInformationFromRequest,
+        ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,
         LoginServiceInterface $externalAuthService,
         ResponseFactoryInterface $responseFactory,
         ClientInformationRepositoryInterface $clientInformationRepository,
