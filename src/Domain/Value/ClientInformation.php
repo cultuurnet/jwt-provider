@@ -41,9 +41,7 @@ final class ClientInformation
         return $this->apiKey;
     }
 
-    /**
-     * @return bool
-     */
+
     public function isAllowedRefresh(): bool
     {
         return $this->isAllowedRefresh;

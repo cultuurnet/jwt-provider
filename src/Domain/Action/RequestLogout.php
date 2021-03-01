@@ -41,8 +41,6 @@ final class RequestLogout
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ResponseInterface
      * @throws NoDestinationPresentException
      */
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface

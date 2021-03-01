@@ -61,9 +61,7 @@ final class ExceptionHandler extends Handler
         return $this->slimResponseFactory->internalServerError();
     }
 
-    /**
-     * @param \Throwable $exception
-     */
+
     private function logError(\Throwable $exception): void
     {
         $log = [

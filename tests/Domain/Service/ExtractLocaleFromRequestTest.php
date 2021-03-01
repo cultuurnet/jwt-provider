@@ -14,7 +14,6 @@ final class ExtractLocaleFromRequestTest extends TestCase
     /**
      * @test
      * @dataProvider validLocalesProvider
-     * @param string $locale
      */
     public function it_return_locale_for_request_having_a_valid_locale(string $locale)
     {

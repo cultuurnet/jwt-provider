@@ -13,13 +13,11 @@ interface LoginServiceInterface
     public function redirectToLogin(string $locale = Locale::DUTCH): ?ResponseInterface;
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string;
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function refreshToken(): ?string;

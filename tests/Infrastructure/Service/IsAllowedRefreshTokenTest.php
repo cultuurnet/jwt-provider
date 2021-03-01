@@ -80,9 +80,7 @@ final class IsAllowedRefreshTokenTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * @return StringLiteral
-     */
+
     private function anApiKey(): StringLiteral
     {
         return new StringLiteral('api-key');

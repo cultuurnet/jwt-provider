@@ -30,8 +30,6 @@ final class Refresh
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ResponseInterface
      * @throws UnSuccessfulRefreshException
      * @throws BadRequestException
      */

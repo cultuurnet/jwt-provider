@@ -55,8 +55,6 @@ final class RequestToken
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ResponseInterface|null
      * @throws NoDestinationPresentException
      */
     public function __invoke(ServerRequestInterface $serverRequest): ?ResponseInterface

@@ -51,9 +51,7 @@ final class SessionClientInformationTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @return ClientInformation
-     */
+
     private function aClientInformation(): ClientInformation
     {
         return new ClientInformation(

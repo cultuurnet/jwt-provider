@@ -31,7 +31,6 @@ final class LoginAuth0Adapter implements LoginServiceInterface
     }
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string
@@ -46,7 +45,6 @@ final class LoginAuth0Adapter implements LoginServiceInterface
     }
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function refreshToken(): ?string

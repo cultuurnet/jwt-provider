@@ -68,7 +68,6 @@ final class LoginAuth0AdapterTest extends TestCase
     /**
      * @test
      * @dataProvider auth0_exceptions()
-     * @param string $exceptionClassName
      * @throws ApiException
      * @throws CoreException
      * @throws UnSuccessfulAuthException

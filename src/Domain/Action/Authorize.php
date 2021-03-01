@@ -46,7 +46,6 @@ final class Authorize
     }
 
     /**
-     * @return ResponseInterface
      * @throws UnSuccessfulAuthException
      */
     public function __invoke(): ResponseInterface

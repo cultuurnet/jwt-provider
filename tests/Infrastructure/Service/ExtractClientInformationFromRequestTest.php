@@ -81,9 +81,7 @@ final class ExtractClientInformationFromRequestTest extends TestCase
         return $serverRequest;
     }
 
-    /**
-     * @return ApiKey
-     */
+
     private function anApiKey(): ApiKey
     {
         return new ApiKey('api-key');

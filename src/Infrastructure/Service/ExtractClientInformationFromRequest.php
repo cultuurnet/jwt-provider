@@ -42,8 +42,6 @@ final class ExtractClientInformationFromRequest implements ExtractClientInformat
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ClientInformation
      * @throws NoDestinationPresentException
      */
     public function __invoke(ServerRequestInterface $serverRequest): ClientInformation
