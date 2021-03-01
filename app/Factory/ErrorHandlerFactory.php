@@ -17,7 +17,7 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 final class ErrorHandlerFactory
 {
-    public static function create(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console) : RunInterface
+    public static function create(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console): RunInterface
     {
         $logger = new Logger('error');
         $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/app.log', Logger::DEBUG));

@@ -54,7 +54,6 @@ final class LoginAuth0AdapterTest extends TestCase
      */
     public function it_returns_refresh_token()
     {
-
         $auth0 = $this->prophesize(Auth0::class);
 
         $auth0adapter = new LoginAuth0Adapter(
@@ -76,7 +75,6 @@ final class LoginAuth0AdapterTest extends TestCase
      */
     public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(string $exceptionClassName): void
     {
-
         $auth0 = $this->prophesize(Auth0::class);
 
         $auth0adapter = new LoginAuth0Adapter(

@@ -37,7 +37,6 @@ final class Refresh
      */
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface
     {
-
         $queryParams = $serverRequest->getQueryParams();
 
         if (!isset($queryParams['refresh'])) {

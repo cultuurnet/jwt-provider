@@ -23,7 +23,6 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-
         $this->addShared(
             ApiKeyReaderInterface::class,
             function () {

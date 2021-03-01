@@ -14,13 +14,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 final class LogOutTest extends TestCase
 {
-
     /**
      * @test
      */
     public function it_redirects_user_back_to_destination()
     {
-
         $clientInformation = $this->aClientInformation();
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
         $clientInformationRepository->get()->willReturn($clientInformation);

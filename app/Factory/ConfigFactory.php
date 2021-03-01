@@ -9,7 +9,7 @@ use Noodlehaus\Parser\Yaml;
 
 final class ConfigFactory
 {
-    public static function create(string $configDir) : Config
+    public static function create(string $configDir): Config
     {
         $configFiles = [
             $configDir . '/config.yml',
