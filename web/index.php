@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
