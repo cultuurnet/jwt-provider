@@ -3,3 +3,4 @@
 *.pem
 config.yml
 /log
+/.php_cs.cache

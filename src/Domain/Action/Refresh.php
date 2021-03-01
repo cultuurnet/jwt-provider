@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Refresh
+final class Refresh
 {
     /**
      * @var ResponseFactoryInterface
@@ -28,14 +30,11 @@ class Refresh
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ResponseInterface
      * @throws UnSuccessfulRefreshException
      * @throws BadRequestException
      */
     public function __invoke(ServerRequestInterface $serverRequest): ResponseInterface
     {
-
         $queryParams = $serverRequest->getQueryParams();
 
         if (!isset($queryParams['refresh'])) {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider;
 
@@ -29,7 +31,7 @@ use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
-class ActionServiceProvider extends BaseServiceProvider
+final class ActionServiceProvider extends BaseServiceProvider
 {
     // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
     // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
@@ -52,7 +54,6 @@ class ActionServiceProvider extends BaseServiceProvider
                 return new RequestToken(
                     $this->get(ExtractClientInformationFromRequest::class),
                     $this->get(LoginServiceInterface::class),
-                    $this->get(ResponseFactoryInterface::class),
                     $this->get(ClientInformationRepositoryInterface::class),
                     $this->get(ExtractLocaleFromRequest::class)
                 );

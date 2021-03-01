@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -6,7 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class IsAllowedRefreshTokenTest extends TestCase
+final class IsAllowedRefreshTokenTest extends TestCase
 {
     /**
      * @test
@@ -78,9 +80,7 @@ class IsAllowedRefreshTokenTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /**
-     * @return StringLiteral
-     */
+
     private function anApiKey(): StringLiteral
     {
         return new StringLiteral('api-key');

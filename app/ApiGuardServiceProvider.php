@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider;
 
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\CultureFeedDecorator;
 use ICultureFeed;
 
-class ApiGuardServiceProvider extends BaseServiceProvider
+final class ApiGuardServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         ApiKeyReaderInterface::class,
@@ -21,7 +23,6 @@ class ApiGuardServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-
         $this->addShared(
             ApiKeyReaderInterface::class,
             function () {

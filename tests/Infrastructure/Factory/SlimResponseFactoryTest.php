@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 
-class SlimResponseFactoryTest extends TestCase
+final class SlimResponseFactoryTest extends TestCase
 {
     /**
      * @test

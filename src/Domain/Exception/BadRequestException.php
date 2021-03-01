@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
 use Fig\Http\Message\StatusCodeInterface;
 
-class BadRequestException extends \Exception implements JwtProviderExceptionInterface
+final class BadRequestException extends \Exception implements JwtProviderExceptionInterface
 {
     public static function missingRefreshToken(): BadRequestException
     {

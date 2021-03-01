@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -10,9 +12,9 @@ use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
-class ExtractClientInformationFromRequest implements ExtractClientInformationFromRequestInterface
+final class ExtractClientInformationFromRequest implements ExtractClientInformationFromRequestInterface
 {
-    const DESTINATION = 'destination';
+    public const DESTINATION = 'destination';
 
     /**
      * @var UriFactoryInterface
@@ -25,7 +27,7 @@ class ExtractClientInformationFromRequest implements ExtractClientInformationFro
     private $apiKeyReader;
 
     /**
-     * @var IsAllowedRefreshToken
+     * @var IsAllowedRefreshTokenInterface
      */
     private $isAllowedRefreshToken;
 
@@ -40,8 +42,6 @@ class ExtractClientInformationFromRequest implements ExtractClientInformationFro
     }
 
     /**
-     * @param ServerRequestInterface $serverRequest
-     * @return ClientInformation
      * @throws NoDestinationPresentException
      */
     public function __invoke(ServerRequestInterface $serverRequest): ClientInformation

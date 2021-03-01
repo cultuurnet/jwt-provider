@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -10,9 +12,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 
-class ExtractClientInformationFromRequestTest extends TestCase
+final class ExtractClientInformationFromRequestTest extends TestCase
 {
-
     /**
      * @test
      */
@@ -80,9 +81,7 @@ class ExtractClientInformationFromRequestTest extends TestCase
         return $serverRequest;
     }
 
-    /**
-     * @return ApiKey
-     */
+
     private function anApiKey(): ApiKey
     {
         return new ApiKey('api-key');

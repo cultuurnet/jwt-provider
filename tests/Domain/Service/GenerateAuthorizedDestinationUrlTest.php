@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Uri;
 
-class GenerateAuthorizedDestinationUrlTest extends TestCase
+final class GenerateAuthorizedDestinationUrlTest extends TestCase
 {
     /**
      * @test

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -9,7 +11,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 
-class LogOutAuth0AdapterTest extends TestCase
+final class LogOutAuth0AdapterTest extends TestCase
 {
     /**
      * @test

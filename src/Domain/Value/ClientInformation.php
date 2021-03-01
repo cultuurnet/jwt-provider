@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Value;
 
 use Psr\Http\Message\UriInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ClientInformation
+final class ClientInformation
 {
     /**
      * @var UriInterface
@@ -39,9 +41,7 @@ class ClientInformation
         return $this->apiKey;
     }
 
-    /**
-     * @return bool
-     */
+
     public function isAllowedRefresh(): bool
     {
         return $this->isAllowedRefresh;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\JwtProvider;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
@@ -11,9 +13,8 @@ use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 
-class RoutingServiceProvider extends BaseServiceProvider
+final class RoutingServiceProvider extends BaseServiceProvider
 {
-
     protected $provides = [
         Router::class,
     ];

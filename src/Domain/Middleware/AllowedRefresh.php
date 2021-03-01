@@ -1,19 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Middleware;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\RefreshTokenNotAllowedException;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AllowedRefresh implements MiddlewareInterface
+final class AllowedRefresh implements MiddlewareInterface
 {
     /**
-     * @var IsAllowedRefreshToken
+     * @var IsAllowedRefreshTokenInterface
      */
     private $isAllowedRefreshToken;
 
@@ -23,7 +25,7 @@ class AllowedRefresh implements MiddlewareInterface
     private $apiKeyReader;
 
     public function __construct(
-        IsAllowedRefreshToken $isAllowedRefreshToken,
+        IsAllowedRefreshTokenInterface $isAllowedRefreshToken,
         ApiKeyReaderInterface $apiKeyReader
     ) {
         $this->isAllowedRefreshToken = $isAllowedRefreshToken;

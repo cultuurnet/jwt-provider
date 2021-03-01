@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SessionClientInformationTest extends TestCase
+final class SessionClientInformationTest extends TestCase
 {
     /**
      * @test
@@ -49,9 +51,7 @@ class SessionClientInformationTest extends TestCase
         $this->assertNull($result);
     }
 
-    /**
-     * @return ClientInformation
-     */
+
     private function aClientInformation(): ClientInformation
     {
         return new ClientInformation(

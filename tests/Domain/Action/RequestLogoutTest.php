@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
@@ -12,9 +14,8 @@ use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RequestLogoutTest extends TestCase
+final class RequestLogoutTest extends TestCase
 {
-
     /**
      * @test
      */

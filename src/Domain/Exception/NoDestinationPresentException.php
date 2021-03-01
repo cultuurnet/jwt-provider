@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
@@ -6,7 +8,7 @@ use Exception;
 use Fig\Http\Message\StatusCodeInterface;
 use Throwable;
 
-class NoDestinationPresentException extends Exception implements JwtProviderExceptionInterface
+final class NoDestinationPresentException extends Exception implements JwtProviderExceptionInterface
 {
     public const MESSAGE = 'Request does not contain a destination parameter to redirect to after login.';
 

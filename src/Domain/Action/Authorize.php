@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use Psr\Http\Message\ResponseInterface;
 
-class Authorize
+final class Authorize
 {
     /**
      * @var LoginServiceInterface
@@ -44,7 +46,6 @@ class Authorize
     }
 
     /**
-     * @return ResponseInterface
      * @throws UnSuccessfulAuthException
      */
     public function __invoke(): ResponseInterface

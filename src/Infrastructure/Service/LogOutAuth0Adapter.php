@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -10,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
-class LogOutAuth0Adapter implements LogOutServiceInterface
+final class LogOutAuth0Adapter implements LogOutServiceInterface
 {
     /**
      * @var ResponseFactoryInterface

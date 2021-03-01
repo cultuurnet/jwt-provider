@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
@@ -11,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class AuthorizeTest extends TestCase
+final class AuthorizeTest extends TestCase
 {
     /**
      * @test
@@ -38,7 +40,7 @@ class AuthorizeTest extends TestCase
         $this->assertEquals('http://foo-bar.com/?jwt=token&refresh=refresh', $response->getHeaderLine('Location'));
     }
 
-    private function aClientInformation() : ClientInformation
+    private function aClientInformation(): ClientInformation
     {
         return new ClientInformation(
             (new UriFactory())->createUri('http://foo-bar.com'),

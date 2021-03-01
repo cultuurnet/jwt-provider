@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -6,7 +8,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
+final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
 {
     /**
      * @var string
@@ -27,12 +29,8 @@ class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
         $this->cultureFeed = $cultureFeed;
     }
 
-    public function __invoke(StringLiteral $apiKey = null): bool
+    public function __invoke(StringLiteral $apiKey): bool
     {
-        if ($apiKey == null) {
-            return false;
-        }
-
         $consumer = $this->cultureFeed->getServiceConsumerByApiKey(
             $apiKey->toNative()
         );

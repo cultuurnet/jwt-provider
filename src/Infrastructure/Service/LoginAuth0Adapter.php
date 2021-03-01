@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -10,7 +12,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LoginAuth0Adapter implements LoginServiceInterface
+final class LoginAuth0Adapter implements LoginServiceInterface
 {
     /**
      * @var Auth0
@@ -29,7 +31,6 @@ class LoginAuth0Adapter implements LoginServiceInterface
     }
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string
@@ -44,7 +45,6 @@ class LoginAuth0Adapter implements LoginServiceInterface
     }
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function refreshToken(): ?string

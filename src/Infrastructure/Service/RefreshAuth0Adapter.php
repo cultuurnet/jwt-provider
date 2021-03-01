@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
-class RefreshAuth0Adapter implements RefreshServiceInterface
+final class RefreshAuth0Adapter implements RefreshServiceInterface
 {
     /** @var Client */
     private $httpClient;

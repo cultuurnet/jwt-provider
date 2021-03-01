@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Factory;
 
@@ -13,9 +15,9 @@ use Whoops\Run;
 use Whoops\RunInterface;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
-class ErrorHandlerFactory
+final class ErrorHandlerFactory
 {
-    public static function create(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console) : RunInterface
+    public static function create(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console): RunInterface
     {
         $logger = new Logger('error');
         $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/app.log', Logger::DEBUG));

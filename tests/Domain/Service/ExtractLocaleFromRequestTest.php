@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
@@ -7,12 +9,11 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ExtractLocaleFromRequestTest extends TestCase
+final class ExtractLocaleFromRequestTest extends TestCase
 {
     /**
      * @test
      * @dataProvider validLocalesProvider
-     * @param string $locale
      */
     public function it_return_locale_for_request_having_a_valid_locale(string $locale)
     {

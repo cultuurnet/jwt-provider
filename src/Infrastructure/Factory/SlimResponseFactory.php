@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
@@ -10,9 +12,8 @@ use Psr\Http\Message\UriInterface;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Response;
 
-class SlimResponseFactory implements ResponseFactoryInterface
+final class SlimResponseFactory implements ResponseFactoryInterface
 {
-
     public function badRequestWithMessage(string $message): ResponseInterface
     {
         $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Error;
 
@@ -8,9 +10,8 @@ use Monolog\Logger;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-class ExceptionHandler extends Handler
+final class ExceptionHandler extends Handler
 {
-
     /**
      * @var EmitterInterface
      */
@@ -60,9 +61,7 @@ class ExceptionHandler extends Handler
         return $this->slimResponseFactory->internalServerError();
     }
 
-    /**
-     * @param \Throwable $exception
-     */
+
     private function logError(\Throwable $exception): void
     {
         $log = [

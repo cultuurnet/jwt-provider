@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ExtractLocaleFromRequest
+final class ExtractLocaleFromRequest
 {
     public function __invoke(ServerRequestInterface $serverRequest): string
     {

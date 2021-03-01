@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
@@ -10,15 +12,13 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LogOutTest extends TestCase
+final class LogOutTest extends TestCase
 {
-
     /**
      * @test
      */
     public function it_redirects_user_back_to_destination()
     {
-
         $clientInformation = $this->aClientInformation();
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
         $clientInformationRepository->get()->willReturn($clientInformation);

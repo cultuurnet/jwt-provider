@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
@@ -11,13 +13,11 @@ interface LoginServiceInterface
     public function redirectToLogin(string $locale = Locale::DUTCH): ?ResponseInterface;
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function token(): ?string;
 
     /**
-     * @return string|null
      * @throws UnSuccessfulAuthException
      */
     public function refreshToken(): ?string;

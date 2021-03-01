@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use PHPUnit\Framework\TestCase;
 
-class LoginAuth0AdapterTest extends TestCase
+final class LoginAuth0AdapterTest extends TestCase
 {
     /**
      * @test
@@ -25,7 +27,7 @@ class LoginAuth0AdapterTest extends TestCase
         $auth0->login(
             null,
             null,
-            ["locale" => Locale::DUTCH]
+            ['locale' => Locale::DUTCH]
         )->shouldBeCalled();
 
         $auth0adapter->redirectToLogin();
@@ -52,7 +54,6 @@ class LoginAuth0AdapterTest extends TestCase
      */
     public function it_returns_refresh_token()
     {
-
         $auth0 = $this->prophesize(Auth0::class);
 
         $auth0adapter = new LoginAuth0Adapter(
@@ -67,14 +68,12 @@ class LoginAuth0AdapterTest extends TestCase
     /**
      * @test
      * @dataProvider auth0_exceptions()
-     * @param string $exceptionClassName
      * @throws ApiException
      * @throws CoreException
      * @throws UnSuccessfulAuthException
      */
     public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(string $exceptionClassName): void
     {
-
         $auth0 = $this->prophesize(Auth0::class);
 
         $auth0adapter = new LoginAuth0Adapter(
