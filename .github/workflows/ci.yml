@@ -43,7 +43,7 @@ jobs:
             - name: ✅ Run tests
               run: composer test
 
-    phpcs:
+    cs:
         runs-on: ubuntu-latest
         name: Code style
         steps:
@@ -71,4 +71,4 @@ jobs:
               run: composer install --no-progress --no-suggest
 
             - name: ✨ Run code style check
-              run: composer phpcs
+              run: composer cs
