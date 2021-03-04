@@ -50,6 +50,10 @@ final class ExtractClientInformationFromRequest implements ExtractClientInformat
 
         $apiKey = $this->apiKeyReader->read($serverRequest);
 
+        if ($apiKey === null) {
+            return new ClientInformation($this->uriFactory->createUri($destination));
+        }
+
         return new ClientInformation(
             $this->uriFactory->createUri($destination),
             $apiKey,
