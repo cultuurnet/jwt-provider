@@ -9,6 +9,9 @@ use Aura\Session\SessionFactory;
 
 final class SessionServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         Session::class,
     ];

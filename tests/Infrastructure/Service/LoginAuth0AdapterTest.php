@@ -52,7 +52,7 @@ final class LoginAuth0AdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_refresh_token()
+    public function it_returns_refresh_token(): void
     {
         $auth0 = $this->prophesize(Auth0::class);
 
@@ -87,7 +87,10 @@ final class LoginAuth0AdapterTest extends TestCase
         $auth0adapter->token();
     }
 
-    public function auth0_exceptions()
+    /**
+     * @return string[][]
+     */
+    public function auth0_exceptions(): array
     {
         return [
             [ApiException::class],

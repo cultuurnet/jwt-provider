@@ -14,7 +14,7 @@ final class SlimResponseFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_bad_request_response_with_message()
+    public function it_creates_bad_request_response_with_message(): void
     {
         $factory = new SlimResponseFactory();
         $response = $factory->badRequestWithMessage('Message');
@@ -26,7 +26,7 @@ final class SlimResponseFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_bad_request_response()
+    public function it_creates_bad_request_response(): void
     {
         $factory = new SlimResponseFactory();
         $response = $factory->badRequest();
@@ -37,7 +37,7 @@ final class SlimResponseFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_redirect_response_for_url()
+    public function it_creates_redirect_response_for_url(): void
     {
         $factory = new SlimResponseFactory();
         $url = (new UriFactory())->createUri('http://foo-bar.com/');

@@ -41,10 +41,13 @@ final class SentryExceptionHandler extends Handler
         return Handler::DONE;
     }
 
+    /**
+     * @return array<string,string>
+     */
     private function createTags(?ApiKey $apiKey): array
     {
         return [
-            'api_key' => $apiKey ? $apiKey->toNative() : 'null',
+            'api_key' => $apiKey ? $apiKey->toString() : 'null',
             'runtime.env' => 'web',
         ];
     }

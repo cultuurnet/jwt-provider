@@ -15,6 +15,9 @@ use League\Route\Strategy\ApplicationStrategy;
 
 final class RoutingServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         Router::class,
     ];

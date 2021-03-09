@@ -16,7 +16,7 @@ final class LogOutAuth0AdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_out_user()
+    public function it_logs_out_user(): void
     {
         $auth0 = $this->prophesize(Auth0::class);
         $authentication = $this->prophesize(Authentication::class);

@@ -16,7 +16,7 @@ final class RefreshTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_new_token()
+    public function it_returns_new_token(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getQueryParams()->willReturn(
@@ -40,7 +40,7 @@ final class RefreshTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_request_is_missing_a_refresh_token()
+    public function it_throws_exception_if_request_is_missing_a_refresh_token(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getQueryParams()->willReturn([]);

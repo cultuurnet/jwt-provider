@@ -37,6 +37,9 @@ final class ActionServiceProvider extends BaseServiceProvider
     // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
     private const JWT_IAT_LEEWAY = 30;
 
+    /**
+     * @var string[]
+     */
     protected $provides = [
         RequestToken::class,
         Authorize::class,

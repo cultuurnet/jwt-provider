@@ -3,7 +3,12 @@
     "description": "Silex application that provides JSON Web Tokens",
     "type": "project",
     "license": "Apache-2.0",
-    "authors": [],
+    "authors": [
+        {
+            "name": "Publiq vzw",
+            "email": "info@publiq.be"
+        }
+    ],
     "require": {
         "php": "^7.1.27",
         "aura/session": "^2.1",
@@ -13,14 +18,13 @@
         "league/container": "^3.3",
         "league/route": "^4.3",
         "monolog/monolog": "^1.11",
-        "slim/psr7": "^0.5",
-        "symfony/console": "^3.4",
+        "slim/psr7": "^0.6",
         "symfony/yaml": "^4.3",
         "zendframework/zend-httphandlerrunner": "^1.1",
         "auth0/auth0-php": "^5.7",
         "beberlei/assert": "^3.2",
         "cultuurnet/culturefeed-php": "^1.10",
-        "cultuurnet/udb3-api-guard": "^v3.0.0",
+        "cultuurnet/udb3-api-guard": "^v4.0.0",
         "sentry/sdk": "^2.2.0"
     },
     "require-dev": {
@@ -49,7 +53,6 @@
     "config": {
         "preferred-install": {
             "cultuurnet/*": "source",
-            "2dotstwice/*": "source",
             "*": "dist"
         }
     },

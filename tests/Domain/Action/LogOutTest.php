@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\ClientInformationNotPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class LogOutTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_redirects_user_back_to_destination()
+    public function it_redirects_user_back_to_destination(): void
     {
         $clientInformation = $this->aClientInformation();
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
@@ -35,7 +35,7 @@ final class LogOutTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_for_no_client_information()
+    public function it_throws_exception_for_no_client_information(): void
     {
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
         $clientInformationRepository->get()->willReturn(null);
@@ -54,7 +54,7 @@ final class LogOutTest extends TestCase
     {
         return new ClientInformation(
             (new UriFactory())->createUri('http://foo-bar.com'),
-            new StringLiteral('api-key')
+            new ApiKey('api-key')
         );
     }
 }

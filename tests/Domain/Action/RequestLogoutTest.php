@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
@@ -12,14 +13,13 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class RequestLogoutTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_logs_out_user()
+    public function it_logs_out_user(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 
@@ -53,7 +53,7 @@ final class RequestLogoutTest extends TestCase
     {
         return new ClientInformation(
             (new UriFactory())->createUri('http://foo-bar.com'),
-            new StringLiteral('api-key')
+            new ApiKey('api-key')
         );
     }
 }
