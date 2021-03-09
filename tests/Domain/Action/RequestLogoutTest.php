@@ -19,7 +19,7 @@ final class RequestLogoutTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_out_user()
+    public function it_logs_out_user(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
 

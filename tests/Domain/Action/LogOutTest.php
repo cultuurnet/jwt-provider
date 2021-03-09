@@ -17,7 +17,7 @@ final class LogOutTest extends TestCase
     /**
      * @test
      */
-    public function it_redirects_user_back_to_destination()
+    public function it_redirects_user_back_to_destination(): void
     {
         $clientInformation = $this->aClientInformation();
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
@@ -35,7 +35,7 @@ final class LogOutTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_for_no_client_information()
+    public function it_throws_exception_for_no_client_information(): void
     {
         $clientInformationRepository = $this->prophesize(ClientInformationRepositoryInterface::class);
         $clientInformationRepository->get()->willReturn(null);

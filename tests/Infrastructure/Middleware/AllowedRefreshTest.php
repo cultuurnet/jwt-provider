@@ -18,7 +18,7 @@ final class AllowedRefreshTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_requests_that_have_permission()
+    public function it_allows_requests_that_have_permission(): void
     {
         $apiKey = new ApiKey('api-key');
 
@@ -44,7 +44,7 @@ final class AllowedRefreshTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_for_request_that_do_not_have_the_refresh_permission()
+    public function it_throws_exception_for_request_that_do_not_have_the_refresh_permission(): void
     {
         $apiKey = new ApiKey('api-key');
 
@@ -73,7 +73,7 @@ final class AllowedRefreshTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_for_request_that_do_not_have_the_api_key()
+    public function it_throws_exception_for_request_that_do_not_have_the_api_key(): void
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $handler = $this->prophesize(RequestHandlerInterface::class);

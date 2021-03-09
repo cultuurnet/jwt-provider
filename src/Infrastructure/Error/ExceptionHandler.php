@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Error;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use Monolog\Logger;
+use Psr\Http\Message\ResponseInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
@@ -52,7 +53,7 @@ final class ExceptionHandler extends Handler
         return Handler::QUIT;
     }
 
-    private function generateResponse(\Throwable $exception)
+    private function generateResponse(\Throwable $exception): ResponseInterface
     {
         if ($exception instanceof JwtProviderExceptionInterface) {
             return $this->slimResponseFactory->forJwtProviderException($exception);
