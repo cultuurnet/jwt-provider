@@ -17,7 +17,6 @@ final class CultureFeedDecorator extends CultureFeed
     /**
      * @param string $apiKey
      * @param bool $includePermissions
-     * @return CultureFeed_Consumer
      * @throws \CultureFeed_ParseException
      */
     public function getServiceConsumerByApiKey($apiKey, $includePermissions = true): CultureFeed_Consumer
