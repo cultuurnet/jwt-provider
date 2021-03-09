@@ -20,7 +20,7 @@
         "auth0/auth0-php": "^5.7",
         "beberlei/assert": "^3.2",
         "cultuurnet/culturefeed-php": "^1.10",
-        "cultuurnet/udb3-api-guard": "^v3.0.0",
+        "cultuurnet/udb3-api-guard": "^v4.0.0",
         "sentry/sdk": "^2.2.0"
     },
     "require-dev": {
