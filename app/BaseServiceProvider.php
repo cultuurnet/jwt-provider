@@ -9,12 +9,7 @@ use Noodlehaus\Config;
 
 abstract class BaseServiceProvider extends AbstractServiceProvider
 {
-    /**
-     * Add Service definition to container
-     *
-     * @param $function
-     */
-    protected function add(string $serviceName, $function, ?string $tag = null): void
+    protected function add(string $serviceName, callable $function, ?string $tag = null): void
     {
         $definition = $this->getLeagueContainer()
             ->add($serviceName, $function);
@@ -24,12 +19,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
         }
     }
 
-    /**
-     * Add Service definition to container
-     *
-     * @param $function
-     */
-    protected function addShared(string $serviceName, $function, ?string $tag = null): void
+    protected function addShared(string $serviceName, callable $function, ?string $tag = null): void
     {
         $definition = $this->getLeagueContainer()
             ->share($serviceName, $function);
@@ -40,8 +30,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * Get parameter from config
-     *
+     * @return mixed
      */
     protected function parameter(string $parameter)
     {
@@ -49,8 +38,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * Get service from container
-     *
+     * @return mixed
      */
     protected function get(string $name)
     {
