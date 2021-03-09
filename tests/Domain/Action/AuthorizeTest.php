@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Action;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
@@ -11,7 +12,6 @@ use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class AuthorizeTest extends TestCase
 {
@@ -44,7 +44,7 @@ final class AuthorizeTest extends TestCase
     {
         return new ClientInformation(
             (new UriFactory())->createUri('http://foo-bar.com'),
-            new StringLiteral('api-key'),
+            new ApiKey('api-key'),
             true
         );
     }
