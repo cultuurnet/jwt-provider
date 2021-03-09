@@ -20,7 +20,8 @@ $apiRequest = ServerRequestFactory::createFromGlobals();
 
 $whoops = ErrorHandlerFactory::create(
     $container->get(HubInterface::class),
-    $container->get(ApiKeyReaderInterface::class)->read($apiRequest)
+    $container->get(ApiKeyReaderInterface::class)->read($apiRequest),
+    $config->get('debug')
 );
 $whoops->register();
 
