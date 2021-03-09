@@ -3,7 +3,12 @@
     "description": "Silex application that provides JSON Web Tokens",
     "type": "project",
     "license": "Apache-2.0",
-    "authors": [],
+    "authors": [
+        {
+            "name": "Publiq vzw",
+            "email": "info@publiq.be"
+        }
+    ],
     "require": {
         "php": "^7.1.27",
         "aura/session": "^2.1",
