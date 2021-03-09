@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e3060467adbcf01ad3a24291f2c635d",
+    "content-hash": "1e1bbceda63cf067ececc578ecf9afad",
     "packages": [
         {
             "name": "aura/session",
@@ -2006,21 +2006,21 @@
         },
         {
             "name": "sentry/sdk",
-            "version": "2.2.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php-sdk.git",
-                "reference": "089858b1b27d3705a5fd1c32d8d10beb55980190"
+                "reference": "908ea3fd0e7a19ccf4b53d1c247c44231595d008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/089858b1b27d3705a5fd1c32d8d10beb55980190",
-                "reference": "089858b1b27d3705a5fd1c32d8d10beb55980190",
+                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/908ea3fd0e7a19ccf4b53d1c247c44231595d008",
+                "reference": "908ea3fd0e7a19ccf4b53d1c247c44231595d008",
                 "shasum": ""
             },
             "require": {
                 "http-interop/http-factory-guzzle": "^1.0",
-                "sentry/sentry": "^2.5",
+                "sentry/sentry": "^3.0",
                 "symfony/http-client": "^4.3|^5.0"
             },
             "type": "metapackage",
@@ -2055,28 +2055,29 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-14T09:30:55+00:00"
+            "time": "2020-09-28T07:49:07+00:00"
         },
         {
             "name": "sentry/sentry",
-            "version": "2.5.2",
+            "version": "3.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "ce63f13e2cf9f72ec169413545a3f7312b2e45e3"
+                "reference": "53e8aeeef6677e23db55c63899ba01c1f4ba2265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/ce63f13e2cf9f72ec169413545a3f7312b2e45e3",
-                "reference": "ce63f13e2cf9f72ec169413545a3f7312b2e45e3",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/53e8aeeef6677e23db55c63899ba01c1f4ba2265",
+                "reference": "53e8aeeef6677e23db55c63899ba01c1f4ba2265",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "guzzlehttp/promises": "^1.3",
-                "guzzlehttp/psr7": "^1.7",
-                "jean85/pretty-package-versions": "^1.5|^2.0.1",
+                "guzzlehttp/psr7": "^1.6",
+                "jean85/pretty-package-versions": "^1.2",
+                "ocramius/package-versions": "^1.8",
                 "php": "^7.1",
                 "php-http/async-client-implementation": "^1.0",
                 "php-http/client-common": "^1.5|^2.0",
@@ -2087,6 +2088,7 @@
                 "psr/http-message-implementation": "^1.0",
                 "psr/log": "^1.0",
                 "symfony/options-resolver": "^2.7|^3.0|^4.0|^5.0",
+                "symfony/polyfill-php80": "^1.17",
                 "symfony/polyfill-uuid": "^1.13.1"
             },
             "conflict": {
@@ -2095,14 +2097,15 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
+                "http-interop/http-factory-guzzle": "^1.0",
                 "monolog/monolog": "^1.3|^2.0",
-                "php-http/mock-client": "^1.4",
+                "php-http/mock-client": "^1.3",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.12",
                 "phpstan/phpstan-phpunit": "^0.12",
-                "phpunit/phpunit": "^7.5.20",
-                "symfony/phpunit-bridge": "^5.2",
-                "vimeo/psalm": "^4.2"
+                "phpunit/phpunit": "^7.5.18",
+                "symfony/phpunit-bridge": "^4.3|^5.0",
+                "vimeo/psalm": "^3.4"
             },
             "suggest": {
                 "monolog/monolog": "Allow sending log messages to Sentry by using the included Monolog handler."
@@ -2110,7 +2113,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -2152,7 +2155,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-02-02T08:58:09+00:00"
+            "time": "2020-09-03T11:19:07+00:00"
         },
         {
             "name": "slim/psr7",
