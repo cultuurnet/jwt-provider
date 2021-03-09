@@ -47,6 +47,9 @@ final class SentryExceptionHandler extends Handler
         return Handler::DONE;
     }
 
+    /**
+     * @return array<string,string>
+     */
     private function createTags(?ApiKey $apiKey, bool $console): array
     {
         return [

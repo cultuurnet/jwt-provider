@@ -46,7 +46,7 @@ final class GenerateAuthorizedDestinationUrlTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_refresh_token_if_injected()
+    public function it_includes_refresh_token_if_injected(): void
     {
         $destinationUrl = new Uri(
             'https',

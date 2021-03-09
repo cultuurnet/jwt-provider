@@ -1,6 +1,7 @@
 parameters:
-	level: 5
+	level: 7
 	paths:
+		- app
 		- src
 		- tests
 includes:

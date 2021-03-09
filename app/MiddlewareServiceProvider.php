@@ -10,6 +10,9 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 
 final class MiddlewareServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         AllowedRefresh::class,
     ];
