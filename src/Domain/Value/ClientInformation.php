@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Value;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use Psr\Http\Message\UriInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ClientInformation
 {
@@ -15,7 +15,7 @@ final class ClientInformation
     private $uri;
 
     /**
-     * @var StringLiteral
+     * @var ApiKey|null
      */
     private $apiKey;
 
@@ -24,7 +24,7 @@ final class ClientInformation
      */
     private $isAllowedRefresh;
 
-    public function __construct(UriInterface $uri, StringLiteral $apiKey = null, bool $isAllowedRefresh = false)
+    public function __construct(UriInterface $uri, ApiKey $apiKey = null, bool $isAllowedRefresh = false)
     {
         $this->uri = $uri;
         $this->apiKey = $apiKey;
@@ -36,11 +36,10 @@ final class ClientInformation
         return $this->uri;
     }
 
-    public function apiKey(): ?StringLiteral
+    public function apiKey(): ?ApiKey
     {
         return $this->apiKey;
     }
-
 
     public function isAllowedRefresh(): bool
     {

@@ -40,7 +40,7 @@ final class ExtractClientInformationFromRequestTest extends TestCase
         );
 
         $result = $extract->__invoke($serverRequest->reveal());
-        $this->assertEquals($apiKey->toNative(), $result->apiKey());
+        $this->assertSame($apiKey->toString(), $result->apiKey()->toString());
         $this->assertEquals('www.jwt.com', $result->uri()->getPath());
         $this->assertTrue($result->isAllowedRefresh());
     }

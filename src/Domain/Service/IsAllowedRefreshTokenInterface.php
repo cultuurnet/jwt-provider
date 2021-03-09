@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 
 interface IsAllowedRefreshTokenInterface
 {
-    public function __invoke(StringLiteral $apiKey): bool;
+    public function __invoke(ApiKey $apiKey): bool;
 }

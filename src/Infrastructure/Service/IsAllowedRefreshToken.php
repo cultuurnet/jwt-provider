@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
 {
@@ -29,10 +29,10 @@ final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
         $this->cultureFeed = $cultureFeed;
     }
 
-    public function __invoke(StringLiteral $apiKey): bool
+    public function __invoke(ApiKey $apiKey): bool
     {
         $consumer = $this->cultureFeed->getServiceConsumerByApiKey(
-            $apiKey->toNative()
+            $apiKey->toString()
         );
 
         if ($consumer === null) {
@@ -45,7 +45,7 @@ final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
     private function hasPermissionForRefresh(ConsumerInterface $consumer): bool
     {
         foreach ($consumer->getPermissionGroupIds() as $group) {
-            if ($group->toNative() === $this->refreshGroupId) {
+            if ($group === $this->refreshGroupId) {
                 return true;
             }
         }

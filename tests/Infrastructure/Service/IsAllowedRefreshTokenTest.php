@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class IsAllowedRefreshTokenTest extends TestCase
 {
@@ -19,13 +19,13 @@ final class IsAllowedRefreshTokenTest extends TestCase
 
         $consumer = $this->aConsumerWithPermissionGroups(
             [
-                new StringLiteral('group-31'),
-                new StringLiteral('refresh-group'),
+                'group-31',
+                'refresh-group',
             ]
         );
 
         $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey)->willReturn($consumer);
+        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn($consumer);
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $cultureFeed->reveal(),
@@ -45,12 +45,12 @@ final class IsAllowedRefreshTokenTest extends TestCase
 
         $consumer = $this->aConsumerWithPermissionGroups(
             [
-                new StringLiteral('group-31'),
+                'group-31',
             ]
         );
 
         $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey)->willReturn($consumer);
+        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn($consumer);
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $cultureFeed->reveal(),
@@ -69,7 +69,7 @@ final class IsAllowedRefreshTokenTest extends TestCase
         $apiKey = $this->anApiKey();
 
         $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey)->willReturn(null);
+        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn(null);
 
         $isAllowedRefreshToken = new IsAllowedRefreshToken(
             $cultureFeed->reveal(),
@@ -81,9 +81,9 @@ final class IsAllowedRefreshTokenTest extends TestCase
     }
 
 
-    private function anApiKey(): StringLiteral
+    private function anApiKey(): ApiKey
     {
-        return new StringLiteral('api-key');
+        return new ApiKey('api-key');
     }
 
     private function aConsumerWithPermissionGroups(array $permissionGroups)
