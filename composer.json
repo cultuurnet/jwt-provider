@@ -49,7 +49,6 @@
     "config": {
         "preferred-install": {
             "cultuurnet/*": "source",
-            "2dotstwice/*": "source",
             "*": "dist"
         }
     },
