@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 
@@ -17,7 +18,7 @@ final class ExtractClientInformationFromRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_extracts_client_information_from_request()
+    public function it_extracts_client_information_from_request(): void
     {
         $serverRequest = $this->aServerRequestWithQueryParameters(
             [
@@ -48,7 +49,7 @@ final class ExtractClientInformationFromRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_if_destination_query_parameter_is_missing_from_request()
+    public function it_throws_exception_if_destination_query_parameter_is_missing_from_request(): void
     {
         $serverRequest = $this->aServerRequestWithQueryParameters([]);
 
@@ -71,6 +72,10 @@ final class ExtractClientInformationFromRequestTest extends TestCase
         $extract->__invoke($serverRequest->reveal());
     }
 
+    /**
+     * @param array<string,string> $queryParams
+     * @return ObjectProphecy<ServerRequestInterface>
+     */
     private function aServerRequestWithQueryParameters(array $queryParams)
     {
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
