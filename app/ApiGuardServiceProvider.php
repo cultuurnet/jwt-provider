@@ -13,6 +13,9 @@ use ICultureFeed;
 
 final class ApiGuardServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         ApiKeyReaderInterface::class,
         ICultureFeed::class,

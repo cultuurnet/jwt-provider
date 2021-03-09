@@ -10,6 +10,9 @@ use function Sentry\init;
 
 final class SentryServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         HubInterface::class,
     ];
