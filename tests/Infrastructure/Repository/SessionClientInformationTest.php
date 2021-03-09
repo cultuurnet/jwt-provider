@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Repository;
 use Aura\Session\Segment;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
 
@@ -17,6 +18,7 @@ final class SessionClientInformationTest extends TestCase
      */
     public function it_stores_client_information(): void
     {
+        /** @var Segment & MockObject $sessionSegment */
         $sessionSegment = $this->createMock(Segment::class);
 
         $session = new SessionClientInformation(
@@ -35,6 +37,7 @@ final class SessionClientInformationTest extends TestCase
      */
     public function it_removes_client_information(): void
     {
+        /** @var Segment & MockObject $sessionSegment */
         $sessionSegment = $this->createMock(Segment::class);
 
         $session = new SessionClientInformation(
