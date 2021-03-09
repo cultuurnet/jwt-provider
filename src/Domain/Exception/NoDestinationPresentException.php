@@ -12,7 +12,7 @@ final class NoDestinationPresentException extends Exception implements JwtProvid
 {
     public const MESSAGE = 'Request does not contain a destination parameter to redirect to after login.';
 
-    public function __construct($code = 0, Throwable $previous = null)
+    public function __construct(int $code = 0, Throwable $previous = null)
     {
         parent::__construct(
             self::MESSAGE,
