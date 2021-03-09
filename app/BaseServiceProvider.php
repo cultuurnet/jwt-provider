@@ -29,17 +29,13 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
         }
     }
 
-    /**
-     * @return mixed
-     */
+    // @phpstan-ignore-next-line
     protected function parameter(string $parameter)
     {
         return $this->getContainer()->get(Config::class)->get($parameter);
     }
 
-    /**
-     * @return mixed
-     */
+    // @phpstan-ignore-next-line
     protected function get(string $name)
     {
         return $this->getContainer()->get($name);
