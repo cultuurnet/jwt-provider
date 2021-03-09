@@ -14,7 +14,13 @@ use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedConsumerAdapter;
  */
 final class CultureFeedDecorator extends CultureFeed
 {
-    public function getServiceConsumerByApiKey($apiKey, $includePermissions = true)
+    /**
+     * @param string $apiKey
+     * @param bool $includePermissions
+     * @return CultureFeed_Consumer
+     * @throws \CultureFeed_ParseException
+     */
+    public function getServiceConsumerByApiKey($apiKey, $includePermissions = true): CultureFeed_Consumer
     {
         /** @var CultureFeed_Consumer $cultureFeed_Consumer */
         $cultureFeed_Consumer = new CultureFeedConsumerAdapter(parent::getServiceConsumerByApiKey($apiKey, $includePermissions));
