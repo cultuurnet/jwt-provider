@@ -21,23 +21,17 @@ final class SentryExceptionHandler extends Handler
      */
     private $apiKey;
 
-    /**
-     * @var bool
-     */
-    private $console;
-
-    public function __construct(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console)
+    public function __construct(HubInterface $sentryHub, ?ApiKey $apiKey)
     {
         $this->sentryHub = $sentryHub;
         $this->apiKey = $apiKey;
-        $this->console = $console;
     }
 
     public function handle(): int
     {
         $this->sentryHub->configureScope(
             function (Scope $scope) {
-                $scope->setTags($this->createTags($this->apiKey, $this->console));
+                $scope->setTags($this->createTags($this->apiKey));
             }
         );
 
@@ -50,11 +44,11 @@ final class SentryExceptionHandler extends Handler
     /**
      * @return array<string,string>
      */
-    private function createTags(?ApiKey $apiKey, bool $console): array
+    private function createTags(?ApiKey $apiKey): array
     {
         return [
             'api_key' => $apiKey ? $apiKey->toString() : 'null',
-            'runtime.env' => $console ? 'cli' : 'web',
+            'runtime.env' => 'web',
         ];
     }
 }
