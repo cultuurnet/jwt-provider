@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\JwtProvider\Error\LoggerFactory;
+use CultuurNet\UDB3\JwtProvider\Error\LoggerName;
 use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ErrorHandlerFactory;
@@ -23,6 +25,8 @@ $container->share(ApiKey::class, function () use ($container, $apiRequest) {
     $apiKeyReader = $container->get(ApiKeyReaderInterface::class);
     return $apiKeyReader->read($apiRequest);
 });
+
+$errorLogger = LoggerFactory::create($container, new LoggerName('web'));
 
 $whoops = ErrorHandlerFactory::create(
     $container->get(HubInterface::class),
