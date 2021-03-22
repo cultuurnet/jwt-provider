@@ -55,6 +55,8 @@ final class SlimResponseFactory implements ResponseFactoryInterface
 
     public function internalServerError(): ResponseInterface
     {
-        return new Response(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        $response = new Response(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        $response->getBody()->write('An internal server error occurred.');
+        return $response;
     }
 }
