@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Factory;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 

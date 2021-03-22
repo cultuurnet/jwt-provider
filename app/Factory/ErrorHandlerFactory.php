@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\Error\ErrorLoggerHandler;
 use CultuurNet\UDB3\JwtProvider\Error\ApiExceptionHandler;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Psr\Log\LoggerInterface;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
