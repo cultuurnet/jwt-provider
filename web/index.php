@@ -28,11 +28,7 @@ $container->share(ApiKey::class, function () use ($container, $apiRequest) {
 
 $errorLogger = LoggerFactory::create($container, new LoggerName('web'));
 
-$whoops = ErrorHandlerFactory::create(
-    $container->get(HubInterface::class),
-    $container->get(ApiKey::class),
-    $config->get('debug')
-);
+$whoops = ErrorHandlerFactory::create($errorLogger, $config->get('debug'));
 $whoops->register();
 
 $response = $container->get(Router::class)->dispatch($apiRequest);

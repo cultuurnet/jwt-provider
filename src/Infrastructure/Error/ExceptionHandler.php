@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Error;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
-use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
@@ -22,20 +21,13 @@ final class ExceptionHandler extends Handler
      * @var ResponseFactoryInterface
      */
     private $slimResponseFactory;
-    /**
-     * @var Logger
-     */
-    private $logger;
-
 
     public function __construct(
         EmitterInterface $emitter,
-        ResponseFactoryInterface $slimResponseFactory,
-        Logger $logger
+        ResponseFactoryInterface $slimResponseFactory
     ) {
         $this->emitter = $emitter;
         $this->slimResponseFactory = $slimResponseFactory;
-        $this->logger = $logger;
     }
 
     public function handle()
@@ -44,11 +36,7 @@ final class ExceptionHandler extends Handler
 
         $response = $this->generateResponse($exception);
 
-        $this->logError($exception);
-
-        $this->emitter->emit(
-            $response
-        );
+        $this->emitter->emit($response);
 
         return Handler::QUIT;
     }
@@ -60,29 +48,5 @@ final class ExceptionHandler extends Handler
         }
 
         return $this->slimResponseFactory->internalServerError();
-    }
-
-
-    private function logError(\Throwable $exception): void
-    {
-        $log = [
-            'message' => $exception->getMessage(),
-            'file' => $exception->getFile(),
-            'line' => $exception->getLine(),
-            'trace' => $exception->getTraceAsString(),
-        ];
-
-        if ($exception instanceof JwtProviderExceptionInterface) {
-            $this->logger->warning(
-                get_class($exception),
-                $log
-            );
-            return;
-        }
-
-        $this->logger->error(
-            get_class($exception),
-            $log
-        );
     }
 }
