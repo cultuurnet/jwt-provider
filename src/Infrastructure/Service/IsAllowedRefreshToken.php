@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 
 final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
@@ -16,25 +17,21 @@ final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
     private $refreshGroupId;
 
     /**
-     * @var \ICultureFeed
+     * @var ConsumerReadRepositoryInterface
      */
-    private $cultureFeed;
-
+    private $consumerReadRepository;
 
     public function __construct(
-        \ICultureFeed $cultureFeed,
+        ConsumerReadRepositoryInterface $consumerReadRepository,
         string $refreshGroupId
     ) {
         $this->refreshGroupId = $refreshGroupId;
-        $this->cultureFeed = $cultureFeed;
+        $this->consumerReadRepository = $consumerReadRepository;
     }
 
     public function __invoke(ApiKey $apiKey): bool
     {
-        $consumer = $this->cultureFeed->getServiceConsumerByApiKey(
-            $apiKey->toString()
-        );
-
+        $consumer = $this->consumerReadRepository->getConsumer($apiKey);
         if ($consumer === null) {
             return false;
         }

@@ -9,6 +9,8 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\CultureFeedConsumerReadRepository;
 use ICultureFeed;
 
 final class ApiGuardServiceProvider extends BaseServiceProvider
@@ -36,6 +38,13 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
                     $queryReader,
                     $headerReader
                 );
+            }
+        );
+
+        $this->addShared(
+            ConsumerReadRepositoryInterface::class,
+            function () {
+                return new CultureFeedConsumerReadRepository($this->get(ICultureFeed::class));
             }
         );
 
