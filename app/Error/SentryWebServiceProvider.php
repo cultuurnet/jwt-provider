@@ -12,6 +12,9 @@ use Sentry\State\HubInterface;
 
 final class SentryWebServiceProvider extends BaseServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $provides = [
         SentryHandlerScopeDecorator::class,
     ];
