@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
@@ -18,9 +19,14 @@ $container = ContainerFactory::forWeb($config);
 
 $apiRequest = ServerRequestFactory::createFromGlobals();
 
+$container->share(ApiKey::class, function () use ($container, $apiRequest) {
+    $apiKeyReader = $container->get(ApiKeyReaderInterface::class);
+    return $apiKeyReader->read($apiRequest);
+});
+
 $whoops = ErrorHandlerFactory::create(
     $container->get(HubInterface::class),
-    $container->get(ApiKeyReaderInterface::class)->read($apiRequest),
+    $container->get(ApiKey::class),
     $config->get('debug')
 );
 $whoops->register();
