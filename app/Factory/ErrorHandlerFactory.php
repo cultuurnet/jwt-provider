@@ -15,18 +15,19 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 final class ErrorHandlerFactory
 {
-    public static function create(LoggerInterface $logger, bool $isDebugEnvironment): RunInterface
+    public static function forWeb(LoggerInterface $logger): RunInterface
     {
         $whoops = new Run();
-
-        if ($isDebugEnvironment === true) {
-            $whoops->prependHandler(new PrettyPageHandler());
-        } else {
-            $whoops->prependHandler(new ExceptionHandler(new SapiStreamEmitter(), new SlimResponseFactory()));
-        }
-
+        $whoops->prependHandler(new ExceptionHandler(new SapiStreamEmitter(), new SlimResponseFactory()));
         $whoops->prependHandler(new ErrorLoggerHandler($logger));
+        return $whoops;
+    }
 
+    public static function forWebDebug(LoggerInterface $logger): RunInterface
+    {
+        $whoops = new Run();
+        $whoops->prependHandler(new PrettyPageHandler());
+        $whoops->prependHandler(new ErrorLoggerHandler($logger));
         return $whoops;
     }
 }
