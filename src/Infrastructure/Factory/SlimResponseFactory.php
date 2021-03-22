@@ -33,18 +33,4 @@ final class SlimResponseFactory implements ResponseFactoryInterface
         $body->write($token);
         return $response->withBody($body);
     }
-
-    public function forJwtProviderException(JwtProviderExceptionInterface $exception): ResponseInterface
-    {
-        $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-        $response->getBody()->write($exception->getMessage());
-        return $response;
-    }
-
-    public function internalServerError(): ResponseInterface
-    {
-        $response = new Response(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
-        $response->getBody()->write('An internal server error occurred.');
-        return $response;
-    }
 }

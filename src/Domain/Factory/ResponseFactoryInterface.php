@@ -13,8 +13,4 @@ interface ResponseFactoryInterface
     public function redirectTo(UriInterface $url): ResponseInterface;
 
     public function responseWithToken(string $token): ResponseInterface;
-
-    public function forJwtProviderException(JwtProviderExceptionInterface $exception): ResponseInterface;
-
-    public function internalServerError(): ResponseInterface;
 }

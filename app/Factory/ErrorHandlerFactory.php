@@ -18,7 +18,7 @@ final class ErrorHandlerFactory
     public static function forWeb(LoggerInterface $logger): RunInterface
     {
         $whoops = new Run();
-        $whoops->prependHandler(new ApiExceptionHandler(new SapiStreamEmitter(), new SlimResponseFactory()));
+        $whoops->prependHandler(new ApiExceptionHandler(new SapiStreamEmitter()));
         $whoops->prependHandler(new ErrorLoggerHandler($logger));
         return $whoops;
     }
