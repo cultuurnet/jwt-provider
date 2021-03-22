@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\JwtProvider\Error;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticationException;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulRefreshException;
 use League\Route\Http\Exception\MethodNotAllowedException;
 use League\Route\Http\Exception\NotFoundException;
 use Psr\Log\LoggerInterface;

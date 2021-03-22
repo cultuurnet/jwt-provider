@@ -10,7 +10,6 @@ use CultuurNet\UDB3\JwtProvider\Factory\ConfigFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ContainerFactory;
 use CultuurNet\UDB3\JwtProvider\Factory\ErrorHandlerFactory;
 use League\Route\Router;
-use Sentry\State\HubInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
