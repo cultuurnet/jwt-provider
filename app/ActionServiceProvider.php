@@ -8,6 +8,7 @@ use Aura\Session\Session;
 use Auth0\SDK\API\Authentication;
 use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh;
@@ -174,7 +175,7 @@ final class ActionServiceProvider extends BaseServiceProvider
             IsAllowedRefreshToken::class,
             function () {
                 return new IsAllowedRefreshToken(
-                    $this->get(\ICultureFeed::class),
+                    $this->get(ConsumerReadRepositoryInterface::class),
                     (string) $this->parameter('auth0.allowed_refresh_permission')
                 );
             }

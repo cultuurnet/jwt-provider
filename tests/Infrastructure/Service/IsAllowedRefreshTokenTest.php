@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\JwtProvider\MockConsumer;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 
 final class IsAllowedRefreshTokenTest extends TestCase
 {
@@ -16,22 +16,14 @@ final class IsAllowedRefreshTokenTest extends TestCase
      */
     public function it_returns_true_for_api_consumer_that_has_the_appropriate_permission(): void
     {
-        $apiKey = $this->anApiKey();
+        $apiKey = new ApiKey('c90b08ea-b223-4428-9b5f-05a36bde3f1a');
+        $consumer = (new MockConsumer($apiKey))
+            ->withPermissionGroupIds(['group-31', 'refresh-group']);
 
-        $consumer = $this->aConsumerWithPermissionGroups(
-            [
-                'group-31',
-                'refresh-group',
-            ]
-        );
+        $repository = new InMemoryConsumerRepository();
+        $repository->setConsumer($apiKey, $consumer);
 
-        $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn($consumer);
-
-        $isAllowedRefreshToken = new IsAllowedRefreshToken(
-            $cultureFeed->reveal(),
-            'refresh-group'
-        );
+        $isAllowedRefreshToken = new IsAllowedRefreshToken($repository, 'refresh-group');
 
         $result = $isAllowedRefreshToken->__invoke($apiKey);
         $this->assertTrue($result);
@@ -42,21 +34,14 @@ final class IsAllowedRefreshTokenTest extends TestCase
      */
     public function it_returns_false_for_api_consumer_that_does_not_have_the_appropriate_permission(): void
     {
-        $apiKey = $this->anApiKey();
+        $apiKey = new ApiKey('c90b08ea-b223-4428-9b5f-05a36bde3f1a');
+        $consumer = (new MockConsumer($apiKey))
+            ->withPermissionGroupIds(['group-31']);
 
-        $consumer = $this->aConsumerWithPermissionGroups(
-            [
-                'group-31',
-            ]
-        );
+        $repository = new InMemoryConsumerRepository();
+        $repository->setConsumer($apiKey, $consumer);
 
-        $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn($consumer);
-
-        $isAllowedRefreshToken = new IsAllowedRefreshToken(
-            $cultureFeed->reveal(),
-            'refresh-group'
-        );
+        $isAllowedRefreshToken = new IsAllowedRefreshToken($repository, 'refresh-group');
 
         $result = $isAllowedRefreshToken->__invoke($apiKey);
         $this->assertFalse($result);
@@ -67,36 +52,13 @@ final class IsAllowedRefreshTokenTest extends TestCase
      */
     public function it_returns_false_for_request_that_have_invalid_consumer_credential(): void
     {
-        $apiKey = $this->anApiKey();
+        $apiKey = new ApiKey('c90b08ea-b223-4428-9b5f-05a36bde3f1a');
 
-        $cultureFeed = $this->prophesize(\ICultureFeed::class);
-        $cultureFeed->getServiceConsumerByApiKey($apiKey->toString())->willReturn(null);
+        $repository = new InMemoryConsumerRepository();
 
-        $isAllowedRefreshToken = new IsAllowedRefreshToken(
-            $cultureFeed->reveal(),
-            'refresh-group'
-        );
+        $isAllowedRefreshToken = new IsAllowedRefreshToken($repository, 'refresh-group');
 
         $result = $isAllowedRefreshToken->__invoke($apiKey);
         $this->assertFalse($result);
-    }
-
-
-    private function anApiKey(): ApiKey
-    {
-        return new ApiKey('api-key');
-    }
-
-    /**
-     * @param string[] $permissionGroups
-     * @return ObjectProphecy<ConsumerInterface>
-     */
-    private function aConsumerWithPermissionGroups(array $permissionGroups)
-    {
-        $consumer = $this->prophesize(ConsumerInterface::class);
-        $consumer->getPermissionGroupIds()->willReturn(
-            $permissionGroups
-        );
-        return $consumer;
     }
 }
