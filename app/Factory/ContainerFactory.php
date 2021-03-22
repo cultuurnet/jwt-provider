@@ -21,7 +21,6 @@ final class ContainerFactory
     {
         $container = self::build($config);
 
-        $container->addServiceProvider(SentryHubServiceProvider::class);
         $container->addServiceProvider(SentryWebServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
         $container->addServiceProvider(ActionServiceProvider::class);
@@ -40,6 +39,8 @@ final class ContainerFactory
             Config::class,
             $config
         );
+
+        $container->addServiceProvider(SentryHubServiceProvider::class);
 
         return $container;
     }
