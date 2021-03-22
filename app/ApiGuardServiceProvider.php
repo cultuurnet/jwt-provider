@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider;
 
+use CultureFeed;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\CultureFeedDecorator;
 use ICultureFeed;
 
 final class ApiGuardServiceProvider extends BaseServiceProvider
@@ -48,7 +48,7 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
                 );
 
                 $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
-                return new CultureFeedDecorator($oauthClient);
+                return new CultureFeed($oauthClient);
             }
         );
     }
