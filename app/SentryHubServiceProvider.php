@@ -8,7 +8,7 @@ use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
 use function Sentry\init;
 
-final class SentryServiceProvider extends BaseServiceProvider
+final class SentryHubServiceProvider extends BaseServiceProvider
 {
     /**
      * @var string[]
