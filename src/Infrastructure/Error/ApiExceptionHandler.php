@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-final class ExceptionHandler extends Handler
+final class ApiExceptionHandler extends Handler
 {
     /**
      * @var EmitterInterface

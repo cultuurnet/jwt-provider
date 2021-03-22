@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\Error\ErrorLoggerHandler;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Error\ExceptionHandler;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Error\ApiExceptionHandler;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Psr\Log\LoggerInterface;
 use Whoops\Handler\PrettyPageHandler;
@@ -18,7 +18,7 @@ final class ErrorHandlerFactory
     public static function forWeb(LoggerInterface $logger): RunInterface
     {
         $whoops = new Run();
-        $whoops->prependHandler(new ExceptionHandler(new SapiStreamEmitter(), new SlimResponseFactory()));
+        $whoops->prependHandler(new ApiExceptionHandler(new SapiStreamEmitter(), new SlimResponseFactory()));
         $whoops->prependHandler(new ErrorLoggerHandler($logger));
         return $whoops;
     }
