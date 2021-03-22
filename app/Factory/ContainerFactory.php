@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\ActionServiceProvider;
 use CultuurNet\UDB3\JwtProvider\ApiGuardServiceProvider;
+use CultuurNet\UDB3\JwtProvider\Error\SentryWebServiceProvider;
 use CultuurNet\UDB3\JwtProvider\MiddlewareServiceProvider;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 use CultuurNet\UDB3\JwtProvider\SentryServiceProvider;
@@ -21,6 +22,7 @@ final class ContainerFactory
         $container = self::build($config);
 
         $container->addServiceProvider(SentryServiceProvider::class);
+        $container->addServiceProvider(SentryWebServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
         $container->addServiceProvider(ActionServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
