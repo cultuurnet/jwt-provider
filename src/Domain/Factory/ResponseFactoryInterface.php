@@ -10,10 +10,6 @@ use Psr\Http\Message\UriInterface;
 
 interface ResponseFactoryInterface
 {
-    public function badRequestWithMessage(string $message): ResponseInterface;
-
-    public function badRequest(): ResponseInterface;
-
     public function redirectTo(UriInterface $url): ResponseInterface;
 
     public function responseWithToken(string $token): ResponseInterface;
