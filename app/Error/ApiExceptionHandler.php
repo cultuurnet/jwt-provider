@@ -23,7 +23,7 @@ final class ApiExceptionHandler extends Handler
         $this->emitter = $emitter;
     }
 
-    public function handle()
+    public function handle(): ?int
     {
         $exception = $this->getInspector()->getException();
 
