@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Factory;
 
-use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,18 +13,6 @@ use Slim\Psr7\Response;
 
 final class SlimResponseFactory implements ResponseFactoryInterface
 {
-    public function badRequestWithMessage(string $message): ResponseInterface
-    {
-        $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-        $response->getBody()->write($message);
-        return $response;
-    }
-
-    public function badRequest(): ResponseInterface
-    {
-        return new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-    }
-
     public function redirectTo(UriInterface $url): ResponseInterface
     {
         return new Response(
@@ -44,17 +31,5 @@ final class SlimResponseFactory implements ResponseFactoryInterface
         $body = $response->getBody();
         $body->write($token);
         return $response->withBody($body);
-    }
-
-    public function forJwtProviderException(JwtProviderExceptionInterface $exception): ResponseInterface
-    {
-        $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);
-        $response->getBody()->write($exception->getMessage());
-        return $response;
-    }
-
-    public function internalServerError(): ResponseInterface
-    {
-        return new Response(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
     }
 }
