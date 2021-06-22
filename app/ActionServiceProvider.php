@@ -166,6 +166,7 @@ final class ActionServiceProvider extends BaseServiceProvider
                         'scope' => 'openid email profile offline_access',
                         'persist_id_token' => true,
                         'persist_refresh_token' => true,
+                        'audience' => 'https://api.publiq.be',
                     ]
                 );
             }
