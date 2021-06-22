@@ -26,7 +26,7 @@ final class LoginAuth0Adapter implements LoginServiceInterface
 
     public function redirectToLogin(string $locale = Locale::DUTCH): ?ResponseInterface
     {
-        $this->auth0->login(null, null, ['locale' => $locale]);
+        $this->auth0->login(null, null, ['locale' => $locale, 'prompt' => 'login']);
         return null;
     }
 
