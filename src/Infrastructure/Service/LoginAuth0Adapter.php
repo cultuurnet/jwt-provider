@@ -36,7 +36,7 @@ final class LoginAuth0Adapter implements LoginServiceInterface
     public function token(): ?string
     {
         try {
-            return $this->auth0->getIdToken();
+            return $this->auth0->getAccessToken();
         } catch (ApiException $e) {
             throw new UnSuccessfulAuthException();
         } catch (CoreException $e) {
