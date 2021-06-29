@@ -163,6 +163,7 @@ final class ActionServiceProvider extends BaseServiceProvider
                         'client_id' => $this->parameter('auth0.client_id'),
                         'client_secret' => $this->parameter('auth0.client_secret'),
                         'redirect_uri' => $this->parameter('auth0.redirect_uri'),
+                        'referrer' => $this->parameter('auth0.referrer'),
                         'scope' => 'openid email profile offline_access',
                         'persist_id_token' => true,
                         'persist_refresh_token' => true,
