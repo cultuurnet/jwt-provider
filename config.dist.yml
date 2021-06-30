@@ -20,6 +20,7 @@ auth0:
   redirect_uri:
   log_out_uri:
   allowed_refresh_permission:
+  referrer: udb
 
 sentry:
   dsn: ***
