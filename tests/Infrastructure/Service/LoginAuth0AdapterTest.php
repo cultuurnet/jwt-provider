@@ -27,7 +27,10 @@ final class LoginAuth0AdapterTest extends TestCase
         $auth0->login(
             null,
             null,
-            ['locale' => Locale::DUTCH]
+            [
+                'locale' => Locale::DUTCH,
+                'referrer' => 'udb',
+            ]
         )->shouldBeCalled();
 
         $auth0adapter->redirectToLogin();
