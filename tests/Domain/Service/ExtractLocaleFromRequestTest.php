@@ -70,6 +70,7 @@ final class ExtractLocaleFromRequestTest extends TestCase
         return [
             [Locale::FRENCH],
             [Locale::DUTCH],
+            [Locale::GERMAN],
         ];
     }
 }

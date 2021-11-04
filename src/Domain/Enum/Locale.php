@@ -8,4 +8,5 @@ final class Locale
 {
     public const DUTCH = 'nl';
     public const FRENCH = 'fr';
+    public const GERMAN = 'de';
 }
