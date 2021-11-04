@@ -13,7 +13,7 @@ final class ExtractLocaleFromRequest
     {
         $lang = $this->extractParameter($serverRequest);
 
-        if (!in_array($lang, [Locale::DUTCH, Locale::FRENCH])) {
+        if (!in_array($lang, [Locale::DUTCH, Locale::FRENCH, Locale::GERMAN])) {
             return Locale::DUTCH;
         }
 
