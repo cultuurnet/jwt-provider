@@ -26,7 +26,13 @@ final class LoginAuth0Adapter implements LoginServiceInterface
 
     public function redirectToLogin(string $locale = Locale::DUTCH): ?ResponseInterface
     {
-        $this->auth0->login(null, null, ['locale' => $locale, 'referrer' => 'udb']);
+        $parameters = [
+            'locale' => $locale,
+            'referrer' => 'udb',
+            'skip_verify_legacy' => 'true',
+            'product_display_name' => 'UiTdatabank',
+        ];
+        $this->auth0->login(null, null, $parameters);
         return null;
     }
 
