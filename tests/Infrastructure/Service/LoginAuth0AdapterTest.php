@@ -30,6 +30,8 @@ final class LoginAuth0AdapterTest extends TestCase
             [
                 'locale' => Locale::DUTCH,
                 'referrer' => 'udb',
+                'skip_verify_legacy' => 'true',
+                'product_display_name' => 'UiTdatabank',
             ]
         )->shouldBeCalled();
 
