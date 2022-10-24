@@ -2,11 +2,8 @@ pipeline {
     agent none
 
     environment {
-        PIPELINE_VERSION        = build.pipelineVersion()
-        REPOSITORY_NAME         = 'uitdatabank-jwt-provider'
-        UITIDV1_GITHUB_REPO     = 'git@github.com:cultuurnet/jwt-provider.git'
-        UITIDV1_CHECKOUT_FOLDER = 'jwt-provider-uitidv1'
-        UITIDV1_CHECKOUT_TAG    = 'refs/tags/uitidv1'
+        PIPELINE_VERSION = build.pipelineVersion()
+        REPOSITORY_NAME  = 'uitdatabank-jwt-provider-uitidv1'
     }
 
     stages {
@@ -30,26 +27,14 @@ pipeline {
                     }
                 }
                 stage('Build') {
-                    steps { 
-                        checkout([
-                            $class: 'GitSCM',
-                            branches: [[name: UITIDV1_CHECKOUT_TAG]],
-                            extensions:
-                                [[$class: 'RelativeTargetDirectory', relativeTargetDir: UITIDV1_CHECKOUT_FOLDER]],
-                                userRemoteConfigs: [[credentialsId: 'git@jenkins.publiq.be', url: UITIDV1_GITHUB_REPO]]
-                        ])
-
-                        dir(UITIDV1_CHECKOUT_FOLDER){
-                            sh label: 'Build binaries', script: 'bundle exec rake jwt-provider-uitidv1:build'
-                        }
+                    steps {
+                        sh label: 'Build binaries', script: 'bundle exec rake jwt-provider-uitidv1:build'
                     }
                 }
                 stage('Build artifact') {
                     steps {
-                        dir(UITIDV1_CHECKOUT_FOLDER){
-                            sh label: 'Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
-                            archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
-                        }
+                        sh label: 'Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
+                        archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
                     }
                 }
             }
