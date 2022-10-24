@@ -15,7 +15,7 @@ task :build_artifact do |task|
   FileUtils.touch('config.yml')
 
   system("fpm -s dir -t deb -n #{artifact_name} -v #{version} -a all -p pkg \
-    -x ".git*" -x pkg -x config.dist.yml -x "Gemfile*" -x Jenkinsfile -x .bundle -x vendor \
+    -x '.git*' -x pkg -x config.dist.yml -x 'Gemfile*' -x Jenkinsfile -x .bundle -x vendor \
     --config-files /var/www/udb3-jwt-provider/config.yml \
     --prefix /var/www/udb3-jwt-provider \
     --deb-user www-data --deb-group www-data \
