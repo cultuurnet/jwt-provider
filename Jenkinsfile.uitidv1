@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         PIPELINE_VERSION = build.pipelineVersion()
-        REPOSITORY_NAME  = 'uitdatabank-jwt-provider'
+        REPOSITORY_NAME  = 'uitdatabank-jwt-provider-uitidv1'
     }
 
     stages {
@@ -28,12 +28,12 @@ pipeline {
                 }
                 stage('Build') {
                     steps {
-                        sh label: 'Build binaries', script: 'bundle exec rake jwt-provider:build'
+                        sh label: 'Build binaries', script: 'bundle exec rake jwt-provider-uitidv1:build'
                     }
                 }
                 stage('Build artifact') {
                     steps {
-                        sh label: 'Build artifact', script: "bundle exec rake jwt-provider:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
+                        sh label: 'Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
                         archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
                     }
                 }
