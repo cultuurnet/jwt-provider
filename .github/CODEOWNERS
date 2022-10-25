@@ -5,6 +5,6 @@
 
 # Jenkins / deployment owners
 Gemfile* @willaerk @paulherbosch
-Jenkinsfile @willaerk @paulherbosch
+Jenkinsfile* @willaerk @paulherbosch
 Rakefile @willaerk @paulherbosch
 lib/ @willaerk @paulherbosch
