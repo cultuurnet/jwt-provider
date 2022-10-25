@@ -10,7 +10,7 @@ pipeline {
         stage('Pre build') {
             steps {
                 setBuildDisplayName to: env.PIPELINE_VERSION
-                sendBuildNotification()
+                // sendBuildNotification()
             }
         }
 
@@ -19,6 +19,7 @@ pipeline {
             environment {
                 GIT_SHORT_COMMIT        = build.shortCommitRef()
                 ARTIFACT_VERSION        = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
+                GIT_CHECKOUT_FOLDER     = "jwt-provider-uitidv1"
             }
             stages {
                 stage('Setup') {
@@ -36,8 +37,10 @@ pipeline {
                 // once checked out, the rake tasks no longer exist ...
                 stage('Build & Build artifact') {
                     steps {
-                        sh label: 'Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
-                        archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                        withCredentials([sshUserPrivateKey(credentialsId: "git@jenkins.publiq.be", keyFileVariable: 'PRIVATE_KEY')]) {
+                            sh label: 'Build & Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION} GIT_CHECKOUT_FOLDER=${env.GIT_CHECKOUT_FOLDER} GIT_SSH_COMMAND='ssh -i ${env.PRIVATE_KEY} -o StrictHostKeyChecking=no'"
+                            archiveArtifacts artifacts: "${env.GIT_CHECKOUT_FOLDER}/pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                        }
                     }
                 }
             }
@@ -86,7 +89,7 @@ pipeline {
             }
             post {
                 always {
-                    sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
                 }
             }
         }
@@ -104,7 +107,7 @@ pipeline {
             }
             post {
                 always {
-                    sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
                 }
             }
         }
@@ -122,7 +125,7 @@ pipeline {
             }
             post {
                 always {
-                    sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
                 }
                 cleanup {
                     cleanupAptlySnapshots repository: env.REPOSITORY_NAME
@@ -146,7 +149,7 @@ pipeline {
 
     post {
         always {
-            sendBuildNotification()
+            // sendBuildNotification()
         }
     }
 }
