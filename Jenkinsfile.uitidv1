@@ -39,16 +39,16 @@ pipeline {
                     steps {
                         withCredentials([sshUserPrivateKey(credentialsId: "git@jenkins.publiq.be", keyFileVariable: 'PRIVATE_KEY')]) {
                             sh label: 'Build & Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION} GIT_CHECKOUT_FOLDER=${env.GIT_CHECKOUT_FOLDER} GIT_SSH_COMMAND='ssh -i \"${env.PRIVATE_KEY}\" -o StrictHostKeyChecking=no'"
-                            archiveArtifacts artifacts: "*/pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                            archiveArtifacts artifacts: "${env.GIT_CHECKOUT_FOLDER}/pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
                         }
                     }
                 }
             }
-            post {
-                cleanup {
-                    cleanWs()
-                }
-            }
+            // post {
+            //     cleanup {
+            //         cleanWs()
+            //     }
+            // }
         }
 
         stage('Upload artifact') {
@@ -59,11 +59,11 @@ pipeline {
                 uploadAptlyArtifacts artifacts: '*.deb', repository: env.REPOSITORY_NAME
                 createAptlySnapshot name: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", repository: env.REPOSITORY_NAME
             }
-            post {
-                cleanup {
-                    cleanWs()
-                }
-            }
+            // post {
+            //     cleanup {
+            //         cleanWs()
+            //     }
+            // }
         }
 
         stage('Deploy to development') {
@@ -139,10 +139,10 @@ pipeline {
                 copyArtifacts filter: 'pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 tagRelease commitHash: artifact.metadata(artifactFilter: '*.deb', field: 'git-ref')
             }
-            post {
-                cleanup {
-                    cleanWs()
-                }
+            // post {
+            //     cleanup {
+            //         cleanWs()
+            //     }
             }
         }
     }
