@@ -11,7 +11,10 @@ namespace 'jwt-provider-uitidv1' do
     license        = 'Apache-2.0'
     description    = 'JSON Web Token provider for UiTDatabank 3'
     source         = 'https://github.com/cultuurnet/jwt-provider'
-  
+ 
+    system('git checkout refs/tags/uitidv1') or exit 1
+    system('composer2 install --no-dev --ignore-platform-reqs --prefer-dist --optimize-autoloader') or exit 1
+ 
     FileUtils.mkdir_p('pkg')
     FileUtils.touch('config.yml')
   
