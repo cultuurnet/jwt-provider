@@ -49,7 +49,7 @@ pipeline {
             agent any
             options { skipDefaultCheckout() }
             steps {
-                copyArtifacts filter: '${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
+                copyArtifacts filter: "${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb", projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 uploadAptlyArtifacts artifacts: '*.deb', repository: env.REPOSITORY_NAME
                 createAptlySnapshot name: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", repository: env.REPOSITORY_NAME
             }
@@ -130,7 +130,7 @@ pipeline {
         stage('Tag release') {
             agent { label 'ubuntu && 16.04' }
             steps {
-                copyArtifacts filter: '${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
+                copyArtifacts filter: "${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb", projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 tagRelease commitHash: artifact.metadata(artifactFilter: '*.deb', field: 'git-ref')
             }
             post {
