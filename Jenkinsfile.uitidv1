@@ -87,11 +87,11 @@ pipeline {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
                 triggerDeployment nodeName: 'udb3-web-acc02'
             }
-            post {
-                always {
-                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
-                }
-            }
+            // post {
+            //     always {
+            //         sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+            //     }
+            // }
         }
 
         stage('Deploy to testing') {
@@ -105,11 +105,11 @@ pipeline {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'xenial'
                 triggerDeployment nodeName: 'udb3-web-test03'
             }
-            post {
-                always {
-                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
-                }
-            }
+            // post {
+            //     always {
+            //         sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+            //     }
+            // }
         }
 
         stage('Deploy to production') {
@@ -124,9 +124,9 @@ pipeline {
                 triggerDeployment nodeName: 'udb3-web-prod03'
             }
             post {
-                always {
-                    // sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
-                }
+                // always {
+                //     sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${env.JOB_NAME} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+                // }
                 cleanup {
                     cleanupAptlySnapshots repository: env.REPOSITORY_NAME
                 }
@@ -147,9 +147,9 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // sendBuildNotification()
-        }
-    }
+    // post {
+    //     always {
+    //         sendBuildNotification()
+    //     }
+    // }
 }
