@@ -2,8 +2,9 @@ pipeline {
     agent none
 
     environment {
-        PIPELINE_VERSION = build.pipelineVersion()
-        REPOSITORY_NAME  = 'uitdatabank-jwt-provider-uitidv1'
+        PIPELINE_VERSION    = build.pipelineVersion()
+        REPOSITORY_NAME     = 'uitdatabank-jwt-provider-uitidv1'
+        GIT_CHECKOUT_FOLDER = "jwt-provider-uitidv1"
     }
 
     stages {
@@ -26,18 +27,14 @@ pipeline {
                         sh label: 'Install rubygems', script: 'bundle install --deployment'
                     }
                 }
-                // stage('Build') {
-                //     steps {
-                //         sh label: 'Build binaries', script: 'bundle exec rake jwt-provider-uitidv1:build'
-                //     }
-                // }
-
                 // we need to combine build and build artifact because we checkout a tag.
                 // once checked out, the rake tasks no longer exist ...
                 stage('Build & Build artifact') {
                     steps {
-                        sh label: 'Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
-                        archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                        withCredentials([sshUserPrivateKey(credentialsId: "git@jenkins.publiq.be", keyFileVariable: 'PRIVATE_KEY')]) {
+                            sh label: 'Build & Build artifact', script: "bundle exec rake jwt-provider-uitidv1:build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION} GIT_CHECKOUT_FOLDER=${env.GIT_CHECKOUT_FOLDER} GIT_SSH_COMMAND='ssh -i \"${env.PRIVATE_KEY}\" -o StrictHostKeyChecking=no'"
+                            archiveArtifacts artifacts: "${env.GIT_CHECKOUT_FOLDER}/pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                        }
                     }
                 }
             }
@@ -52,7 +49,7 @@ pipeline {
             agent any
             options { skipDefaultCheckout() }
             steps {
-                copyArtifacts filter: 'pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
+                copyArtifacts filter: "${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb", projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 uploadAptlyArtifacts artifacts: '*.deb', repository: env.REPOSITORY_NAME
                 createAptlySnapshot name: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", repository: env.REPOSITORY_NAME
             }
@@ -133,7 +130,7 @@ pipeline {
         stage('Tag release') {
             agent { label 'ubuntu && 16.04' }
             steps {
-                copyArtifacts filter: 'pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
+                copyArtifacts filter: "${env.GIT_CHECKOUT_FOLDER}/pkg/*.deb", projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
                 tagRelease commitHash: artifact.metadata(artifactFilter: '*.deb', field: 'git-ref')
             }
             post {
