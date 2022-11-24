@@ -11,6 +11,7 @@ namespace 'jwt-provider' do
     license        = 'Apache-2.0'
     description    = 'JSON Web Token provider (via Auth0) for UiTDatabank 3'
     source         = 'https://github.com/cultuurnet/jwt-provider'
+    build_url      = ENV['JOB_DISPLAY_URL'].nil? ? "" : ENV['JOB_DISPLAY_URL']
   
     FileUtils.mkdir_p('pkg')
     FileUtils.touch('config.yml')
@@ -24,6 +25,7 @@ namespace 'jwt-provider' do
       --license '#{license}' -m '#{maintainer}' \
       --deb-field 'Pipeline-Version: #{calver_version}' \
       --deb-field 'Git-Ref: #{git_short_ref}' \
+      --deb-field 'Build-Url: #{build_url}' \
       ."
     ) or exit 1
   
