@@ -85,6 +85,7 @@ final class LoginAuth0AdapterTest extends TestCase
             $auth0->reveal()
         );
 
+        /** @phpstan-ignore-next-line willThrow does accept a string, but still gives type error in phpstan. */
         $auth0->getIdToken()->willThrow($exceptionClassName);
 
         $this->expectException(UnSuccessfulAuthException::class);
