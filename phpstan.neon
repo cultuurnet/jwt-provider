@@ -4,5 +4,6 @@ parameters:
 		- app
 		- src
 		- tests
+		- web
 includes:
     - vendor/jangregor/phpstan-prophecy/extension.neon
