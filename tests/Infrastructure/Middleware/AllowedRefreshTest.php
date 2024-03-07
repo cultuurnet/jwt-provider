@@ -10,11 +10,14 @@ use CultuurNet\UDB3\JwtProvider\Domain\Exception\RefreshTokenNotAllowedException
 use CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class AllowedRefreshTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

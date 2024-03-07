@@ -11,9 +11,12 @@ use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 final class LoginAuth0AdapterTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

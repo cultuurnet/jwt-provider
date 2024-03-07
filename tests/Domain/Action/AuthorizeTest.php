@@ -11,10 +11,13 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Psr7\Factory\UriFactory;
 
 final class AuthorizeTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

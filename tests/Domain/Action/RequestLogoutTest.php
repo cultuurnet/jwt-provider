@@ -10,12 +10,15 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromReque
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Value\ClientInformation;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Response;
 
 final class RequestLogoutTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

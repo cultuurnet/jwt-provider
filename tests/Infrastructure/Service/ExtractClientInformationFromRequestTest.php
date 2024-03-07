@@ -9,12 +9,15 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\NoDestinationPresentException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\UriFactory;
 
 final class ExtractClientInformationFromRequestTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */
