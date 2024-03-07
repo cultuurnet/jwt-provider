@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.1', '7.2', '7.3', '7.4']
+                php-versions: ['7.4']
         name: PHP ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -44,7 +44,7 @@ jobs:
 
     cs:
         runs-on: ubuntu-latest
-        name: Code style
+        name: Code style (PHP 7.4)
         steps:
             - name: 📤 Checkout project
               uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs:
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.1
+                  php-version: 7.4
                   tools: composer
 
             - name: 📩 Cache Composer packages
@@ -73,7 +73,7 @@ jobs:
 
     phpstan:
       runs-on: ubuntu-latest
-      name: Static analysis
+      name: Static analysis (PHP 7.4)
       steps:
         - name: 📤 Checkout project
           uses: actions/checkout@v2
@@ -81,7 +81,7 @@ jobs:
         - name: 🐘 Install PHP
           uses: shivammathur/setup-php@v2
           with:
-            php-version: 7.1
+            php-version: 7.4
             tools: composer
 
         - name: 📩 Cache Composer packages
