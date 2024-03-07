@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\JwtProvider\Error;
 
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use Fig\Http\Message\StatusCodeInterface;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
 use Whoops\Handler\Handler;
-use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
 final class ApiExceptionHandler extends Handler
 {

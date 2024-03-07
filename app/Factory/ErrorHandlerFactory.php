@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\JwtProvider\Factory;
 
 use CultuurNet\UDB3\JwtProvider\Error\ErrorLoggerHandler;
 use CultuurNet\UDB3\JwtProvider\Error\ApiExceptionHandler;
+use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Log\LoggerInterface;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\RunInterface;
-use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 final class ErrorHandlerFactory
 {
