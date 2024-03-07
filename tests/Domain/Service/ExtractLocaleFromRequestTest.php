@@ -7,10 +7,13 @@ namespace CultuurNet\UDB3\JwtProvider\Domain\Service;
 use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class ExtractLocaleFromRequestTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      * @dataProvider validLocalesProvider
