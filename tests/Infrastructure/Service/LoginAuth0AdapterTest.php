@@ -9,6 +9,7 @@ use Auth0\SDK\Exception\ApiException;
 use Auth0\SDK\Exception\CoreException;
 use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class LoginAuth0AdapterTest extends TestCase
@@ -77,7 +78,7 @@ final class LoginAuth0AdapterTest extends TestCase
      * @throws CoreException
      * @throws UnSuccessfulAuthException
      */
-    public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(string $exceptionClassName): void
+    public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(Exception $exceptionClass): void
     {
         $auth0 = $this->prophesize(Auth0::class);
 
@@ -85,7 +86,7 @@ final class LoginAuth0AdapterTest extends TestCase
             $auth0->reveal()
         );
 
-        $auth0->getIdToken()->willThrow($exceptionClassName);
+        $auth0->getIdToken()->willThrow($exceptionClass);
 
         $this->expectException(UnSuccessfulAuthException::class);
 
@@ -93,13 +94,13 @@ final class LoginAuth0AdapterTest extends TestCase
     }
 
     /**
-     * @return string[][]
+     * @return Exception[][]
      */
     public function auth0_exceptions(): array
     {
         return [
-            [ApiException::class],
-            [CoreException::class],
+            [new ApiException()],
+            [new CoreException()],
         ];
     }
 }
