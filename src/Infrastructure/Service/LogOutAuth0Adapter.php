@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
-use Auth0\SDK\API\Authentication;
-use Auth0\SDK\Auth0;
+use Auth0\SDK\Contract\API\AuthenticationInterface;
+use Auth0\SDK\Contract\Auth0Interface;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -30,12 +30,12 @@ final class LogOutAuth0Adapter implements LogOutServiceInterface
     private $logOutUri;
 
     /**
-     * @var Authentication
+     * @var AuthenticationInterface
      */
     private $authentication;
 
     /**
-     * @var Auth0
+     * @var Auth0Interface
      */
     private $auth0;
 
@@ -46,8 +46,8 @@ final class LogOutAuth0Adapter implements LogOutServiceInterface
 
 
     public function __construct(
-        Auth0 $auth0,
-        Authentication $authentication,
+        Auth0Interface $auth0,
+        AuthenticationInterface $authentication,
         ResponseFactoryInterface $responseFactory,
         UriFactoryInterface $uriFactory,
         string $logOutUri,
@@ -69,7 +69,7 @@ final class LogOutAuth0Adapter implements LogOutServiceInterface
 
     private function generateAuth0LogoutUri(): UriInterface
     {
-        $destination = $this->authentication->get_logout_link($this->logOutUri, $this->clientId);
+        $destination = $this->authentication->getLogoutLink($this->logOutUri, ['clientId' => $this->clientId]);
         return $this->uriFactory->createUri($destination);
     }
 }

@@ -13,25 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 
 final class Authorize
 {
-    /**
-     * @var LoginServiceInterface
-     */
-    private $authService;
-
-    /**
-     * @var GenerateAuthorizedDestinationUrl
-     */
-    private $generateAuthorizedDestinationUrl;
-
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
-
-    /**
-     * @var ClientInformationRepositoryInterface
-     */
-    private $clientInformationRepository;
+    private LoginServiceInterface $authService;
+    private GenerateAuthorizedDestinationUrl $generateAuthorizedDestinationUrl;
+    private ResponseFactoryInterface $responseFactory;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
     public function __construct(
         LoginServiceInterface $authService,

@@ -16,28 +16,23 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformation;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
-use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
 final class ActionServiceProvider extends BaseServiceProvider
 {
-    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
-    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
-    private const JWT_IAT_LEEWAY = 30;
-
     /**
      * @var string[]
      */
@@ -113,9 +108,12 @@ final class ActionServiceProvider extends BaseServiceProvider
                 return new LogOutAuth0Adapter(
                     $this->get(Auth0::class),
                     new Authentication(
-                        $this->parameter('auth0.domain'),
-                        $this->parameter('auth0.client_id'),
-                        $this->parameter('auth0.client_secret')
+                        [
+                            'domain' => $this->parameter('auth0.domain'),
+                            'clientId' => $this->parameter('auth0.client_id'),
+                            'clientSecret' => $this->parameter('auth0.client_secret'),
+                            'cookieSecret' => $this->parameter('auth0.cookie_secret'),
+                        ]
                     ),
                     $this->get(ResponseFactoryInterface::class),
                     new UriFactory(),
@@ -156,16 +154,17 @@ final class ActionServiceProvider extends BaseServiceProvider
         $this->addShared(
             Auth0::class,
             function () {
-                JWT::$leeway = self::JWT_IAT_LEEWAY;
                 return new Auth0(
                     [
                         'domain' => $this->parameter('auth0.domain'),
-                        'client_id' => $this->parameter('auth0.client_id'),
-                        'client_secret' => $this->parameter('auth0.client_secret'),
-                        'redirect_uri' => $this->parameter('auth0.redirect_uri'),
-                        'scope' => 'openid email profile offline_access',
-                        'persist_id_token' => true,
-                        'persist_refresh_token' => true,
+                        'clientId' => $this->parameter('auth0.client_id'),
+                        'clientSecret' => $this->parameter('auth0.client_secret'),
+                        'redirectUri' => $this->parameter('auth0.redirect_uri'),
+                        'scope' => ['openid','email','profile','offline_access'],
+                        'persistIdToken' => true,
+                        'persistRefreshToken' => true,
+                        'tokenLeeway' => $this->parameter('auth0.id_token_leeway'),
+                        'cookieSecret' => $this->parameter('auth0.cookie_secret'),
                     ]
                 );
             }
@@ -176,7 +175,7 @@ final class ActionServiceProvider extends BaseServiceProvider
             function () {
                 return new IsAllowedRefreshToken(
                     $this->get(ConsumerReadRepositoryInterface::class),
-                    (string) $this->parameter('auth0.allowed_refresh_permission')
+                    (string)$this->parameter('auth0.allowed_refresh_permission')
                 );
             }
         );

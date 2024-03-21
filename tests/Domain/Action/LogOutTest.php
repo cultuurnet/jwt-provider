@@ -32,7 +32,7 @@ final class LogOutTest extends TestCase
         );
         $response = $logOutAction->__invoke();
 
-        $this->assertEquals('http://foo-bar.com/', $response->getHeaderLine('Location'));
+        $this->assertEquals('http://foo-bar.com', $response->getHeaderLine('Location'));
     }
 
     /**
