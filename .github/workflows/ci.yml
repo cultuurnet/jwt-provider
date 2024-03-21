@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.4']
+                php-versions: ['7.4', '8.0']
         name: PHP ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -82,6 +82,64 @@ jobs:
           uses: shivammathur/setup-php@v2
           with:
             php-version: 7.4
+            tools: composer
+
+        - name: 📩 Cache Composer packages
+          id: composer-cache
+          uses: actions/cache@v2
+          with:
+            path: vendor
+            key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-php-
+
+        - name: 📦 Install dependencies
+          if: steps.composer-cache.outputs.cache-hit != 'true'
+          run: composer install --no-progress --no-suggest
+
+        - name: 🔍 Run static analysis
+          run: composer phpstan
+
+    cs-php80:
+      runs-on: ubuntu-latest
+      name: Code style (PHP 8.0)
+      steps:
+        - name: 📤 Checkout project
+          uses: actions/checkout@v2
+
+        - name: 🐘 Install PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: 8.0
+            tools: composer
+
+        - name: 📩 Cache Composer packages
+          id: composer-cache
+          uses: actions/cache@v2
+          with:
+            path: vendor
+            key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-php-
+
+        - name: 📦 Install dependencies
+          if: steps.composer-cache.outputs.cache-hit != 'true'
+          run: composer install --no-progress --no-suggest
+
+        - name: ✨ Run code style check
+          run: composer cs
+
+    phpstan-php80:
+      runs-on: ubuntu-latest
+      name: Static analysis (PHP 8.0)
+      steps:
+        - name: 📤 Checkout project
+          uses: actions/checkout@v2
+
+        - name: 🐘 Install PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: 8.0
             tools: composer
 
         - name: 📩 Cache Composer packages
