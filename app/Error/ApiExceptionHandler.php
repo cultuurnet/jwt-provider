@@ -13,10 +13,7 @@ use Whoops\Handler\Handler;
 
 final class ApiExceptionHandler extends Handler
 {
-    /**
-     * @var EmitterInterface
-     */
-    private $emitter;
+    private \Laminas\HttpHandlerRunner\Emitter\EmitterInterface $emitter;
 
     public function __construct(EmitterInterface $emitter)
     {

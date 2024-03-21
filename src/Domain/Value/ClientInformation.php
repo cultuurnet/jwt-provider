@@ -9,20 +9,11 @@ use Psr\Http\Message\UriInterface;
 
 final class ClientInformation
 {
-    /**
-     * @var UriInterface
-     */
-    private $uri;
+    private \Psr\Http\Message\UriInterface $uri;
 
-    /**
-     * @var ApiKey|null
-     */
-    private $apiKey;
+    private ?\CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey $apiKey;
 
-    /**
-     * @var bool
-     */
-    private $isAllowedRefresh;
+    private bool $isAllowedRefresh;
 
     public function __construct(UriInterface $uri, ApiKey $apiKey = null, bool $isAllowedRefresh = false)
     {

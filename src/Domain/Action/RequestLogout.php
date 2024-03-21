@@ -13,20 +13,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class RequestLogout
 {
-    /**
-     * @var LogOutServiceInterface
-     */
-    private $logOutService;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface $logOutService;
 
-    /**
-     * @var ClientInformationRepositoryInterface
-     */
-    private $clientInformationRepository;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface $clientInformationRepository;
 
-    /**
-     * @var ExtractClientInformationFromRequestInterface
-     */
-    private $extractClientInformationFromRequest;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest;
 
     public function __construct(
         ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,

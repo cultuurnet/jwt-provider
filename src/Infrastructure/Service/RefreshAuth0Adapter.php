@@ -11,17 +11,13 @@ use GuzzleHttp\Exception\GuzzleException;
 
 final class RefreshAuth0Adapter implements RefreshServiceInterface
 {
-    /** @var Client */
-    private $httpClient;
+    private \GuzzleHttp\Client $httpClient;
 
-    /** @var string */
-    private $clientId;
+    private string $clientId;
 
-    /** @var string */
-    private $clientSecret;
+    private string $clientSecret;
 
-    /** @var string */
-    private $domain;
+    private string $domain;
 
     public function __construct(Client $client, string $clientId, string $clientSecret, string $domain)
     {

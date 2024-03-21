@@ -14,15 +14,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class AllowedRefresh implements MiddlewareInterface
 {
-    /**
-     * @var IsAllowedRefreshTokenInterface
-     */
-    private $isAllowedRefreshToken;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface $isAllowedRefreshToken;
 
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
+    private \CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface $apiKeyReader;
 
     public function __construct(
         IsAllowedRefreshTokenInterface $isAllowedRefreshToken,

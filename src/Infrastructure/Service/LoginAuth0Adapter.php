@@ -15,10 +15,7 @@ use Slim\Psr7\Response;
 
 final class LoginAuth0Adapter implements LoginServiceInterface
 {
-    /**
-     * @var Auth0Interface
-     */
-    private $auth0;
+    private \Auth0\SDK\Contract\Auth0Interface $auth0;
 
     public function __construct(Auth0Interface $auth0)
     {

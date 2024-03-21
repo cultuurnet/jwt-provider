@@ -13,15 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class Refresh
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var RefreshServiceInterface
-     */
-    private $refreshService;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface $refreshService;
 
     public function __construct(ResponseFactoryInterface $responseFactory, RefreshServiceInterface $refreshService)
     {

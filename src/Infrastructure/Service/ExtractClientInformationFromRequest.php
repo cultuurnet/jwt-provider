@@ -16,20 +16,11 @@ final class ExtractClientInformationFromRequest implements ExtractClientInformat
 {
     public const DESTINATION = 'destination';
 
-    /**
-     * @var UriFactoryInterface
-     */
-    private $uriFactory;
+    private \Psr\Http\Message\UriFactoryInterface $uriFactory;
 
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
+    private \CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface $apiKeyReader;
 
-    /**
-     * @var IsAllowedRefreshTokenInterface
-     */
-    private $isAllowedRefreshToken;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface $isAllowedRefreshToken;
 
     public function __construct(
         UriFactoryInterface $uriFactory,

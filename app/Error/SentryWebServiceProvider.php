@@ -23,12 +23,10 @@ final class SentryWebServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             SentryHandlerScopeDecorator::class,
-            function () {
-                return SentryHandlerScopeDecorator::forWeb(
-                    new SentryHandler($this->get(HubInterface::class), Logger::ERROR),
-                    $this->get(ApiKey::class)
-                );
-            }
+            fn (): \CultuurNet\UDB3\JwtProvider\Error\SentryHandlerScopeDecorator => SentryHandlerScopeDecorator::forWeb(
+                new SentryHandler($this->get(HubInterface::class), Logger::ERROR),
+                $this->get(ApiKey::class)
+            )
         );
     }
 }

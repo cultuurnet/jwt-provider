@@ -15,20 +15,11 @@ use function Sentry\withScope;
  */
 final class SentryHandlerScopeDecorator implements HandlerInterface
 {
-    /**
-     * @var HandlerInterface
-     */
-    private $decoratedHandler;
+    private \Monolog\Handler\HandlerInterface $decoratedHandler;
 
-    /**
-     * @var ApiKey
-     */
-    private $apiKey;
+    private \CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey $apiKey;
 
-    /**
-     * @var bool
-     */
-    private $console;
+    private bool $console;
 
     private function __construct(HandlerInterface $decoratedHandler, ApiKey $apiKey, bool $console)
     {
@@ -39,7 +30,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     public static function forWeb(HandlerInterface $decoratedHandler, ?ApiKey $apiKey): self
     {
-        $apiKey = $apiKey ?? new ApiKey('null');
+        $apiKey ??= new ApiKey('null');
         return new self($decoratedHandler, $apiKey, false);
     }
 

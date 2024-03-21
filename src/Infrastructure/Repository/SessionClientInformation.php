@@ -12,10 +12,7 @@ final class SessionClientInformation implements ClientInformationRepositoryInter
 {
     private const KEY = 'ClientInformation';
 
-    /**
-     * @var Segment
-     */
-    private $segment;
+    private \Aura\Session\Segment $segment;
 
     public function __construct(Segment $segment)
     {

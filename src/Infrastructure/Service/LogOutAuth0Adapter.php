@@ -14,35 +14,17 @@ use Psr\Http\Message\UriInterface;
 
 final class LogOutAuth0Adapter implements LogOutServiceInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private \CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var UriFactoryInterface
-     */
-    private $uriFactory;
+    private \Psr\Http\Message\UriFactoryInterface $uriFactory;
 
-    /**
-     * @var string
-     */
-    private $logOutUri;
+    private string $logOutUri;
 
-    /**
-     * @var AuthenticationInterface
-     */
-    private $authentication;
+    private \Auth0\SDK\Contract\API\AuthenticationInterface $authentication;
 
-    /**
-     * @var Auth0Interface
-     */
-    private $auth0;
+    private \Auth0\SDK\Contract\Auth0Interface $auth0;
 
-    /**
-     * @var string
-     */
-    private $clientId;
+    private string $clientId;
 
 
     public function __construct(

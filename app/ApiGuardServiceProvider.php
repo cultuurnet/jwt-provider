@@ -26,11 +26,11 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): void
     {
         $this->addShared(
             ApiKeyReaderInterface::class,
-            function () {
+            function (): \CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader {
                 $queryReader = new QueryParameterApiKeyReader('apiKey');
                 $headerReader = new CustomHeaderApiKeyReader('X-Api-Key');
 
@@ -43,14 +43,12 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ConsumerReadRepositoryInterface::class,
-            function () {
-                return new CultureFeedConsumerReadRepository($this->get(ICultureFeed::class));
-            }
+            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Service\CultureFeedConsumerReadRepository => new CultureFeedConsumerReadRepository($this->get(ICultureFeed::class))
         );
 
         $this->addShared(
             ICultureFeed::class,
-            function () {
+            function (): \CultureFeed {
                 $oauthClient = new \CultureFeed_DefaultOAuthClient(
                     $this->parameter('uitid.consumer.key'),
                     $this->parameter('uitid.consumer.secret')
