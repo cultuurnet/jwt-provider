@@ -9,9 +9,9 @@ use Psr\Http\Message\UriInterface;
 
 final class ClientInformation
 {
-    private \Psr\Http\Message\UriInterface $uri;
+    private UriInterface $uri;
 
-    private ?\CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey $apiKey;
+    private ?ApiKey $apiKey;
 
     private bool $isAllowedRefresh;
 

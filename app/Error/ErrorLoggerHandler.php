@@ -22,7 +22,7 @@ final class ErrorLoggerHandler extends Handler
         JwtProviderExceptionInterface::class,
     ];
 
-    private \Psr\Log\LoggerInterface $logger;
+    private LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger)
     {

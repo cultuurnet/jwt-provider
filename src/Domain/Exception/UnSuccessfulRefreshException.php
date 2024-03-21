@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Domain\Exception;
 
+use Exception;
 use Fig\Http\Message\StatusCodeInterface;
 
-final class UnSuccessfulRefreshException extends \Exception implements JwtProviderExceptionInterface
+final class UnSuccessfulRefreshException extends Exception implements JwtProviderExceptionInterface
 {
     public function getHttpCode(): int
     {

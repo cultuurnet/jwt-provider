@@ -14,15 +14,15 @@ use Psr\Http\Message\UriInterface;
 
 final class LogOutAuth0Adapter implements LogOutServiceInterface
 {
-    private \CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
-    private \Psr\Http\Message\UriFactoryInterface $uriFactory;
+    private UriFactoryInterface $uriFactory;
 
     private string $logOutUri;
 
-    private \Auth0\SDK\Contract\API\AuthenticationInterface $authentication;
+    private AuthenticationInterface $authentication;
 
-    private \Auth0\SDK\Contract\Auth0Interface $auth0;
+    private Auth0Interface $auth0;
 
     private string $clientId;
 

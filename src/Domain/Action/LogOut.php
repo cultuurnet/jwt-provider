@@ -11,9 +11,9 @@ use Psr\Http\Message\ResponseInterface;
 
 final class LogOut
 {
-    private \CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface $clientInformationRepository;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
-    private \CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
     public function __construct(
         ClientInformationRepositoryInterface $clientInformationRepository,

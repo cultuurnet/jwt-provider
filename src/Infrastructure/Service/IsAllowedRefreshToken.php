@@ -13,7 +13,7 @@ final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
 {
     private string $refreshGroupId;
 
-    private \CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface $consumerReadRepository;
+    private ConsumerReadRepositoryInterface $consumerReadRepository;
 
     public function __construct(
         ConsumerReadRepositoryInterface $consumerReadRepository,

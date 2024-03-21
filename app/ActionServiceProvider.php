@@ -49,7 +49,7 @@ final class ActionServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             RequestToken::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken => new RequestToken(
+            fn (): RequestToken => new RequestToken(
                 $this->get(ExtractClientInformationFromRequest::class),
                 $this->get(LoginServiceInterface::class),
                 $this->get(ClientInformationRepositoryInterface::class),
@@ -59,7 +59,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Authorize::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Action\Authorize => new Authorize(
+            fn (): Authorize => new Authorize(
                 $this->get(LoginServiceInterface::class),
                 new GenerateAuthorizedDestinationUrl(),
                 $this->get(ResponseFactoryInterface::class),
@@ -69,7 +69,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             RequestLogout::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout => new RequestLogout(
+            fn (): RequestLogout => new RequestLogout(
                 $this->get(ExtractClientInformationFromRequest::class),
                 $this->get(LogOutServiceInterface::class),
                 $this->get(ClientInformationRepositoryInterface::class)
@@ -78,7 +78,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LogOut::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Action\LogOut => new LogOut(
+            fn (): LogOut => new LogOut(
                 $this->get(ClientInformationRepositoryInterface::class),
                 $this->get(ResponseFactoryInterface::class)
             )
@@ -86,7 +86,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Refresh::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Action\Refresh => new Refresh(
+            fn (): Refresh => new Refresh(
                 $this->get(ResponseFactoryInterface::class),
                 $this->get(RefreshServiceInterface::class)
             )
@@ -94,7 +94,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LogOutServiceInterface::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter => new LogOutAuth0Adapter(
+            fn (): LogOutAuth0Adapter => new LogOutAuth0Adapter(
                 $this->get(Auth0::class),
                 new Authentication(
                     [
@@ -113,19 +113,19 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ResponseFactoryInterface::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory => new SlimResponseFactory()
+            fn (): SlimResponseFactory => new SlimResponseFactory()
         );
 
         $this->addShared(
             LoginServiceInterface::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter => new LoginAuth0Adapter(
+            fn (): LoginAuth0Adapter => new LoginAuth0Adapter(
                 $this->get(Auth0::class)
             )
         );
 
         $this->addShared(
             RefreshServiceInterface::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter => new RefreshAuth0Adapter(
+            fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
                 new Client(),
                 $this->parameter('auth0.client_id'),
                 $this->parameter('auth0.client_secret'),
@@ -135,7 +135,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Auth0::class,
-            fn (): \Auth0\SDK\Auth0 => new Auth0(
+            fn (): Auth0 => new Auth0(
                 [
                     'domain' => $this->parameter('auth0.domain'),
                     'clientId' => $this->parameter('auth0.client_id'),
@@ -152,7 +152,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             IsAllowedRefreshToken::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken => new IsAllowedRefreshToken(
+            fn (): IsAllowedRefreshToken => new IsAllowedRefreshToken(
                 $this->get(ConsumerReadRepositoryInterface::class),
                 (string)$this->parameter('auth0.allowed_refresh_permission')
             )
@@ -160,7 +160,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ClientInformationRepositoryInterface::class,
-            function (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformation {
+            function (): SessionClientInformation {
                 $session = $this->get(Session::class);
                 $segment = $session->getSegment(ClientInformationRepositoryInterface::class);
                 return new SessionClientInformation(
@@ -171,7 +171,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ExtractClientInformationFromRequest::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest => new ExtractClientInformationFromRequest(
+            fn (): ExtractClientInformationFromRequest => new ExtractClientInformationFromRequest(
                 new UriFactory(),
                 $this->get(ApiKeyReaderInterface::class),
                 $this->get(IsAllowedRefreshToken::class)

@@ -13,6 +13,7 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
         __DIR__ . '/web',
     ])
+    ->withImportNames()
     ->withPhpSets(php74: true)
     ->withSets([SetList::TYPE_DECLARATION]) //rule to force typed declarations
     ->withRules([

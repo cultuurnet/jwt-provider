@@ -24,7 +24,7 @@ final class MiddlewareServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             AllowedRefresh::class,
-            fn (): \CultuurNet\UDB3\JwtProvider\Domain\Middleware\AllowedRefresh => new AllowedRefresh(
+            fn (): AllowedRefresh => new AllowedRefresh(
                 $this->get(IsAllowedRefreshToken::class),
                 $this->get(ApiKeyReaderInterface::class)
             )

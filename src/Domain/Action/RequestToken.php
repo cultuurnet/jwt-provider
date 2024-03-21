@@ -14,13 +14,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class RequestToken
 {
-    private \CultuurNet\UDB3\JwtProvider\Domain\Service\ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest;
+    private ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest;
 
-    private \CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface $externalAuthService;
+    private LoginServiceInterface $externalAuthService;
 
-    private \CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface $clientInformationRepository;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
-    private \CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest $extractLocaleFromRequest;
+    private ExtractLocaleFromRequest $extractLocaleFromRequest;
 
     public function __construct(
         ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,

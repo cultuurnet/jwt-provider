@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Error;
 
+use Throwable;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\JwtProviderExceptionInterface;
 use Fig\Http\Message\StatusCodeInterface;
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
@@ -13,7 +14,7 @@ use Whoops\Handler\Handler;
 
 final class ApiExceptionHandler extends Handler
 {
-    private \Laminas\HttpHandlerRunner\Emitter\EmitterInterface $emitter;
+    private EmitterInterface $emitter;
 
     public function __construct(EmitterInterface $emitter)
     {
@@ -31,7 +32,7 @@ final class ApiExceptionHandler extends Handler
         return Handler::QUIT;
     }
 
-    private function generateResponse(\Throwable $exception): ResponseInterface
+    private function generateResponse(Throwable $exception): ResponseInterface
     {
         if ($exception instanceof JwtProviderExceptionInterface) {
             $response = new Response(StatusCodeInterface::STATUS_BAD_REQUEST);

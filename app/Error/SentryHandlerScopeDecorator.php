@@ -15,9 +15,9 @@ use function Sentry\withScope;
  */
 final class SentryHandlerScopeDecorator implements HandlerInterface
 {
-    private \Monolog\Handler\HandlerInterface $decoratedHandler;
+    private HandlerInterface $decoratedHandler;
 
-    private \CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey $apiKey;
+    private ApiKey $apiKey;
 
     private bool $console;
 
