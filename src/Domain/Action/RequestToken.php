@@ -14,25 +14,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class RequestToken
 {
-    /**
-     * @var ExtractClientInformationFromRequestInterface
-     */
-    private $extractClientInformationFromRequest;
+    private ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest;
 
-    /**
-     * @var LoginServiceInterface
-     */
-    private $externalAuthService;
+    private LoginServiceInterface $externalAuthService;
 
-    /**
-     * @var ClientInformationRepositoryInterface
-     */
-    private $clientInformationRepository;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
-    /**
-     * @var ExtractLocaleFromRequest
-     */
-    private $extractLocaleFromRequest;
+    private ExtractLocaleFromRequest $extractLocaleFromRequest;
 
     public function __construct(
         ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,

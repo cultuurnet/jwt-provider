@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
 use Auth0\SDK\Auth0;
-use Auth0\SDK\Exception\ApiException;
-use Auth0\SDK\Exception\CoreException;
+use Auth0\SDK\Contract\Auth0Interface;
+use Auth0\SDK\Exception\NetworkException;
+use Auth0\SDK\Exception\StateException;
 use CultuurNet\UDB3\JwtProvider\Domain\Enum\Locale;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulAuthException;
 use Exception;
@@ -22,14 +23,13 @@ final class LoginAuth0AdapterTest extends TestCase
      */
     public function it_redirects_to_login_page(): void
     {
-        $auth0 = $this->prophesize(Auth0::class);
+        $auth0 = $this->prophesize(Auth0Interface::class);
 
         $auth0adapter = new LoginAuth0Adapter(
             $auth0->reveal()
         );
 
         $auth0->login(
-            null,
             null,
             [
                 'locale' => Locale::DUTCH,
@@ -47,13 +47,14 @@ final class LoginAuth0AdapterTest extends TestCase
      */
     public function it_returns_token(): void
     {
-        $auth0 = $this->prophesize(Auth0::class);
+        $auth0 = $this->prophesize(Auth0Interface::class);
 
         $auth0adapter = new LoginAuth0Adapter(
             $auth0->reveal()
         );
 
         $auth0->getIdToken()->willReturn('token');
+        $auth0->exchange()->willReturn(true);
 
         $this->assertEquals('token', $auth0adapter->token());
     }
@@ -63,7 +64,7 @@ final class LoginAuth0AdapterTest extends TestCase
      */
     public function it_returns_refresh_token(): void
     {
-        $auth0 = $this->prophesize(Auth0::class);
+        $auth0 = $this->prophesize(Auth0Interface::class);
 
         $auth0adapter = new LoginAuth0Adapter(
             $auth0->reveal()
@@ -77,19 +78,18 @@ final class LoginAuth0AdapterTest extends TestCase
     /**
      * @test
      * @dataProvider auth0_exceptions()
-     * @throws ApiException
-     * @throws CoreException
      * @throws UnSuccessfulAuthException
      */
     public function it_wraps_auth0_exceptions_to_unsuccessful_auth_exception(Exception $exceptionClass): void
     {
-        $auth0 = $this->prophesize(Auth0::class);
+        $auth0 = $this->prophesize(Auth0Interface::class);
 
         $auth0adapter = new LoginAuth0Adapter(
             $auth0->reveal()
         );
 
         $auth0->getIdToken()->willThrow($exceptionClass);
+        $auth0->exchange()->willReturn(true);
 
         $this->expectException(UnSuccessfulAuthException::class);
 
@@ -102,8 +102,8 @@ final class LoginAuth0AdapterTest extends TestCase
     public function auth0_exceptions(): array
     {
         return [
-            [new ApiException()],
-            [new CoreException()],
+            [new NetworkException()],
+            [new StateException()],
         ];
     }
 }

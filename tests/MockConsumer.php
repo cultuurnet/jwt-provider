@@ -9,25 +9,16 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 
 final class MockConsumer implements ConsumerInterface
 {
-    /**
-     * @var ApiKey
-     */
-    private $apiKey;
+    private ApiKey $apiKey;
 
     /**
      * @var string[]
      */
-    private $permissionGroupIds = [];
+    private array $permissionGroupIds = [];
 
-    /**
-     * @var string|null
-     */
-    private $defaultQuery;
+    private ?string $defaultQuery = null;
 
-    /**
-     * @var string|null
-     */
-    private $name;
+    private ?string $name = null;
 
     public function __construct(ApiKey $apiKey)
     {

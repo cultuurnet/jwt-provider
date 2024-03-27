@@ -13,10 +13,7 @@ use ICultureFeed;
 
 final class CultureFeedConsumerReadRepository implements ConsumerReadRepositoryInterface
 {
-    /**
-     * @var ICultureFeed
-     */
-    private $cultureFeed;
+    private ICultureFeed $cultureFeed;
 
     public function __construct(ICultureFeed $cultureFeed)
     {

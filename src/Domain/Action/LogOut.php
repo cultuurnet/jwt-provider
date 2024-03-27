@@ -11,15 +11,9 @@ use Psr\Http\Message\ResponseInterface;
 
 final class LogOut
 {
-    /**
-     * @var ClientInformationRepositoryInterface
-     */
-    private $clientInformationRepository;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
     public function __construct(
         ClientInformationRepositoryInterface $clientInformationRepository,

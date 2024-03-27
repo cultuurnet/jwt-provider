@@ -40,7 +40,7 @@ final class AuthorizeTest extends TestCase
 
         $response = $authorizeAction->__invoke();
 
-        $this->assertEquals('http://foo-bar.com/?jwt=token&refresh=refresh', $response->getHeaderLine('Location'));
+        $this->assertEquals('http://foo-bar.com?jwt=token&refresh=refresh', $response->getHeaderLine('Location'));
     }
 
     private function aClientInformation(): ClientInformation

@@ -16,28 +16,23 @@ use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestLogout;
 use CultuurNet\UDB3\JwtProvider\Domain\Action\RequestToken;
 use CultuurNet\UDB3\JwtProvider\Domain\Factory\ResponseFactoryInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Repository\ClientInformationRepositoryInterface;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
-use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\GenerateAuthorizedDestinationUrl;
+use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\LogOutServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformation;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
-use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
 final class ActionServiceProvider extends BaseServiceProvider
 {
-    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657
-    // @see https://community.auth0.com/t/help-with-leeway-setting-using-auth0-php/14657/7
-    private const JWT_IAT_LEEWAY = 30;
-
     /**
      * @var string[]
      */
@@ -54,136 +49,118 @@ final class ActionServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             RequestToken::class,
-            function () {
-                return new RequestToken(
-                    $this->get(ExtractClientInformationFromRequest::class),
-                    $this->get(LoginServiceInterface::class),
-                    $this->get(ClientInformationRepositoryInterface::class),
-                    $this->get(ExtractLocaleFromRequest::class)
-                );
-            }
+            fn (): RequestToken => new RequestToken(
+                $this->get(ExtractClientInformationFromRequest::class),
+                $this->get(LoginServiceInterface::class),
+                $this->get(ClientInformationRepositoryInterface::class),
+                $this->get(ExtractLocaleFromRequest::class)
+            )
         );
 
         $this->addShared(
             Authorize::class,
-            function () {
-                return new Authorize(
-                    $this->get(LoginServiceInterface::class),
-                    new GenerateAuthorizedDestinationUrl(),
-                    $this->get(ResponseFactoryInterface::class),
-                    $this->get(ClientInformationRepositoryInterface::class)
-                );
-            }
+            fn (): Authorize => new Authorize(
+                $this->get(LoginServiceInterface::class),
+                new GenerateAuthorizedDestinationUrl(),
+                $this->get(ResponseFactoryInterface::class),
+                $this->get(ClientInformationRepositoryInterface::class)
+            )
         );
 
         $this->addShared(
             RequestLogout::class,
-            function () {
-                return new RequestLogout(
-                    $this->get(ExtractClientInformationFromRequest::class),
-                    $this->get(LogOutServiceInterface::class),
-                    $this->get(ClientInformationRepositoryInterface::class)
-                );
-            }
+            fn (): RequestLogout => new RequestLogout(
+                $this->get(ExtractClientInformationFromRequest::class),
+                $this->get(LogOutServiceInterface::class),
+                $this->get(ClientInformationRepositoryInterface::class)
+            )
         );
 
         $this->addShared(
             LogOut::class,
-            function () {
-                return new LogOut(
-                    $this->get(ClientInformationRepositoryInterface::class),
-                    $this->get(ResponseFactoryInterface::class)
-                );
-            }
+            fn (): LogOut => new LogOut(
+                $this->get(ClientInformationRepositoryInterface::class),
+                $this->get(ResponseFactoryInterface::class)
+            )
         );
 
         $this->addShared(
             Refresh::class,
-            function () {
-                return new Refresh(
-                    $this->get(ResponseFactoryInterface::class),
-                    $this->get(RefreshServiceInterface::class)
-                );
-            }
+            fn (): Refresh => new Refresh(
+                $this->get(ResponseFactoryInterface::class),
+                $this->get(RefreshServiceInterface::class)
+            )
         );
 
         $this->addShared(
             LogOutServiceInterface::class,
-            function () {
-                return new LogOutAuth0Adapter(
-                    $this->get(Auth0::class),
-                    new Authentication(
-                        $this->parameter('auth0.domain'),
-                        $this->parameter('auth0.client_id'),
-                        $this->parameter('auth0.client_secret')
-                    ),
-                    $this->get(ResponseFactoryInterface::class),
-                    new UriFactory(),
-                    $this->parameter('auth0.log_out_uri'),
-                    $this->parameter('auth0.client_id')
-                );
-            }
+            fn (): LogOutAuth0Adapter => new LogOutAuth0Adapter(
+                $this->get(Auth0::class),
+                new Authentication(
+                    [
+                        'domain' => $this->parameter('auth0.domain'),
+                        'clientId' => $this->parameter('auth0.client_id'),
+                        'clientSecret' => $this->parameter('auth0.client_secret'),
+                        'cookieSecret' => $this->parameter('auth0.cookie_secret'),
+                    ]
+                ),
+                $this->get(ResponseFactoryInterface::class),
+                new UriFactory(),
+                $this->parameter('auth0.log_out_uri'),
+                $this->parameter('auth0.client_id')
+            )
         );
 
         $this->addShared(
             ResponseFactoryInterface::class,
-            function () {
-                return new SlimResponseFactory();
-            }
+            fn (): SlimResponseFactory => new SlimResponseFactory()
         );
 
         $this->addShared(
             LoginServiceInterface::class,
-            function () {
-                return new LoginAuth0Adapter(
-                    $this->get(Auth0::class)
-                );
-            }
+            fn (): LoginAuth0Adapter => new LoginAuth0Adapter(
+                $this->get(Auth0::class)
+            )
         );
 
         $this->addShared(
             RefreshServiceInterface::class,
-            function () {
-                return new RefreshAuth0Adapter(
-                    new Client(),
-                    $this->parameter('auth0.client_id'),
-                    $this->parameter('auth0.client_secret'),
-                    $this->parameter('auth0.domain')
-                );
-            }
+            fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
+                new Client(),
+                $this->parameter('auth0.client_id'),
+                $this->parameter('auth0.client_secret'),
+                $this->parameter('auth0.domain')
+            )
         );
 
         $this->addShared(
             Auth0::class,
-            function () {
-                JWT::$leeway = self::JWT_IAT_LEEWAY;
-                return new Auth0(
-                    [
-                        'domain' => $this->parameter('auth0.domain'),
-                        'client_id' => $this->parameter('auth0.client_id'),
-                        'client_secret' => $this->parameter('auth0.client_secret'),
-                        'redirect_uri' => $this->parameter('auth0.redirect_uri'),
-                        'scope' => 'openid email profile offline_access',
-                        'persist_id_token' => true,
-                        'persist_refresh_token' => true,
-                    ]
-                );
-            }
+            fn (): Auth0 => new Auth0(
+                [
+                    'domain' => $this->parameter('auth0.domain'),
+                    'clientId' => $this->parameter('auth0.client_id'),
+                    'clientSecret' => $this->parameter('auth0.client_secret'),
+                    'redirectUri' => $this->parameter('auth0.redirect_uri'),
+                    'scope' => ['openid','email','profile','offline_access'],
+                    'persistIdToken' => true,
+                    'persistRefreshToken' => true,
+                    'tokenLeeway' => $this->parameter('auth0.id_token_leeway'),
+                    'cookieSecret' => $this->parameter('auth0.cookie_secret'),
+                ]
+            )
         );
 
         $this->addShared(
             IsAllowedRefreshToken::class,
-            function () {
-                return new IsAllowedRefreshToken(
-                    $this->get(ConsumerReadRepositoryInterface::class),
-                    (string) $this->parameter('auth0.allowed_refresh_permission')
-                );
-            }
+            fn (): IsAllowedRefreshToken => new IsAllowedRefreshToken(
+                $this->get(ConsumerReadRepositoryInterface::class),
+                (string)$this->parameter('auth0.allowed_refresh_permission')
+            )
         );
 
         $this->addShared(
             ClientInformationRepositoryInterface::class,
-            function () {
+            function (): SessionClientInformation {
                 $session = $this->get(Session::class);
                 $segment = $session->getSegment(ClientInformationRepositoryInterface::class);
                 return new SessionClientInformation(
@@ -194,13 +171,11 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ExtractClientInformationFromRequest::class,
-            function () {
-                return new ExtractClientInformationFromRequest(
-                    new UriFactory(),
-                    $this->get(ApiKeyReaderInterface::class),
-                    $this->get(IsAllowedRefreshToken::class)
-                );
-            }
+            fn (): ExtractClientInformationFromRequest => new ExtractClientInformationFromRequest(
+                new UriFactory(),
+                $this->get(ApiKeyReaderInterface::class),
+                $this->get(IsAllowedRefreshToken::class)
+            )
         );
     }
 }

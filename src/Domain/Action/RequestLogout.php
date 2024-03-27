@@ -13,20 +13,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class RequestLogout
 {
-    /**
-     * @var LogOutServiceInterface
-     */
-    private $logOutService;
+    private LogOutServiceInterface $logOutService;
 
-    /**
-     * @var ClientInformationRepositoryInterface
-     */
-    private $clientInformationRepository;
+    private ClientInformationRepositoryInterface $clientInformationRepository;
 
-    /**
-     * @var ExtractClientInformationFromRequestInterface
-     */
-    private $extractClientInformationFromRequest;
+    private ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest;
 
     public function __construct(
         ExtractClientInformationFromRequestInterface $extractClientInformationFromRequest,

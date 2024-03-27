@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
-use Auth0\SDK\API\Authentication;
-use Auth0\SDK\Auth0;
+use Auth0\SDK\Contract\API\AuthenticationInterface;
+use Auth0\SDK\Contract\Auth0Interface;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Factory\SlimResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
@@ -21,18 +21,19 @@ final class LogOutAuth0AdapterTest extends TestCase
      */
     public function it_logs_out_user(): void
     {
-        $auth0 = $this->prophesize(Auth0::class);
-        $authentication = $this->prophesize(Authentication::class);
-        $auth0LogOutUri = 'https://auth0/logout?destinationTo=http://foo-bar.com/';
+        $auth0 = $this->prophesize(Auth0Interface::class);
+        $authentication = $this->prophesize(AuthenticationInterface::class);
+        $auth0LogOutUri = 'https://auth0/logout?destinationTo=http://foo-bar.com';
+        $auth0->logout()->willReturn('http://foo-bar.com');
 
-        $authentication->get_logout_link('http://foo-bar.com/', 'client-id')->willReturn($auth0LogOutUri);
+        $authentication->getLogoutLink('http://foo-bar.com', ['clientId' => 'client-id'])->willReturn($auth0LogOutUri);
 
         $auth0adapter = new LogOutAuth0Adapter(
             $auth0->reveal(),
             $authentication->reveal(),
             new SlimResponseFactory(),
             new UriFactory(),
-            'http://foo-bar.com/',
+            'http://foo-bar.com',
             'client-id'
         );
 

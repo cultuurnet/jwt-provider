@@ -17,10 +17,10 @@ final class SlimResponseFactoryTest extends TestCase
     public function it_creates_redirect_response_for_url(): void
     {
         $factory = new SlimResponseFactory();
-        $url = (new UriFactory())->createUri('http://foo-bar.com/');
+        $url = (new UriFactory())->createUri('http://foo-bar.com');
         $response = $factory->redirectTo($url);
         $this->assertEquals(StatusCodeInterface::STATUS_MOVED_PERMANENTLY, $response->getStatusCode());
         $this->assertTrue($response instanceof Response);
-        $this->assertEquals('http://foo-bar.com/', $response->getHeaderLine('Location'));
+        $this->assertEquals('http://foo-bar.com', $response->getHeaderLine('Location'));
     }
 }
