@@ -44,7 +44,10 @@ jobs:
 
     cs:
         runs-on: ubuntu-latest
-        name: Code style (PHP 7.4)
+        strategy:
+          matrix:
+            php-versions: [ '7.4', '8.0' ]
+        name: Code style (PHP ${{ matrix.php-versions }})
         steps:
             - name: 📤 Checkout project
               uses: actions/checkout@v2
@@ -52,7 +55,7 @@ jobs:
             - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: 7.4
+                  php-version: ${{ matrix.php-versions }}
                   tools: composer
 
             - name: 📩 Cache Composer packages
@@ -73,7 +76,10 @@ jobs:
 
     phpstan:
       runs-on: ubuntu-latest
-      name: Static analysis (PHP 7.4)
+      strategy:
+        matrix:
+          php-versions: [ '7.4', '8.0' ]
+      name: Static analysis (PHP ${{ matrix.php-versions }})
       steps:
         - name: 📤 Checkout project
           uses: actions/checkout@v2
@@ -81,65 +87,7 @@ jobs:
         - name: 🐘 Install PHP
           uses: shivammathur/setup-php@v2
           with:
-            php-version: 7.4
-            tools: composer
-
-        - name: 📩 Cache Composer packages
-          id: composer-cache
-          uses: actions/cache@v2
-          with:
-            path: vendor
-            key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-php-
-
-        - name: 📦 Install dependencies
-          if: steps.composer-cache.outputs.cache-hit != 'true'
-          run: composer install --no-progress --no-suggest
-
-        - name: 🔍 Run static analysis
-          run: composer phpstan
-
-    cs-php80:
-      runs-on: ubuntu-latest
-      name: Code style (PHP 8.0)
-      steps:
-        - name: 📤 Checkout project
-          uses: actions/checkout@v2
-
-        - name: 🐘 Install PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: 8.0
-            tools: composer
-
-        - name: 📩 Cache Composer packages
-          id: composer-cache
-          uses: actions/cache@v2
-          with:
-            path: vendor
-            key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-php-
-
-        - name: 📦 Install dependencies
-          if: steps.composer-cache.outputs.cache-hit != 'true'
-          run: composer install --no-progress --no-suggest
-
-        - name: ✨ Run code style check
-          run: composer cs
-
-    phpstan-php80:
-      runs-on: ubuntu-latest
-      name: Static analysis (PHP 8.0)
-      steps:
-        - name: 📤 Checkout project
-          uses: actions/checkout@v2
-
-        - name: 🐘 Install PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: 8.0
+            php-version: ${{ matrix.php-versions }}
             tools: composer
 
         - name: 📩 Cache Composer packages
