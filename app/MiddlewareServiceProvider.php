@@ -20,16 +20,14 @@ final class MiddlewareServiceProvider extends BaseServiceProvider
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): void
     {
         $this->addShared(
             AllowedRefresh::class,
-            function () {
-                return new AllowedRefresh(
-                    $this->get(IsAllowedRefreshToken::class),
-                    $this->get(ApiKeyReaderInterface::class)
-                );
-            }
+            fn (): AllowedRefresh => new AllowedRefresh(
+                $this->get(IsAllowedRefreshToken::class),
+                $this->get(ApiKeyReaderInterface::class)
+            )
         );
     }
 }

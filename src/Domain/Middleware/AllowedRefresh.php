@@ -14,15 +14,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class AllowedRefresh implements MiddlewareInterface
 {
-    /**
-     * @var IsAllowedRefreshTokenInterface
-     */
-    private $isAllowedRefreshToken;
+    private IsAllowedRefreshTokenInterface $isAllowedRefreshToken;
 
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
+    private ApiKeyReaderInterface $apiKeyReader;
 
     public function __construct(
         IsAllowedRefreshTokenInterface $isAllowedRefreshToken,

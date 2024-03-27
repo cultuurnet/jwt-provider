@@ -13,15 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class Refresh
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var RefreshServiceInterface
-     */
-    private $refreshService;
+    private RefreshServiceInterface $refreshService;
 
     public function __construct(ResponseFactoryInterface $responseFactory, RefreshServiceInterface $refreshService)
     {

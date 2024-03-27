@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use JsonException;
 use CultuurNet\UDB3\JwtProvider\Domain\Exception\UnSuccessfulRefreshException;
 use CultuurNet\UDB3\JwtProvider\Domain\Service\RefreshServiceInterface;
 use GuzzleHttp\Client;
@@ -11,17 +12,13 @@ use GuzzleHttp\Exception\GuzzleException;
 
 final class RefreshAuth0Adapter implements RefreshServiceInterface
 {
-    /** @var Client */
-    private $httpClient;
+    private Client $httpClient;
 
-    /** @var string */
-    private $clientId;
+    private string $clientId;
 
-    /** @var string */
-    private $clientSecret;
+    private string $clientSecret;
 
-    /** @var string */
-    private $domain;
+    private string $domain;
 
     public function __construct(Client $client, string $clientId, string $clientSecret, string $domain)
     {
@@ -46,7 +43,7 @@ final class RefreshAuth0Adapter implements RefreshServiceInterface
             );
             $res = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
             return $res['id_token'];
-        } catch (\JsonException|GuzzleException $exception) {
+        } catch (JsonException|GuzzleException $exception) {
             throw new UnSuccessfulRefreshException($exception->getMessage());
         }
     }
