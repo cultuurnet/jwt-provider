@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\Infrastructure\Service;
 
+use Exception;
 use Auth0\SDK\Contract\Auth0Interface;
 use Auth0\SDK\Exception\NetworkException;
 use Auth0\SDK\Exception\StateException;
@@ -15,10 +16,7 @@ use Slim\Psr7\Response;
 
 final class LoginAuth0Adapter implements LoginServiceInterface
 {
-    /**
-     * @var Auth0Interface
-     */
-    private $auth0;
+    private Auth0Interface $auth0;
 
     public function __construct(Auth0Interface $auth0)
     {
@@ -53,7 +51,7 @@ final class LoginAuth0Adapter implements LoginServiceInterface
     {
         try {
             return $this->auth0->getRefreshToken();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new UnSuccessfulAuthException();
         }
     }

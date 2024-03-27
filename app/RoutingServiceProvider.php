@@ -26,7 +26,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
     {
         $this->add(
             Router::class,
-            function () {
+            function (): Router {
                 $router = new Router();
                 $strategy = (new ApplicationStrategy())->setContainer($this->getContainer());
                 $router->setStrategy($strategy);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider;
 
+use CultureFeed_DefaultOAuthClient;
 use CultureFeed;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
@@ -26,11 +27,11 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): void
     {
         $this->addShared(
             ApiKeyReaderInterface::class,
-            function () {
+            function (): CompositeApiKeyReader {
                 $queryReader = new QueryParameterApiKeyReader('apiKey');
                 $headerReader = new CustomHeaderApiKeyReader('X-Api-Key');
 
@@ -43,15 +44,13 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ConsumerReadRepositoryInterface::class,
-            function () {
-                return new CultureFeedConsumerReadRepository($this->get(ICultureFeed::class));
-            }
+            fn (): CultureFeedConsumerReadRepository => new CultureFeedConsumerReadRepository($this->get(ICultureFeed::class))
         );
 
         $this->addShared(
             ICultureFeed::class,
-            function () {
-                $oauthClient = new \CultureFeed_DefaultOAuthClient(
+            function (): CultureFeed {
+                $oauthClient = new CultureFeed_DefaultOAuthClient(
                     $this->parameter('uitid.consumer.key'),
                     $this->parameter('uitid.consumer.secret')
                 );

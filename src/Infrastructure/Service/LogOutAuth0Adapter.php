@@ -14,35 +14,17 @@ use Psr\Http\Message\UriInterface;
 
 final class LogOutAuth0Adapter implements LogOutServiceInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var UriFactoryInterface
-     */
-    private $uriFactory;
+    private UriFactoryInterface $uriFactory;
 
-    /**
-     * @var string
-     */
-    private $logOutUri;
+    private string $logOutUri;
 
-    /**
-     * @var AuthenticationInterface
-     */
-    private $authentication;
+    private AuthenticationInterface $authentication;
 
-    /**
-     * @var Auth0Interface
-     */
-    private $auth0;
+    private Auth0Interface $auth0;
 
-    /**
-     * @var string
-     */
-    private $clientId;
+    private string $clientId;
 
 
     public function __construct(

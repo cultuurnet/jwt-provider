@@ -23,6 +23,6 @@ final class ExtractLocaleFromRequest
     private function extractParameter(ServerRequestInterface $serverRequest): ?string
     {
         $queryParams = $serverRequest->getQueryParams();
-        return isset($queryParams['lang']) ? $queryParams['lang'] : null;
+        return $queryParams['lang'] ?? null;
     }
 }

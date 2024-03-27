@@ -19,7 +19,7 @@ final class SessionServiceProvider extends BaseServiceProvider
     /**
      * @inheritDoc
      */
-    public function register()
+    public function register(): void
     {
         $this->addShared(
             Session::class,

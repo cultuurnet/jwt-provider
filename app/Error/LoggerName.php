@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\JwtProvider\Error;
 
 final class LoggerName
 {
-    /**
-     * @var string
-     */
-    private $fileNameWithoutSuffix;
+    private string $fileNameWithoutSuffix;
 
-    /**
-     * @var string
-     */
-    private $loggerName;
+    private string $loggerName;
 
     public function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
     {

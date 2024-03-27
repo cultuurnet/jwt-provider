@@ -11,15 +11,9 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\IsAllowedRefreshTokenInterface;
 
 final class IsAllowedRefreshToken implements IsAllowedRefreshTokenInterface
 {
-    /**
-     * @var string
-     */
-    private $refreshGroupId;
+    private string $refreshGroupId;
 
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
+    private ConsumerReadRepositoryInterface $consumerReadRepository;
 
     public function __construct(
         ConsumerReadRepositoryInterface $consumerReadRepository,
