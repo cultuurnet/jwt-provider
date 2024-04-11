@@ -14,19 +14,10 @@ class OAuthUrlHelperTest extends TestCase
     public const TEST_VERIFIER = 'testVerifier';
     public const DEFAULT_DESTINATION = 'http://www.default.com';
 
-    /**
-     * @var OAuthUrlHelper
-     */
     private OAuthUrlHelper $oAuthUrlHelper;
 
-    /**
-     * @var StringLiteral
-     */
     private StringLiteral $defaultDestination;
 
-    /**
-     * @var RequestToken
-     */
     private RequestToken $requestToken;
 
     public function setUp(): void

@@ -25,9 +25,6 @@ class CultureFeedUserServiceTest extends TestCase
      */
     private object $cultureFeedFactory;
 
-    /**
-     * @var CultureFeedUserService
-     */
     private CultureFeedUserService $service;
 
     public function setUp(): void

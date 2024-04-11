@@ -29,9 +29,6 @@ class JwtOAuthCallbackHandlerTest extends TestCase
      */
     private object $userService;
 
-    /**
-     * @var JwtOAuthCallbackHandler
-     */
     private JwtOAuthCallbackHandler $callbackHandler;
 
     public function setUp(): void

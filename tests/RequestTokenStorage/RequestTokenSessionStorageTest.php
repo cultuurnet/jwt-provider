@@ -15,22 +15,13 @@ class RequestTokenSessionStorageTest extends TestCase
      */
     private object $sessionSegment;
 
-    /**
-     * @var array
-     */
     private array $sessionData;
 
-    /**
-     * @var RequestTokenSessionStorage
-     */
     private RequestTokenSessionStorage $requestTokenSessionStorage;
 
-    /**
-     * @var RequestToken
-     */
     private RequestToken $requestToken;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->sessionSegment = $this->createMock(Segment::class);
         $this->sessionData = [];
