@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
@@ -18,21 +20,21 @@ use ValueObjects\Web\EmailAddress;
 class JwtOAuthCallbackHandlerTest extends TestCase
 {
     /**
-     * @var JwtEncoderServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var JwtEncoderServiceInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private $encoder;
+    private object $encoder;
 
     /**
-     * @var UserServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UserServiceInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private $userService;
+    private object $userService;
 
     /**
      * @var JwtOAuthCallbackHandler
      */
-    private $callbackHandler;
+    private JwtOAuthCallbackHandler $callbackHandler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->encoder = $this->createMock(JwtEncoderServiceInterface::class);
         $this->userService = $this->createMock(UserServiceInterface::class);
@@ -46,7 +48,7 @@ class JwtOAuthCallbackHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_redirect_response_to_the_destination_with_a_jwt_as_url_fragment()
+    public function it_returns_a_redirect_response_to_the_destination_with_a_jwt_as_url_fragment(): void
     {
         $userId = new StringLiteral('id-1');
 

@@ -7,20 +7,11 @@ use ValueObjects\Web\EmailAddress;
 
 class UserClaims
 {
-    /**
-     * @var StringLiteral
-     */
-    private $uid;
+    private StringLiteral $uid;
 
-    /**
-     * @var StringLiteral
-     */
-    private $nick;
+    private StringLiteral $nick;
 
-    /**
-     * @var EmailAddress|null
-     */
-    private $email;
+    private ?EmailAddress $email;
 
     public function __construct(
         StringLiteral $uid,

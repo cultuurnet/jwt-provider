@@ -11,15 +11,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface
 {
-    /**
-     * @var ConsumerCredentials
-     */
-    private $consumerCredentials;
+    private ConsumerCredentials $consumerCredentials;
 
-    /**
-     * @var StringLiteral
-     */
-    private $baseUrl;
+    private StringLiteral $baseUrl;
 
     public function __construct(
         ConsumerCredentials $consumerCredentials,

@@ -11,7 +11,7 @@ class UserClaimsTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_an_array()
+    public function it_can_be_converted_to_an_array(): void
     {
         $claims = new UserClaims(
             new StringLiteral('id-1'),
@@ -31,7 +31,7 @@ class UserClaimsTest extends TestCase
     /**
      * @test
      */
-    public function it_can_have_an_empty_email_address_by_default()
+    public function it_can_have_an_empty_email_address_by_default(): void
     {
         $claims = new UserClaims(
             new StringLiteral('id-1'),

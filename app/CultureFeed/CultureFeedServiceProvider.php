@@ -20,7 +20,7 @@ class CultureFeedServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             CultureFeedFactoryInterface::class,
-            function () {
+            function (): CultureFeedFactory {
                 return new CultureFeedFactory(
                     $this->get(ConsumerCredentials::class),
                     new StringLiteral($this->parameter('uitid.base_url'))
@@ -30,7 +30,7 @@ class CultureFeedServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ConsumerCredentials::class,
-            function () {
+            function (): ConsumerCredentials {
                 $key = $this->parameter('uitid.consumer.key');
                 $secret = $this->parameter('uitid.consumer.secret');
 

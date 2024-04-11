@@ -33,7 +33,7 @@ class JwtServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             Builder::class,
-            function () {
+            function (): Builder {
                 $builder = new Builder();
                 $builder->setIssuer($this->parameter('jwt.iss'));
                 return $builder;
@@ -42,14 +42,14 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Signer::class,
-            function () {
+            function (): Sha256 {
                 return new Sha256();
             }
         );
 
         $this->addShared(
             'jwt.keys.private',
-            function () {
+            function (): Key {
                 $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.private.file');
 
                 return new Key(
@@ -61,7 +61,7 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             'jwt.keys.public',
-            function () {
+            function (): Key {
                 $file = __DIR__ . '/../../' . $this->parameter('jwt.keys.public.file');
 
                 return new Key(
@@ -72,7 +72,7 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             ValidationData::class,
-            function () {
+            function (): ValidationData {
                 $data = new ValidationData();
                 $data->setIssuer($this->parameter('jwt.iss'));
                 return $data;
@@ -81,7 +81,7 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             JwtEncoderServiceInterface::class,
-            function () {
+            function (): JwtEncoderService {
                 return new JwtEncoderService(
                     $this->get(Builder::class),
                     $this->get(Signer::class),
@@ -97,7 +97,7 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             JwtDecoderServiceInterface::class,
-            function () {
+            function (): JwtDecoderService {
                 return new JwtDecoderService(
                     new Parser(),
                     $this->get(ValidationData::class),

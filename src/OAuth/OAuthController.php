@@ -11,25 +11,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class OAuthController
 {
-    /**
-     * @var OAuthService
-     */
-    private $oAuthService;
+    private OAuthService $oAuthService;
 
-    /**
-     * @var RequestTokenStorageInterface
-     */
-    private $requestTokenStorage;
+    private RequestTokenStorageInterface $requestTokenStorage;
 
-    /**
-     * @var OAuthUrlHelper
-     */
-    private $oAuthUrlHelper;
+    private OAuthUrlHelper $oAuthUrlHelper;
 
-    /**
-     * @var OAuthCallbackHandlerInterface
-     */
-    private $oAuthCallbackHandler;
+    private OAuthCallbackHandlerInterface $oAuthCallbackHandler;
 
     public function __construct(
         OAuthService $oAuthService,

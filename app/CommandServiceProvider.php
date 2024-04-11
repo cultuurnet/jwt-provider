@@ -17,7 +17,7 @@ class CommandServiceProvider extends BaseServiceProvider
     {
         $this->add(
             Application::class,
-            function () {
+            function (): Application {
                 $commandMap = [
                     'jwt:decode' => DecodeJwtCommand::class,
                     'jwt:encode' => EncodeJwtCommand::class,

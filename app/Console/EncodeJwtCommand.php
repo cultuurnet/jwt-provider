@@ -10,10 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EncodeJwtCommand extends Command
 {
-    /**
-     * @var JwtEncoderServiceInterface
-     */
-    private $encoder;
+    private JwtEncoderServiceInterface $encoder;
 
     public function __construct(JwtEncoderServiceInterface $encoder)
     {
@@ -47,7 +44,7 @@ class EncodeJwtCommand extends Command
     {
         $claims = array_filter(
             $input->getArguments(),
-            function ($claim) {
+            function ($claim): bool {
                 return $claim !== 'command';
             },
             ARRAY_FILTER_USE_KEY

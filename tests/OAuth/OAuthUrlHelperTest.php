@@ -1,6 +1,7 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use InvalidArgumentException;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -8,27 +9,27 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OAuthUrlHelperTest extends TestCase
 {
-    const TEST_TOKEN = 'testToken';
-    const TEST_SECRET = 'testSecret';
-    const TEST_VERIFIER = 'testVerifier';
-    const DEFAULT_DESTINATION = 'http://www.default.com';
+    public const TEST_TOKEN = 'testToken';
+    public const TEST_SECRET = 'testSecret';
+    public const TEST_VERIFIER = 'testVerifier';
+    public const DEFAULT_DESTINATION = 'http://www.default.com';
 
     /**
      * @var OAuthUrlHelper
      */
-    private $oAuthUrlHelper;
+    private OAuthUrlHelper $oAuthUrlHelper;
 
     /**
      * @var StringLiteral
      */
-    private $defaultDestination;
+    private StringLiteral $defaultDestination;
 
     /**
      * @var RequestToken
      */
-    private $requestToken;
+    private RequestToken $requestToken;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->requestToken = new RequestToken(
             self::TEST_TOKEN,
@@ -65,7 +66,7 @@ class OAuthUrlHelperTest extends TestCase
             '/connect'
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
 

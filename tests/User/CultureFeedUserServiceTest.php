@@ -2,6 +2,10 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
+use ICultureFeed;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
+use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
@@ -12,23 +16,23 @@ use ValueObjects\Web\EmailAddress;
 class CultureFeedUserServiceTest extends TestCase
 {
     /**
-     * @var \ICultureFeed|\PHPUnit_Framework_MockObject_MockObject
+     * @var ICultureFeed|PHPUnit_Framework_MockObject_MockObject
      */
-    private $cultureFeed;
+    private object $cultureFeed;
 
     /**
-     * @var CultureFeedFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CultureFeedFactoryInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private $cultureFeedFactory;
+    private object $cultureFeedFactory;
 
     /**
      * @var CultureFeedUserService
      */
-    private $service;
+    private CultureFeedUserService $service;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->cultureFeed = $this->createMock(\ICultureFeed::class);
+        $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
         $this->cultureFeedFactory = $this->createMock(CultureFeedFactoryInterface::class);
 
@@ -40,15 +44,15 @@ class CultureFeedUserServiceTest extends TestCase
      * @dataProvider userServiceDataProvider
      *
      * @param AccessToken $accessToken
-     * @param \CultureFeed_User $cfUser
+     * @param CultureFeed_User $cfUser
      * @param UserClaims $expectedClaims
      * @internal param StringLiteral $id
      */
     public function it_returns_all_claims_for_a_user_by_user_id(
         AccessToken $accessToken,
-        \CultureFeed_User $cfUser,
+        CultureFeed_User $cfUser,
         UserClaims $expectedClaims
-    ) {
+    ): void {
         $includePrivateFields = true;
         $useAuth = true;
 
@@ -74,9 +78,9 @@ class CultureFeedUserServiceTest extends TestCase
     /**
      * @return array
      */
-    public function userServiceDataProvider()
+    public function userServiceDataProvider(): array
     {
-        $cfUserWithoutEmail = new \CultureFeed_User();
+        $cfUserWithoutEmail = new CultureFeed_User();
         $cfUserWithoutEmail->id = 'id-1';
         $cfUserWithoutEmail->nick = 'foo';
 
