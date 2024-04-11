@@ -32,16 +32,12 @@ class OAuthServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             OAuthCallbackHandlerInterface::class,
-            function () {
-                return $this->get(JwtOAuthCallbackHandler::class);
-            }
+            fn() => $this->get(JwtOAuthCallbackHandler::class)
         );
 
         $this->addShared(
             OAuthUrlHelper::class,
-            function (): OAuthUrlHelper {
-                return new OAuthUrlHelper(RoutingServiceProvider::AUTHORIZATION_PATH);
-            }
+            fn(): OAuthUrlHelper => new OAuthUrlHelper(RoutingServiceProvider::AUTHORIZATION_PATH)
         );
     }
 }

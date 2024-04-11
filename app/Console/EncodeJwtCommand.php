@@ -44,9 +44,7 @@ class EncodeJwtCommand extends Command
     {
         $claims = array_filter(
             $input->getArguments(),
-            function ($claim): bool {
-                return $claim !== 'command';
-            },
+            fn($claim): bool => $claim !== 'command',
             ARRAY_FILTER_USE_KEY
         );
 

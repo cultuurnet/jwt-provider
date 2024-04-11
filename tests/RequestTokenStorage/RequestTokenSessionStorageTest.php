@@ -46,9 +46,7 @@ class RequestTokenSessionStorageTest extends TestCase
         $this->sessionSegment
             ->method('get')
             ->willReturnCallback(
-                function ($key, $alt = null) {
-                    return $this->sessionData[$key] ?? $alt;
-                }
+                fn($key, $alt = null) => $this->sessionData[$key] ?? $alt
             );
 
         $this->sessionSegment

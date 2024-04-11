@@ -42,9 +42,7 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             Signer::class,
-            function (): Sha256 {
-                return new Sha256();
-            }
+            fn(): Sha256 => new Sha256()
         );
 
         $this->addShared(
@@ -81,30 +79,26 @@ class JwtServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             JwtEncoderServiceInterface::class,
-            function (): JwtEncoderService {
-                return new JwtEncoderService(
-                    $this->get(Builder::class),
-                    $this->get(Signer::class),
-                    $this->get('jwt.keys.private'),
-                    new SystemClock(
-                        new DateTimeZone('Europe/Brussels')
-                    ),
-                    new Integer($this->parameter('jwt.exp')),
-                    new Integer($this->parameter('jwt.nbf'))
-                );
-            }
+            fn(): JwtEncoderService => new JwtEncoderService(
+                $this->get(Builder::class),
+                $this->get(Signer::class),
+                $this->get('jwt.keys.private'),
+                new SystemClock(
+                    new DateTimeZone('Europe/Brussels')
+                ),
+                new Integer($this->parameter('jwt.exp')),
+                new Integer($this->parameter('jwt.nbf'))
+            )
         );
 
         $this->addShared(
             JwtDecoderServiceInterface::class,
-            function (): JwtDecoderService {
-                return new JwtDecoderService(
-                    new Parser(),
-                    $this->get(ValidationData::class),
-                    $this->get(Signer::class),
-                    $this->get('jwt.keys.public')
-                );
-            }
+            fn(): JwtDecoderService => new JwtDecoderService(
+                new Parser(),
+                $this->get(ValidationData::class),
+                $this->get(Signer::class),
+                $this->get('jwt.keys.public')
+            )
         );
     }
 }

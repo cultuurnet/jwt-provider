@@ -20,12 +20,10 @@ class CultureFeedServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             CultureFeedFactoryInterface::class,
-            function (): CultureFeedFactory {
-                return new CultureFeedFactory(
-                    $this->get(ConsumerCredentials::class),
-                    new StringLiteral($this->parameter('uitid.base_url'))
-                );
-            }
+            fn(): CultureFeedFactory => new CultureFeedFactory(
+                $this->get(ConsumerCredentials::class),
+                new StringLiteral($this->parameter('uitid.base_url'))
+            )
         );
 
         $this->addShared(
@@ -43,9 +41,7 @@ class CultureFeedServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             UserServiceInterface::class,
-            function () {
-                return $this->get(CultureFeedUserService::class);
-            }
+            fn() => $this->get(CultureFeedUserService::class)
         );
     }
 }
