@@ -23,12 +23,12 @@
         "zendframework/zend-httphandlerrunner": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5",
         "escapestudios/symfony2-coding-standard": "~2.9",
         "squizlabs/php_codesniffer": "~2.5.1",
         "satooshi/php-coveralls": "^2.1",
         "phpstan/phpstan": "^1.10",
-        "rector/rector": "^1.0"
+        "rector/rector": "^1.0",
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {

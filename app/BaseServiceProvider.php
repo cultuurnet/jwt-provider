@@ -9,12 +9,8 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 {
     /**
      * Add Service definition to container
-     *
-     * @param string $serviceName
-     * @param $function
-     * @param string|null $tag
      */
-    protected function add(string $serviceName, $function, ?string $tag = null): void
+    protected function add(string $serviceName, callable $function, ?string $tag = null): void
     {
         $definition = $this->getLeagueContainer()
             ->add($serviceName, $function);
@@ -26,12 +22,8 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 
     /**
      * Add Service definition to container
-     *
-     * @param string $serviceName
-     * @param $function
-     * @param string|null $tag
      */
-    protected function addShared(string $serviceName, $function, ?string $tag = null): void
+    protected function addShared(string $serviceName, callable $function, ?string $tag = null): void
     {
         $definition = $this->getLeagueContainer()
             ->share($serviceName, $function);
@@ -44,7 +36,6 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     /**
      * Get parameter from config
      *
-     * @param string $parameter
      * @return mixed
      */
     protected function parameter(string $parameter)
@@ -55,7 +46,6 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     /**
      * Get service from container
      *
-     * @param string $name
      * @return mixed
      */
     protected function get(string $name)
