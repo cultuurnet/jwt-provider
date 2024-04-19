@@ -9,10 +9,7 @@ use ValueObjects\Web\EmailAddress;
 
 class CultureFeedUserService implements UserServiceInterface
 {
-    /**
-     * @var CultureFeedFactoryInterface
-     */
-    private $cultureFeedFactory;
+    private CultureFeedFactoryInterface $cultureFeedFactory;
 
     public function __construct(CultureFeedFactoryInterface $cultureFeedFactory)
     {

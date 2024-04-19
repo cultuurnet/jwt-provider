@@ -11,10 +11,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DecodeJwtCommand extends Command
 {
-    /**
-     * @var JWTDecoderServiceInterface
-     */
-    private $decoder;
+    private JWTDecoderServiceInterface $decoder;
 
     public function __construct(JWTDecoderServiceInterface $decoder)
     {

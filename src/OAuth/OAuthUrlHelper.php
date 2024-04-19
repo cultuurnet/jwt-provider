@@ -13,10 +13,7 @@ class OAuthUrlHelper
     private const OAUTH_TOKEN = 'oauth_token';
     private const OAUTH_VERIFIER = 'oauth_verifier';
 
-    /**
-     * @var string
-     */
-    private $authorizationPath;
+    private string $authorizationPath;
 
     /**
      * @param string $authorizationPath
