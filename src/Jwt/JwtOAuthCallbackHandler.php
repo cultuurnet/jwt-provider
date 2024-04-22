@@ -24,7 +24,7 @@ class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
         $this->userService = $userService;
     }
 
-    public function handle(AccessToken $accessToken, UriInterface $destination): ResponseInterface
+    public function handle(AccessToken $accessToken, string $destination): ResponseInterface
     {
         $claims = $this->userService
             ->getUserClaims($accessToken)
@@ -32,12 +32,24 @@ class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
 
         $jwt = $this->encoderService->encode($claims);
 
-        $q = $destination->getQuery();
-
-        $q .= ($q?'&':'') . 'jwt=' . $jwt;
+        $destination = $this->addJwtTokenToRedirectUri($destination, $jwt);
 
         return new RedirectResponse(
-            (string) $destination->withQuery($q)
+            $destination
         );
+    }
+
+    private function addJwtTokenToRedirectUri(string $destination, \Lcobucci\JWT\Token $jwt)
+    {
+        $urlParts = parse_url($destination);
+
+        if (empty($urlParts['query'])) {
+            $newQuery = 'jwt=' . $jwt;
+        } else {
+            $newQuery = $urlParts['query'] . '&jwt=' . $jwt;
+        }
+
+        $destination = str_replace($urlParts['query'], $newQuery, $destination);
+        return $destination;
     }
 }

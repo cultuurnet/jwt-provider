@@ -34,7 +34,7 @@ class OAuthController
     public function connect(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $callbackUrl = (string) $this->oAuthUrlHelper->createCallbackUri($request);
+            $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
         } catch (InvalidArgumentException $e) {
             return ResponseFactory::create(400, $e->getMessage());
         }
@@ -53,7 +53,7 @@ class OAuthController
     public function register(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $callbackUrl = (string) $this->oAuthUrlHelper->createCallbackUri($request);
+            $callbackUrl = $this->oAuthUrlHelper->createCallbackUri($request);
         } catch (InvalidArgumentException $e) {
             return ResponseFactory::create(400, $e->getMessage());
         }
