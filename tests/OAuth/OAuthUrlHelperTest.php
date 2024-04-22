@@ -16,8 +16,6 @@ class OAuthUrlHelperTest extends TestCase
 
     private OAuthUrlHelper $oAuthUrlHelper;
 
-    private StringLiteral $defaultDestination;
-
     private RequestToken $requestToken;
 
     public function setUp(): void
@@ -28,7 +26,6 @@ class OAuthUrlHelperTest extends TestCase
         );
 
         $this->oAuthUrlHelper = new OAuthUrlHelper('/authorize');
-        $this->defaultDestination = new StringLiteral(self::DEFAULT_DESTINATION);
     }
 
     /**

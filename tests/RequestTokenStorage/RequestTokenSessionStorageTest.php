@@ -10,12 +10,8 @@ use PHPUnit_Framework_MockObject_MockObject;
 
 class RequestTokenSessionStorageTest extends TestCase
 {
-    /**
-     * @var Segment|PHPUnit_Framework_MockObject_MockObject
-     */
-    private object $sessionSegment;
-
-    private array $sessionData;
+    /** @var array<string, mixed> */
+    private array $sessionData = [];
 
     private RequestTokenSessionStorage $requestTokenSessionStorage;
 
@@ -23,10 +19,10 @@ class RequestTokenSessionStorageTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sessionSegment = $this->createMock(Segment::class);
+        $sessionSegment = $this->createMock(Segment::class);
         $this->sessionData = [];
 
-        $this->sessionSegment
+        $sessionSegment
             ->method('set')
             ->willReturnCallback(
                 function ($key, $value): void {
@@ -34,13 +30,15 @@ class RequestTokenSessionStorageTest extends TestCase
                 }
             );
 
-        $this->sessionSegment
+        $sessionSegment
             ->method('get')
             ->willReturnCallback(
-                fn($key, $alt = null) => $this->sessionData[$key] ?? $alt
+                function ($key, $alt = null) {
+                    return $this->sessionData[$key] ?? $alt;
+                }
             );
 
-        $this->sessionSegment
+        $sessionSegment
             ->method('clear')
             ->willReturnCallback(
                 function (): void {
@@ -49,7 +47,7 @@ class RequestTokenSessionStorageTest extends TestCase
             );
 
         $this->requestTokenSessionStorage = new RequestTokenSessionStorage(
-            $this->sessionSegment
+            $sessionSegment
         );
 
         $this->requestToken = new RequestToken('token', 'secret');

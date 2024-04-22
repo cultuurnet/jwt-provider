@@ -20,12 +20,12 @@ use ValueObjects\Web\EmailAddress;
 class JwtOAuthCallbackHandlerTest extends TestCase
 {
     /**
-     * @var JwtEncoderServiceInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var JwtEncoderServiceInterface|MockObject
      */
     private $encoder;
 
     /**
-     * @var UserServiceInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var UserServiceInterface|MockObject
      */
     private $userService;
 

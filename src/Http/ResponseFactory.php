@@ -10,6 +10,9 @@ use Slim\Psr7\Response;
 
 final class ResponseFactory
 {
+    /**
+     * @param string[] $headers
+     */
     public static function create(int $statusCode, string $body = '', array $headers = []): ResponseInterface
     {
         $response = new Response($statusCode, new Headers($headers));

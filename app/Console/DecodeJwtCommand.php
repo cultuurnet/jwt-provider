@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
-use CultuurNet\UDB3\Jwt\JWTDecoderServiceInterface;
+use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,9 +11,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DecodeJwtCommand extends Command
 {
-    private JWTDecoderServiceInterface $decoder;
+    private JwtDecoderServiceInterface $decoder;
 
-    public function __construct(JWTDecoderServiceInterface $decoder)
+    public function __construct(JwtDecoderServiceInterface $decoder)
     {
         parent::__construct();
         $this->decoder = $decoder;
@@ -50,6 +50,6 @@ class DecodeJwtCommand extends Command
         $output->writeln('Signature verification: ' . ($verified ? '✓' : '✕'));
 
         // Return 0 as exit code if verified & valid, otherwise 1.
-        return !($valid && $verified);
+        return (int)!($valid && $verified);
     }
 }

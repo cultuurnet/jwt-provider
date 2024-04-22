@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider\User;
 
 use ICultureFeed;
-use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit\Framework\MockObject\MockObject;
 use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
@@ -12,18 +10,19 @@ use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class CultureFeedUserServiceTest extends TestCase
 {
     /**
-     * @var ICultureFeed|PHPUnit_Framework_MockObject_MockObject
+     * @var ICultureFeed&MockObject
      */
-    private object $cultureFeed;
+    private $cultureFeed;
 
     /**
-     * @var CultureFeedFactoryInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var CultureFeedFactoryInterface&MockObject
      */
-    private object $cultureFeedFactory;
+    private $cultureFeedFactory;
 
     private CultureFeedUserService $service;
 
