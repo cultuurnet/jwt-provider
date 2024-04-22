@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "218cf8c8a0135e603a95140e7df3e87b",
+    "content-hash": "1bf5c972a30b0d10e8bbd1f0308aebc8",
     "packages": [
         {
             "name": "aura/session",
@@ -466,6 +466,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^4.7"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -488,6 +489,11 @@
                 }
             ],
             "description": "Clock abstraction library",
+            "support": {
+                "issues": "https://github.com/cultuurnet/clock/issues",
+                "source": "https://github.com/cultuurnet/clock/tree/v1.0.0"
+            },
+            "abandoned": true,
             "time": "2015-06-08T16:12:34+00:00"
         },
         {
@@ -543,25 +549,32 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc"
+                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
-                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
+                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
-                "lcobucci/jwt": "~3.1"
+                "lcobucci/jwt": "3.3.*",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
+                "phpunit/phpunit": "^7.5",
+                "silex/silex": "^1.3",
+                "squizlabs/php_codesniffer": "~2.3",
+                "symfony/security": "~2.7.3"
             },
+            "suggest": {
+                "silex/silex": "To use the provided JwtServiceProvider",
+                "symfony/security": "To integrate with Symfony's firewall"
+            },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -579,12 +592,17 @@
             ],
             "authors": [
                 {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2018-06-29T14:15:52+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/udb3-jwt/issues",
+                "source": "https://github.com/cultuurnet/udb3-jwt/tree/master"
+            },
+            "abandoned": true,
+            "time": "2021-01-15T09:26:35+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -1440,16 +1458,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.3.1",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18"
+                "reference": "c1123697f6a2ec29162b82f170dd4a491f524773"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
-                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/c1123697f6a2ec29162b82f170dd4a491f524773",
+                "reference": "c1123697f6a2ec29162b82f170dd4a491f524773",
                 "shasum": ""
             },
             "require": {
@@ -1491,7 +1509,21 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2019-05-24T18:30:49+00:00"
+            "support": {
+                "issues": "https://github.com/lcobucci/jwt/issues",
+                "source": "https://github.com/lcobucci/jwt/tree/3.3.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/lcobucci",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/lcobucci",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-08-20T13:22:28+00:00"
         },
         {
             "name": "league/container",
