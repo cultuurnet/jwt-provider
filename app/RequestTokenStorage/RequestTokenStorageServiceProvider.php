@@ -7,9 +7,14 @@ use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 
 class RequestTokenStorageServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
+    protected array $provides = [
         RequestTokenStorageInterface::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {

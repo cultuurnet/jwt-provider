@@ -10,11 +10,16 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
+    protected array $provides = [
         ConsumerCredentials::class,
         CultureFeedFactoryInterface::class,
         UserServiceInterface::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {
