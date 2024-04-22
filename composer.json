@@ -10,7 +10,7 @@
         "cultuurnet/culturefeed-php": "^1.6",
         "cultuurnet/udb3-jwt": "~0.1",
         "cultuurnet/valueobjects": "~3.0",
-        "filp/whoops": "^2.5",
+        "filp/whoops": "^2.15",
         "hassankhan/config": "^2.1",
         "lcobucci/jwt": "~3.1",
         "league/container": "^3.3",
