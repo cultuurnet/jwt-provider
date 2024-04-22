@@ -50,6 +50,6 @@ class DecodeJwtCommand extends Command
         $output->writeln('Signature verification: ' . ($verified ? '✓' : '✕'));
 
         // Return 0 as exit code if verified & valid, otherwise 1.
-        return ($valid && $verified) ? 1 : 0;
+        return (int)!($valid && $verified);
     }
 }
