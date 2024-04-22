@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddeb880eec58879417a60f41ec26c60b",
+    "content-hash": "9791dfa8b10e362d84e2d8ea9bbc9eb7",
     "packages": [
         {
             "name": "aura/session",
