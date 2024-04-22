@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Aura\Session\Segment;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 use PHPUnit\Framework\TestCase;
@@ -12,24 +13,15 @@ class RequestTokenSessionStorageTest extends TestCase
     /**
      * @var Segment|PHPUnit_Framework_MockObject_MockObject
      */
-    private $sessionSegment;
+    private object $sessionSegment;
 
-    /**
-     * @var array
-     */
-    private $sessionData;
+    private array $sessionData;
 
-    /**
-     * @var RequestTokenSessionStorage
-     */
-    private $requestTokenSessionStorage;
+    private RequestTokenSessionStorage $requestTokenSessionStorage;
 
-    /**
-     * @var RequestToken
-     */
-    private $requestToken;
+    private RequestToken $requestToken;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->sessionSegment = $this->createMock(Segment::class);
         $this->sessionData = [];
@@ -37,7 +29,7 @@ class RequestTokenSessionStorageTest extends TestCase
         $this->sessionSegment
             ->method('set')
             ->willReturnCallback(
-                function ($key, $value) {
+                function ($key, $value): void {
                     $this->sessionData[$key] = $value;
                 }
             );
@@ -45,15 +37,13 @@ class RequestTokenSessionStorageTest extends TestCase
         $this->sessionSegment
             ->method('get')
             ->willReturnCallback(
-                function ($key, $alt = null) {
-                    return $this->sessionData[$key] ?? $alt;
-                }
+                fn($key, $alt = null) => $this->sessionData[$key] ?? $alt
             );
 
         $this->sessionSegment
             ->method('clear')
             ->willReturnCallback(
-                function () {
+                function (): void {
                     $this->sessionData = [];
                 }
             );

@@ -12,15 +12,9 @@ use Psr\Http\Message\UriInterface;
 
 class JwtOAuthCallbackHandler implements OAuthCallbackHandlerInterface
 {
-    /**
-     * @var JwtEncoderServiceInterface
-     */
-    private $encoderService;
+    private JwtEncoderServiceInterface $encoderService;
 
-    /**
-     * @var UserServiceInterface
-     */
-    private $userService;
+    private UserServiceInterface $userService;
 
     public function __construct(
         JwtEncoderServiceInterface $encoderService,

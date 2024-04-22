@@ -13,10 +13,7 @@ class RequestTokenSessionStorage implements RequestTokenStorageInterface
 {
     private const REQUEST_TOKEN_KEY = 'RequestToken';
     
-    /**
-     * @var Segment
-     */
-    private $sessionSegment;
+    private Segment $sessionSegment;
 
     public function __construct(Segment $sessionSegment)
     {

@@ -19,7 +19,7 @@ class OAuthServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             OAuthService::class,
-            function () {
+            function (): OAuthService {
                 $baseUrl = $this->parameter('uitid.base_url');
                 $consumerCredentials = $this->get(ConsumerCredentials::class);
 
@@ -32,16 +32,12 @@ class OAuthServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             OAuthCallbackHandlerInterface::class,
-            function () {
-                return $this->get(JwtOAuthCallbackHandler::class);
-            }
+            fn() => $this->get(JwtOAuthCallbackHandler::class)
         );
 
         $this->addShared(
             OAuthUrlHelper::class,
-            function () {
-                return new OAuthUrlHelper(RoutingServiceProvider::AUTHORIZATION_PATH);
-            }
+            fn(): OAuthUrlHelper => new OAuthUrlHelper(RoutingServiceProvider::AUTHORIZATION_PATH)
         );
     }
 }

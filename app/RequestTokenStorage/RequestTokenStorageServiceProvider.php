@@ -15,7 +15,7 @@ class RequestTokenStorageServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             RequestTokenStorageInterface::class,
-            function () {
+            function (): RequestTokenSessionStorage {
                 $sessionFactory = new SessionFactory;
                 $session = $sessionFactory->newInstance($_COOKIE);
                 $segment = $session->getSegment(RequestTokenSessionStorage::class);
