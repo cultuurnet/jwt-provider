@@ -39,10 +39,6 @@ class DecodeJwtCommand extends Command
 
         $output->writeln('');
 
-        foreach ($token->getClaims() as $claim => $value) {
-            $output->writeln("{$claim}: {$value}");
-        }
-
         $valid = $this->decoder->validateData($token);
         $verified = $this->decoder->verifySignature($token);
 
