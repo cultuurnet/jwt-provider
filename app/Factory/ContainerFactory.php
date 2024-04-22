@@ -17,14 +17,13 @@ class ContainerFactory
     public static function forCli(Config $config): Container
     {
         $container = self::build($config);
-        $container->addServiceProvider(CommandServiceProvider::class);
+        $container->addServiceProvider(new CommandServiceProvider);
         return $container;
     }
-
     public static function forWeb(Config $config): Container
     {
         $container = self::build($config);
-        $container->addServiceProvider(RoutingServiceProvider::class);
+        $container->addServiceProvider(new RoutingServiceProvider);
         return $container;
     }
 
@@ -37,10 +36,10 @@ class ContainerFactory
             $config
         );
 
-        $container->addServiceProvider(CultureFeedServiceProvider::class);
-        $container->addServiceProvider(JwtServiceProvider::class);
-        $container->addServiceProvider(OAuthServiceProvider::class);
-        $container->addServiceProvider(RequestTokenStorageServiceProvider::class);
+        $container->addServiceProvider(new CultureFeedServiceProvider);
+        $container->addServiceProvider(new JwtServiceProvider);
+        $container->addServiceProvider(new OAuthServiceProvider);
+        $container->addServiceProvider(new RequestTokenStorageServiceProvider);
 
         return $container;
     }
