@@ -22,12 +22,12 @@ class JwtOAuthCallbackHandlerTest extends TestCase
     /**
      * @var JwtEncoderServiceInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private object $encoder;
+    private $encoder;
 
     /**
      * @var UserServiceInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private object $userService;
+    private $userService;
 
     private JwtOAuthCallbackHandler $callbackHandler;
 

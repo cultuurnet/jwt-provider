@@ -15,6 +15,12 @@ install:
 ci:
 	docker exec -it jwt-provider composer ci
 
+test:
+	docker exec -it jwt-provider composer test
+
+stan:
+	docker exec -it jwt-provider composer stan
+
 bash:
 	docker exec -it jwt-provider bash
 
