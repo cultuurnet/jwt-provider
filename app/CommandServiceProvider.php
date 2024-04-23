@@ -9,9 +9,14 @@ use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 class CommandServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
+    protected array $provides = [
         Application::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {

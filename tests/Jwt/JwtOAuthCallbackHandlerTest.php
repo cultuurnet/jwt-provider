@@ -2,18 +2,17 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
-use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit\Framework\MockObject\MockObject;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
 use CultuurNet\UDB3\JwtProvider\User\UserClaims;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
-use GuzzleHttp\Psr7\Uri;
 use Lcobucci\JWT\Signature;
 use Lcobucci\JWT\Token as Jwt;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\UriFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
@@ -57,7 +56,7 @@ class JwtOAuthCallbackHandlerTest extends TestCase
             )
         );
 
-        $destination = new Uri('http://bar.com/sub/directory?query=value');
+        $destination =  (new UriFactory())->createUri('http://bar.com/sub/directory?query=value');
 
         $userClaims = new UserClaims(
             $userId,

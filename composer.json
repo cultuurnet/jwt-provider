@@ -10,22 +10,20 @@
         "cultuurnet/culturefeed-php": "^1.6",
         "cultuurnet/udb3-jwt": "~0.1",
         "cultuurnet/valueobjects": "~3.0",
-        "filp/whoops": "^2.5",
-        "guzzlehttp/psr7": "^1.3",
+        "filp/whoops": "^2.15",
         "hassankhan/config": "^2.1",
         "lcobucci/jwt": "~3.1",
-        "league/container": "^3.3",
         "league/route": "^4.3",
         "monolog/monolog": "~1.11",
-        "slim/psr7": "^0.5",
-        "symfony/console": "^3.4",
-        "symfony/yaml": "^4.3",
-        "laminas/laminas-httphandlerrunner": "^2.2"
+        "laminas/laminas-httphandlerrunner": "^2.2",
+        "guzzle/guzzle": "^2.6",
+        "slim/psr7": "^1.6",
+        "league/container": "^4.2",
+        "symfony/yaml": "^4.4"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "~2.9",
         "squizlabs/php_codesniffer": "~2.5.1",
-        "satooshi/php-coveralls": "^2.1",
         "phpstan/phpstan": "^1.10",
         "rector/rector": "^1.0",
         "phpunit/phpunit": "^9.6"
