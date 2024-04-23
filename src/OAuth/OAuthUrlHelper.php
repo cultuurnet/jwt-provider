@@ -1,11 +1,13 @@
 <?php
+
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use CultuurNet\Auth\TokenCredentials as RequestToken;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use Slim\Psr7\Factory\UriFactory;
 
 class OAuthUrlHelper
 {
@@ -27,11 +29,11 @@ class OAuthUrlHelper
     public function createCallbackUri(ServerRequestInterface $request): UriInterface
     {
         $baseUrl = $this->getBaseUrlFromRequest($request);
-        $query = http_build_query([self::DESTINATION => (string) $this->getDestinationUri($request)]);
+        $query = http_build_query([self::DESTINATION => (string)$this->getDestinationUri($request)]);
 
         $url = $baseUrl . '/' . $this->authorizationPath . '?' . $query;
 
-        return new Uri($url);
+        return (new UriFactory())->createUri($url);
     }
 
     public function hasValidRequestToken(
@@ -43,7 +45,7 @@ class OAuthUrlHelper
         $actualToken = $request->getQueryParams()[self::OAUTH_TOKEN] ?? null;
         $actualVerifier = $this->getOAuthVerifier($request);
 
-        return ($actualToken === $token) && (bool) $actualVerifier;
+        return ($actualToken === $token) && (bool)$actualVerifier;
     }
 
     public function getOAuthVerifier(ServerRequestInterface $request): ?string
@@ -51,10 +53,10 @@ class OAuthUrlHelper
         $verifier = $request->getQueryParams()[self::OAUTH_VERIFIER] ?? null;
 
         if ($verifier === null) {
-            return $verifier;
+            return null;
         }
 
-        return (string) $verifier;
+        return (string)$verifier;
     }
 
     public function getDestinationUri(ServerRequestInterface $request): UriInterface
@@ -67,7 +69,7 @@ class OAuthUrlHelper
             );
         }
 
-        return new Uri($destination);
+        return (new UriFactory())->createUri($destination);
     }
 
     private function getBaseUrlFromRequest(ServerRequestInterface $request): string
