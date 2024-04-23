@@ -19,7 +19,7 @@ use ValueObjects\Number\Integer;
 
 class JwtServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
+    protected array $provides = [
         Builder::class,
         Signer::class,
         'jwt.keys.private',
@@ -28,6 +28,11 @@ class JwtServiceProvider extends BaseServiceProvider
         JwtEncoderServiceInterface::class,
         JwtDecoderServiceInterface::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {

@@ -10,9 +10,14 @@ class RoutingServiceProvider extends BaseServiceProvider
 {
     public const AUTHORIZATION_PATH = '/authorize';
 
-    protected $provides = [
+    protected array $provides = [
         Router::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {

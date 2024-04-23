@@ -9,11 +9,16 @@ use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;
 
 class OAuthServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
+    protected array $provides = [
         OAuthService::class,
         OAuthCallbackHandlerInterface::class,
         OAuthUrlHelper::class,
     ];
+
+    public function provides(string $id): bool
+    {
+        return in_array($id, $this->provides, true);
+    }
 
     public function register(): void
     {
