@@ -20,7 +20,7 @@
         "slim/psr7": "^0.5",
         "symfony/console": "^3.4",
         "symfony/yaml": "^4.3",
-        "zendframework/zend-httphandlerrunner": "^1.1"
+        "laminas/laminas-httphandlerrunner": "^2.2"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "~2.9",
