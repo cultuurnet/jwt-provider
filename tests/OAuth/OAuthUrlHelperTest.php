@@ -41,7 +41,7 @@ class OAuthUrlHelperTest extends TestCase
 
         $callbackUri = $this->oAuthUrlHelper->createCallbackUri($request);
 
-        $this->assertEquals($expectedUri, $callbackUri);
+        $this->assertEquals($expectedUri, (string) $callbackUri);
     }
 
     /**

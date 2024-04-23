@@ -1,11 +1,11 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
+use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
-use Slim\Psr7\Uri;
 
 class OAuthUrlHelper
 {
@@ -24,12 +24,14 @@ class OAuthUrlHelper
         $this->authorizationPath = trim($authorizationPath, '/');
     }
 
-    public function createCallbackUri(ServerRequestInterface $request): string
+    public function createCallbackUri(ServerRequestInterface $request): UriInterface
     {
         $baseUrl = $this->getBaseUrlFromRequest($request);
-        $query = http_build_query([self::DESTINATION => $this->getDestinationUri($request)]);
+        $query = http_build_query([self::DESTINATION => (string) $this->getDestinationUri($request)]);
 
-        return $baseUrl . '/' . $this->authorizationPath . '?' . $query;
+        $url = $baseUrl . '/' . $this->authorizationPath . '?' . $query;
+
+        return new Uri($url);
     }
 
     public function hasValidRequestToken(
@@ -49,13 +51,13 @@ class OAuthUrlHelper
         $verifier = $request->getQueryParams()[self::OAUTH_VERIFIER] ?? null;
 
         if ($verifier === null) {
-            return null;
+            return $verifier;
         }
 
         return (string) $verifier;
     }
 
-    public function getDestinationUri(ServerRequestInterface $request): string
+    public function getDestinationUri(ServerRequestInterface $request): UriInterface
     {
         $destination = $request->getQueryParams()[self::DESTINATION] ?? null;
 
@@ -65,7 +67,7 @@ class OAuthUrlHelper
             );
         }
 
-        return $destination;
+        return new Uri($destination);
     }
 
     private function getBaseUrlFromRequest(ServerRequestInterface $request): string

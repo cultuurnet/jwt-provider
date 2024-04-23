@@ -8,5 +8,5 @@ use Psr\Http\Message\UriInterface;
 
 interface OAuthCallbackHandlerInterface
 {
-    public function handle(AccessToken $accessToken, string $destination): ResponseInterface;
+    public function handle(AccessToken $accessToken, UriInterface $destination): ResponseInterface;
 }
