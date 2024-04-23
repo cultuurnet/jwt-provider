@@ -37,7 +37,7 @@ class OAuthUrlHelperTest extends TestCase
             'GET',
             'http://culudb-jwt-provider.dev/connect?destination=http://culudb-silex.dev'
         );
-        $expectedUri = 'http://culudb-jwt-provider.dev/authorize?destination=' . urlencode('http://culudb-silex.dev/');
+        $expectedUri = 'http://culudb-jwt-provider.dev/authorize?destination=' . urlencode('http://culudb-silex.dev');
 
         $callbackUri = $this->oAuthUrlHelper->createCallbackUri($request);
 
