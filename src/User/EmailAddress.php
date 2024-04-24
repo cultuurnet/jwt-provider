@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ValueObjects\Exception\InvalidNativeArgumentException;
+use InvalidArgumentException;
 
 final class EmailAddress
 {
@@ -15,7 +15,7 @@ final class EmailAddress
         $filteredValue = filter_var($value, FILTER_VALIDATE_EMAIL);
 
         if ($filteredValue === false) {
-            throw new InvalidNativeArgumentException($value, array('string (valid email address)'));
+            throw new InvalidArgumentException('Invalid email address: ' . $value);
         }
 
         $this->value = $filteredValue;
