@@ -2,8 +2,6 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ValueObjects\Web\EmailAddress;
-
 class UserClaims
 {
     private string $uid;
@@ -28,7 +26,7 @@ class UserClaims
         return [
             'uid' => $this->uid,
             'nick' => $this->nick,
-            'email' => (string) $this->email,
+            'email' => $this->email !== null ? $this->email->toString() : '',
         ];
     }
 }

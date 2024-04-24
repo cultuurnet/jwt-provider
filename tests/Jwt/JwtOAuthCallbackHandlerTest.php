@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Jwt;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
+use CultuurNet\UDB3\JwtProvider\User\EmailAddress;
 use CultuurNet\UDB3\JwtProvider\User\UserClaims;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use Lcobucci\JWT\Signature;
@@ -12,7 +13,6 @@ use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
-use ValueObjects\Web\EmailAddress;
 
 class JwtOAuthCallbackHandlerTest extends TestCase
 {

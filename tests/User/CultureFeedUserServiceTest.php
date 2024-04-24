@@ -8,7 +8,6 @@ use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class CultureFeedUserServiceTest extends TestCase

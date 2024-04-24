@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider\User;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Web\EmailAddress;
 
 class UserClaimsTest extends TestCase
 {
