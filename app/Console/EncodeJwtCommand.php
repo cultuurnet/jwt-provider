@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
-use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtEncoderService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,9 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EncodeJwtCommand extends Command
 {
-    private JwtEncoderServiceInterface $encoder;
+    private JwtEncoderService $encoder;
 
-    public function __construct(JwtEncoderServiceInterface $encoder)
+    public function __construct(JwtEncoderService $encoder)
     {
         parent::__construct();
         $this->encoder = $encoder;
