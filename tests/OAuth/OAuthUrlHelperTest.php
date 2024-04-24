@@ -5,7 +5,6 @@ use InvalidArgumentException;
 use CultuurNet\Auth\TokenCredentials as RequestToken;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OAuthUrlHelperTest extends TestCase
 {

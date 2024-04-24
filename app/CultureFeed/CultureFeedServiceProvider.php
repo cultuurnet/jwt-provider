@@ -6,7 +6,6 @@ use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserService;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedServiceProvider extends BaseServiceProvider
 {
@@ -27,7 +26,7 @@ class CultureFeedServiceProvider extends BaseServiceProvider
             CultureFeedFactoryInterface::class,
             fn(): CultureFeedFactory => new CultureFeedFactory(
                 $this->get(ConsumerCredentials::class),
-                new StringLiteral($this->parameter('uitid.base_url'))
+                $this->parameter('uitid.base_url')
             )
         );
 

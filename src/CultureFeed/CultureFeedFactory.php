@@ -7,17 +7,16 @@ use CultureFeed_DefaultOAuthClient;
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use ICultureFeed;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface
 {
     private ConsumerCredentials $consumerCredentials;
 
-    private StringLiteral $baseUrl;
+    private string $baseUrl;
 
     public function __construct(
         ConsumerCredentials $consumerCredentials,
-        StringLiteral $baseUrl
+        string $baseUrl
     ) {
         $this->consumerCredentials = $consumerCredentials;
 
@@ -37,7 +36,7 @@ class CultureFeedFactory implements CultureFeedFactoryInterface
     public function createForUser(AccessToken $userAccessToken): ICultureFeed
     {
         $client = $this->createOAuthClient($userAccessToken);
-        $client->setEndpoint($this->baseUrl->toNative());
+        $client->setEndpoint($this->baseUrl);
 
         return new CultureFeed(
             $client

@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\JwtProvider\User;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class UserClaimsTest extends TestCase
@@ -14,8 +13,8 @@ class UserClaimsTest extends TestCase
     public function it_can_be_converted_to_an_array(): void
     {
         $claims = new UserClaims(
-            new StringLiteral('id-1'),
-            new StringLiteral('foo'),
+            'id-1',
+            'foo',
             new EmailAddress('foo@bar.com')
         );
 
@@ -34,8 +33,8 @@ class UserClaimsTest extends TestCase
     public function it_can_have_an_empty_email_address_by_default(): void
     {
         $claims = new UserClaims(
-            new StringLiteral('id-1'),
-            new StringLiteral('foo')
+            'id-1',
+            'foo'
         );
 
         $expected = [
