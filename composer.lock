@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "218cf8c8a0135e603a95140e7df3e87b",
+    "content-hash": "2e043c600f31dfc3e7fe2325f11487f4",
     "packages": [
         {
             "name": "aura/session",
@@ -450,47 +450,6 @@
             "time": "2018-12-14T08:36:04+00:00"
         },
         {
-            "name": "cultuurnet/clock",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/clock.git",
-                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/clock/zipball/601aaf46375fffd3d3367a866253ca6bb092f584",
-                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Clock\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                }
-            ],
-            "description": "Clock abstraction library",
-            "time": "2015-06-08T16:12:34+00:00"
-        },
-        {
             "name": "cultuurnet/culturefeed-php",
             "version": "1.10",
             "source": {
@@ -536,55 +495,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2019-11-25T12:28:46+00:00"
-        },
-        {
-            "name": "cultuurnet/udb3-jwt",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
-                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/clock": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "lcobucci/jwt": "~3.1"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\Jwt\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
-                }
-            ],
-            "description": "Provides JWT service classes",
-            "time": "2018-06-29T14:15:52+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
