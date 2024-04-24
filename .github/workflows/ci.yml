@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.4']
-    name: PHP ${{ matrix.php-versions }}
+        php-versions: ['7.4', '8.0']
+    name: PHP unit tests ${{ matrix.php-versions }}
     steps:
       - name: 📤 Checkout project
         uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [ '7.4']
+        php-versions: [ '7.4', '8.0']
     name: Static analysis (PHP ${{ matrix.php-versions }})
     steps:
       - name: 📤 Checkout project
