@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
-use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
 use CultuurNet\UDB3\JwtProvider\User\UserClaims;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
@@ -19,7 +18,7 @@ use ValueObjects\Web\EmailAddress;
 class JwtOAuthCallbackHandlerTest extends TestCase
 {
     /**
-     * @var JwtEncoderServiceInterface|MockObject
+     * @var JwtEncoderService&MockObject
      */
     private $encoder;
 
@@ -32,7 +31,7 @@ class JwtOAuthCallbackHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->encoder = $this->createMock(JwtEncoderServiceInterface::class);
+        $this->encoder = $this->createMock(JwtEncoderService::class);
         $this->userService = $this->createMock(UserServiceInterface::class);
 
         $this->callbackHandler = new JwtOAuthCallbackHandler(

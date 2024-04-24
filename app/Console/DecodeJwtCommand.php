@@ -2,18 +2,17 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Console;
 
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
+use CultuurNet\UDB3\JwtProvider\Jwt\JwtDecoderService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class DecodeJwtCommand extends Command
 {
-    private JwtDecoderServiceInterface $decoder;
+    private JwtDecoderService $decoder;
 
-    public function __construct(JwtDecoderServiceInterface $decoder)
+    public function __construct(JwtDecoderService $decoder)
     {
         parent::__construct();
         $this->decoder = $decoder;
@@ -33,9 +32,7 @@ class DecodeJwtCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $token = $this->decoder->parse(
-            new StringLiteral($input->getArgument('token'))
-        );
+        $token = $this->decoder->parse($input->getArgument('token'));
 
         $output->writeln('');
 

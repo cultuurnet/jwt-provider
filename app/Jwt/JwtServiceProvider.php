@@ -2,12 +2,8 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
-use CultuurNet\Clock\SystemClock;
-use CultuurNet\UDB3\Jwt\JwtDecoderService;
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
-use CultuurNet\UDB3\Jwt\JwtEncoderService;
-use CultuurNet\UDB3\Jwt\JwtEncoderServiceInterface;
 use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
+use CultuurNet\UDB3\JwtProvider\Clock\SystemClock;
 use DateTimeZone;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
@@ -15,7 +11,6 @@ use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\ValidationData;
-use ValueObjects\Number\Integer;
 
 class JwtServiceProvider extends BaseServiceProvider
 {
@@ -25,8 +20,8 @@ class JwtServiceProvider extends BaseServiceProvider
         'jwt.keys.private',
         'jwt.keys.public',
         ValidationData::class,
-        JwtEncoderServiceInterface::class,
-        JwtDecoderServiceInterface::class,
+        JwtEncoderService::class,
+        JwtDecoderService::class,
     ];
 
     public function provides(string $id): bool
@@ -83,22 +78,20 @@ class JwtServiceProvider extends BaseServiceProvider
         );
 
         $this->addShared(
-            JwtEncoderServiceInterface::class,
-            fn(): JwtEncoderService => new JwtEncoderService(
+            JwtEncoderService::class,
+            fn(): DefaultJwtEncoderService => new DefaultJwtEncoderService(
                 $this->get(Builder::class),
                 $this->get(Signer::class),
                 $this->get('jwt.keys.private'),
-                new SystemClock(
-                    new DateTimeZone('Europe/Brussels')
-                ),
-                new Integer($this->parameter('jwt.exp')),
-                new Integer($this->parameter('jwt.nbf'))
+                new SystemClock(new DateTimeZone('Europe/Brussels')),
+                $this->parameter('jwt.exp'),
+                $this->parameter('jwt.nbf')
             )
         );
 
         $this->addShared(
-            JwtDecoderServiceInterface::class,
-            fn(): JwtDecoderService => new JwtDecoderService(
+            JwtDecoderService::class,
+            fn(): DefaultJwtDecoderService => new DefaultJwtDecoderService(
                 new Parser(),
                 $this->get(ValidationData::class),
                 $this->get(Signer::class),
