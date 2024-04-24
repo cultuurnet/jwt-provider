@@ -4,8 +4,6 @@ namespace CultuurNet\UDB3\JwtProvider\User;
 
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class CultureFeedUserService implements UserServiceInterface
 {
@@ -24,8 +22,8 @@ class CultureFeedUserService implements UserServiceInterface
             ->getUser($userAccessToken->getId(), true, true);
 
         return new UserClaims(
-            new StringLiteral((string) $cfUser->id),
-            new StringLiteral((string) $cfUser->nick),
+            $cfUser->id,
+            $cfUser->nick,
             $cfUser->mbox !== null ? new EmailAddress($cfUser->mbox) : null
         );
     }

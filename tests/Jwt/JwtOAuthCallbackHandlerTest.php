@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\Jwt;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
+use CultuurNet\UDB3\JwtProvider\User\EmailAddress;
 use CultuurNet\UDB3\JwtProvider\User\UserClaims;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
 use Lcobucci\JWT\Signature;
@@ -12,8 +13,6 @@ use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\UriFactory;
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class JwtOAuthCallbackHandlerTest extends TestCase
 {
@@ -45,10 +44,10 @@ class JwtOAuthCallbackHandlerTest extends TestCase
      */
     public function it_returns_a_redirect_response_to_the_destination_with_a_jwt_as_url_fragment(): void
     {
-        $userId = new StringLiteral('id-1');
+        $userId = 'id-1';
 
         $accessToken = new AccessToken(
-            $userId->toNative(),
+            $userId,
             new TokenCredentials(
                 'token',
                 'secret'
@@ -59,7 +58,7 @@ class JwtOAuthCallbackHandlerTest extends TestCase
 
         $userClaims = new UserClaims(
             $userId,
-            new StringLiteral('foo'),
+            'foo',
             new EmailAddress('foo@bar.com')
         );
 

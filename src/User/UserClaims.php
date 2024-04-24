@@ -2,20 +2,17 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
-
 class UserClaims
 {
-    private StringLiteral $uid;
+    private string $uid;
 
-    private StringLiteral $nick;
+    private string $nick;
 
     private ?EmailAddress $email;
 
     public function __construct(
-        StringLiteral $uid,
-        StringLiteral $nick,
+        string $uid,
+        string $nick,
         ?EmailAddress $email = null
     ) {
         $this->uid = $uid;
@@ -27,9 +24,9 @@ class UserClaims
     {
         // Always set the email claim, but could be empty in some cases.
         return [
-            'uid' => (string) $this->uid,
-            'nick' => (string) $this->nick,
-            'email' => (string) $this->email,
+            'uid' => $this->uid,
+            'nick' => $this->nick,
+            'email' => $this->email !== null ? $this->email->toString() : '',
         ];
     }
 }

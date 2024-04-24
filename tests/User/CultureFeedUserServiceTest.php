@@ -8,8 +8,6 @@ use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class CultureFeedUserServiceTest extends TestCase
@@ -42,7 +40,6 @@ class CultureFeedUserServiceTest extends TestCase
      * @param AccessToken $accessToken
      * @param CultureFeed_User $cfUser
      * @param UserClaims $expectedClaims
-     * @internal param StringLiteral $id
      */
     public function it_returns_all_claims_for_a_user_by_user_id(
         AccessToken $accessToken,
@@ -92,8 +89,8 @@ class CultureFeedUserServiceTest extends TestCase
                 ),
                 $cfUserWithoutEmail,
                 new UserClaims(
-                    new StringLiteral('id-1'),
-                    new StringLiteral('foo')
+                    'id-1',
+                    'foo'
                 ),
             ],
             [
@@ -103,8 +100,8 @@ class CultureFeedUserServiceTest extends TestCase
                 ),
                 $cfUserWithEmail,
                 new UserClaims(
-                    new StringLiteral('id-2'),
-                    new StringLiteral('foo'),
+                    'id-2',
+                    'foo',
                     new EmailAddress('foo@bar.com')
                 ),
             ],

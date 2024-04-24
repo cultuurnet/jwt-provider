@@ -8,7 +8,6 @@
         "aura/session": "^2.1",
         "cultuurnet/auth": "^3.0",
         "cultuurnet/culturefeed-php": "^1.6",
-        "cultuurnet/valueobjects": "~3.0",
         "filp/whoops": "^2.15",
         "hassankhan/config": "^2.1",
         "lcobucci/jwt": "~3.1",
