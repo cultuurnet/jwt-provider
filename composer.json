@@ -16,7 +16,7 @@
         "guzzlehttp/psr7": "^2.6",
         "league/container": "^3.3",
         "league/route": "^4.3",
-        "monolog/monolog": "^1.11",
+        "monolog/monolog": "^3.6",
         "symfony/yaml": "^5.4",
         "beberlei/assert": "^3.2",
         "cultuurnet/culturefeed-php": "^1.10",
