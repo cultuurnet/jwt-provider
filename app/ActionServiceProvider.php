@@ -98,16 +98,16 @@ final class ActionServiceProvider extends BaseServiceProvider
                 $this->get(Auth0::class),
                 new Authentication(
                     [
-                        'domain' => $this->parameter('auth0.domain'),
-                        'clientId' => $this->parameter('auth0.client_id'),
-                        'clientSecret' => $this->parameter('auth0.client_secret'),
-                        'cookieSecret' => $this->parameter('auth0.cookie_secret'),
+                        'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
+                        'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
+                        'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
+                        'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
                     ]
                 ),
                 $this->get(ResponseFactoryInterface::class),
                 new UriFactory(),
-                $this->parameter('auth0.log_out_uri'),
-                $this->parameter('auth0.client_id')
+                $this->parameter($this->getIdentityProvider() . '.log_out_uri'),
+                $this->parameter($this->getIdentityProvider() . '.client_id')
             )
         );
 
@@ -127,9 +127,10 @@ final class ActionServiceProvider extends BaseServiceProvider
             RefreshServiceInterface::class,
             fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
                 new Client(),
-                $this->parameter('auth0.client_id'),
-                $this->parameter('auth0.client_secret'),
-                $this->parameter('auth0.domain')
+                $this->parameter($this->getIdentityProvider() . '.client_id'),
+                $this->parameter($this->getIdentityProvider() . '.client_secret'),
+                $this->parameter($this->getIdentityProvider() . '.domain'),
+                $this->getIdentityProvider()
             )
         );
 
@@ -137,15 +138,15 @@ final class ActionServiceProvider extends BaseServiceProvider
             Auth0::class,
             fn (): Auth0 => new Auth0(
                 [
-                    'domain' => $this->parameter('auth0.domain'),
-                    'clientId' => $this->parameter('auth0.client_id'),
-                    'clientSecret' => $this->parameter('auth0.client_secret'),
-                    'redirectUri' => $this->parameter('auth0.redirect_uri'),
+                    'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
+                    'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
+                    'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
+                    'redirectUri' => $this->parameter($this->getIdentityProvider() . '.redirect_uri'),
                     'scope' => ['openid','email','profile','offline_access'],
                     'persistIdToken' => true,
                     'persistRefreshToken' => true,
-                    'tokenLeeway' => $this->parameter('auth0.id_token_leeway'),
-                    'cookieSecret' => $this->parameter('auth0.cookie_secret'),
+                    'tokenLeeway' => $this->parameter($this->getIdentityProvider() . '.id_token_leeway'),
+                    'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
                 ]
             )
         );
@@ -154,7 +155,7 @@ final class ActionServiceProvider extends BaseServiceProvider
             IsAllowedRefreshToken::class,
             fn (): IsAllowedRefreshToken => new IsAllowedRefreshToken(
                 $this->get(ConsumerReadRepositoryInterface::class),
-                (string)$this->parameter('auth0.allowed_refresh_permission')
+                (string)$this->parameter($this->getIdentityProvider() . '.allowed_refresh_permission')
             )
         );
 
@@ -177,5 +178,13 @@ final class ActionServiceProvider extends BaseServiceProvider
                 $this->get(IsAllowedRefreshToken::class)
             )
         );
+    }
+
+    private function getIdentityParameter(): string
+    {
+        if ($this->parameter('keycloak.enabled')) {
+            return 'keycloak';
+        }
+        return 'auth0';
     }
 }
