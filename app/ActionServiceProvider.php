@@ -129,8 +129,7 @@ final class ActionServiceProvider extends BaseServiceProvider
                 new Client(),
                 $this->parameter($this->getIdentityProvider() . '.client_id'),
                 $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                $this->parameter($this->getIdentityProvider() . '.domain'),
-                $this->getIdentityProvider()
+                $this->parameter($this->getIdentityProvider() . '.domain')
             )
         );
 
@@ -180,7 +179,7 @@ final class ActionServiceProvider extends BaseServiceProvider
         );
     }
 
-    private function getIdentityParameter(): string
+    private function getIdentityProvider(): string
     {
         if ($this->parameter('keycloak.enabled')) {
             return 'keycloak';
