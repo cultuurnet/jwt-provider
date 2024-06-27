@@ -5,6 +5,6 @@ namespace 'jwt-provider' do
   end
   desc "remove debug files"
   task :remove_debug_files do |task|
-      system('rm web/jwt-example*.php')
+      system('rm web/jwt-example.php')
   end
 end
