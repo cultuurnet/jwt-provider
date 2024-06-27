@@ -1,4 +1,4 @@
-.PHONY: up down build install ci bash init
+.PHONY: up down build install ci bash init config
 
 up:
 	docker-compose up -d
@@ -20,5 +20,8 @@ cs-fix:
 
 bash:
 	docker exec -it jwt-provider bash
+
+config:
+	sh ./docker/config.sh
 
 init: install
