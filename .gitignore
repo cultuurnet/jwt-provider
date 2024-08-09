@@ -1,7 +1,8 @@
 /vendor
+.bundle/
 /build
 *.pem
 config.yml
-.idea
-.php_cs.cache
+/log
+/.php_cs.cache
 .phpunit.result.cache
