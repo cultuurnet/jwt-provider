@@ -1,9 +1,9 @@
 #!/bin/sh
 
-DIR="../appconfig/files/udb3/docker/jwt-provider/"
+DIR="../appconfig/files/uitdatabank/docker/jwt-provider/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
-  echo "Error: missing appconfig see docker.md prerequisites to fix this."
+  echo "Error: missing appconfig. The appconfig and jwt-provider repositories must be cloned into the same parent folder."
   exit 1
 fi
