@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\JwtProvider\Error;
 use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
+
 use function Sentry\init;
 
 final class SentryHubServiceProvider extends BaseServiceProvider
