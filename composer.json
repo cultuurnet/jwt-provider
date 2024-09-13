@@ -34,7 +34,7 @@
         "guzzlehttp/guzzle": "^7.8"
     },
     "require-dev": {
-        "publiq/php-cs-fixer-config": "^1.3",
+        "publiq/php-cs-fixer-config": "^v2.1",
         "jangregor/phpstan-prophecy": "^1.0",
         "phpunit/phpunit": "^9.6",
         "phpspec/prophecy-phpunit": "^2.2",
