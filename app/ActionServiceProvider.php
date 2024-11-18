@@ -178,12 +178,4 @@ final class ActionServiceProvider extends BaseServiceProvider
             )
         );
     }
-
-    private function getIdentityProvider(): string
-    {
-        if ($this->parameter('keycloak.enabled')) {
-            return 'keycloak';
-        }
-        return 'auth0';
-    }
 }
