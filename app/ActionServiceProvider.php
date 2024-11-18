@@ -98,16 +98,16 @@ final class ActionServiceProvider extends BaseServiceProvider
                 $this->get(Auth0::class),
                 new Authentication(
                     [
-                        'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
-                        'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
-                        'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                        'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
+                        'domain' => $this->parameter('keycloak.domain'),
+                        'clientId' => $this->parameter('keycloak.client_id'),
+                        'clientSecret' => $this->parameter('keycloak.client_secret'),
+                        'cookieSecret' => $this->parameter('keycloak.cookie_secret'),
                     ]
                 ),
                 $this->get(ResponseFactoryInterface::class),
                 new UriFactory(),
-                $this->parameter($this->getIdentityProvider() . '.log_out_uri'),
-                $this->parameter($this->getIdentityProvider() . '.client_id')
+                $this->parameter('keycloak.log_out_uri'),
+                $this->parameter('keycloak.client_id')
             )
         );
 
@@ -127,9 +127,9 @@ final class ActionServiceProvider extends BaseServiceProvider
             RefreshServiceInterface::class,
             fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
                 new Client(),
-                $this->parameter($this->getIdentityProvider() . '.client_id'),
-                $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                $this->parameter($this->getIdentityProvider() . '.domain')
+                $this->parameter('keycloak.client_id'),
+                $this->parameter('keycloak.client_secret'),
+                $this->parameter('keycloak.domain')
             )
         );
 
@@ -137,15 +137,15 @@ final class ActionServiceProvider extends BaseServiceProvider
             Auth0::class,
             fn (): Auth0 => new Auth0(
                 [
-                    'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
-                    'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
-                    'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                    'redirectUri' => $this->parameter($this->getIdentityProvider() . '.redirect_uri'),
+                    'domain' => $this->parameter('keycloak.domain'),
+                    'clientId' => $this->parameter('keycloak.client_id'),
+                    'clientSecret' => $this->parameter('keycloak.client_secret'),
+                    'redirectUri' => $this->parameter('keycloak.redirect_uri'),
                     'scope' => ['openid','email','profile','offline_access'],
                     'persistIdToken' => true,
                     'persistRefreshToken' => true,
-                    'tokenLeeway' => $this->parameter($this->getIdentityProvider() . '.id_token_leeway'),
-                    'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
+                    'tokenLeeway' => $this->parameter('keycloak.id_token_leeway'),
+                    'cookieSecret' => $this->parameter('keycloak.cookie_secret'),
                 ]
             )
         );
@@ -154,7 +154,7 @@ final class ActionServiceProvider extends BaseServiceProvider
             IsAllowedRefreshToken::class,
             fn (): IsAllowedRefreshToken => new IsAllowedRefreshToken(
                 $this->get(ConsumerReadRepositoryInterface::class),
-                (string)$this->parameter($this->getIdentityProvider() . '.allowed_refresh_permission')
+                (string)$this->parameter('keycloak.allowed_refresh_permission')
             )
         );
 
