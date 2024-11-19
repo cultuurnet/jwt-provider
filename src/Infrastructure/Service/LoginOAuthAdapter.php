@@ -14,7 +14,7 @@ use CultuurNet\UDB3\JwtProvider\Domain\Service\LoginServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
 
-final class LoginAuth0Adapter implements LoginServiceInterface
+final class LoginOAuthAdapter implements LoginServiceInterface
 {
     private Auth0Interface $auth0;
 

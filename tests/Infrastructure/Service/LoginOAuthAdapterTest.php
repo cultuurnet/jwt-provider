@@ -14,7 +14,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-final class LoginAuth0AdapterTest extends TestCase
+final class LoginOAuthAdapterTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -25,7 +25,7 @@ final class LoginAuth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginAuth0Adapter(
+        $auth0adapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
@@ -49,7 +49,7 @@ final class LoginAuth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginAuth0Adapter(
+        $auth0adapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
@@ -66,7 +66,7 @@ final class LoginAuth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginAuth0Adapter(
+        $auth0adapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
@@ -84,7 +84,7 @@ final class LoginAuth0AdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginAuth0Adapter(
+        $auth0adapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 

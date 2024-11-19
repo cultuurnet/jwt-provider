@@ -25,7 +25,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformati
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginOAuthAdapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutOAuthAdapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use GuzzleHttp\Client;
@@ -118,7 +118,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LoginServiceInterface::class,
-            fn (): LoginAuth0Adapter => new LoginAuth0Adapter(
+            fn (): LoginOAuthAdapter => new LoginOAuthAdapter(
                 $this->get(Auth0::class)
             )
         );
