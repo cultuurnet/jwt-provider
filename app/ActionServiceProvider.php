@@ -25,9 +25,9 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Repository\SessionClientInformati
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginOAuthAdapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutOAuthAdapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshOAuthAdapter;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
@@ -94,20 +94,20 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LogOutServiceInterface::class,
-            fn (): LogOutAuth0Adapter => new LogOutAuth0Adapter(
+            fn (): LogOutOAuthAdapter => new LogOutOAuthAdapter(
                 $this->get(Auth0::class),
                 new Authentication(
                     [
-                        'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
-                        'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
-                        'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                        'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
+                        'domain' => $this->parameter('keycloak.domain'),
+                        'clientId' => $this->parameter('keycloak.client_id'),
+                        'clientSecret' => $this->parameter('keycloak.client_secret'),
+                        'cookieSecret' => $this->parameter('keycloak.cookie_secret'),
                     ]
                 ),
                 $this->get(ResponseFactoryInterface::class),
                 new UriFactory(),
-                $this->parameter($this->getIdentityProvider() . '.log_out_uri'),
-                $this->parameter($this->getIdentityProvider() . '.client_id')
+                $this->parameter('keycloak.log_out_uri'),
+                $this->parameter('keycloak.client_id')
             )
         );
 
@@ -118,18 +118,18 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LoginServiceInterface::class,
-            fn (): LoginAuth0Adapter => new LoginAuth0Adapter(
+            fn (): LoginOAuthAdapter => new LoginOAuthAdapter(
                 $this->get(Auth0::class)
             )
         );
 
         $this->addShared(
             RefreshServiceInterface::class,
-            fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
+            fn (): RefreshOAuthAdapter => new RefreshOAuthAdapter(
                 new Client(),
-                $this->parameter($this->getIdentityProvider() . '.client_id'),
-                $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                $this->parameter($this->getIdentityProvider() . '.domain')
+                $this->parameter('keycloak.client_id'),
+                $this->parameter('keycloak.client_secret'),
+                $this->parameter('keycloak.domain')
             )
         );
 
@@ -137,15 +137,15 @@ final class ActionServiceProvider extends BaseServiceProvider
             Auth0::class,
             fn (): Auth0 => new Auth0(
                 [
-                    'domain' => $this->parameter($this->getIdentityProvider() . '.domain'),
-                    'clientId' => $this->parameter($this->getIdentityProvider() . '.client_id'),
-                    'clientSecret' => $this->parameter($this->getIdentityProvider() . '.client_secret'),
-                    'redirectUri' => $this->parameter($this->getIdentityProvider() . '.redirect_uri'),
+                    'domain' => $this->parameter('keycloak.domain'),
+                    'clientId' => $this->parameter('keycloak.client_id'),
+                    'clientSecret' => $this->parameter('keycloak.client_secret'),
+                    'redirectUri' => $this->parameter('keycloak.redirect_uri'),
                     'scope' => ['openid','email','profile','offline_access'],
                     'persistIdToken' => true,
                     'persistRefreshToken' => true,
-                    'tokenLeeway' => $this->parameter($this->getIdentityProvider() . '.id_token_leeway'),
-                    'cookieSecret' => $this->parameter($this->getIdentityProvider() . '.cookie_secret'),
+                    'tokenLeeway' => $this->parameter('keycloak.id_token_leeway'),
+                    'cookieSecret' => $this->parameter('keycloak.cookie_secret'),
                 ]
             )
         );
@@ -154,7 +154,7 @@ final class ActionServiceProvider extends BaseServiceProvider
             IsAllowedRefreshToken::class,
             fn (): IsAllowedRefreshToken => new IsAllowedRefreshToken(
                 $this->get(ConsumerReadRepositoryInterface::class),
-                (string)$this->parameter($this->getIdentityProvider() . '.allowed_refresh_permission')
+                (string)$this->parameter('keycloak.allowed_refresh_permission')
             )
         );
 
@@ -177,13 +177,5 @@ final class ActionServiceProvider extends BaseServiceProvider
                 $this->get(IsAllowedRefreshToken::class)
             )
         );
-    }
-
-    private function getIdentityProvider(): string
-    {
-        if ($this->parameter('keycloak.enabled')) {
-            return 'keycloak';
-        }
-        return 'auth0';
     }
 }

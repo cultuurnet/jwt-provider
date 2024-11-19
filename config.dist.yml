@@ -13,7 +13,7 @@ jwt:
   keys:
     public:
       file: public.pem
-auth0:
+keycloak:
   domain:
   client_id:
   client_secret:

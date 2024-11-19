@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Slim\Psr7\Factory\UriFactory;
 
-final class LogOutAuth0AdapterTest extends TestCase
+final class LogOutOAuthAdapterTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -28,7 +28,7 @@ final class LogOutAuth0AdapterTest extends TestCase
 
         $authentication->getLogoutLink('http://foo-bar.com', ['clientId' => 'client-id'])->willReturn($auth0LogOutUri);
 
-        $auth0adapter = new LogOutAuth0Adapter(
+        $logOutOAuthAdapter = new LogOutOAuthAdapter(
             $auth0->reveal(),
             $authentication->reveal(),
             new SlimResponseFactory(),
@@ -37,7 +37,7 @@ final class LogOutAuth0AdapterTest extends TestCase
             'client-id'
         );
 
-        $response = $auth0adapter->logout();
+        $response = $logOutOAuthAdapter->logout();
 
         $this->assertEquals(StatusCodeInterface::STATUS_MOVED_PERMANENTLY, $response->getStatusCode());
         $this->assertEquals($auth0LogOutUri, $response->getHeaderLine('Location'));
