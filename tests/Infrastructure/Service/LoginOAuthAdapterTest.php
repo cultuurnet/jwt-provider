@@ -25,7 +25,7 @@ final class LoginOAuthAdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginOAuthAdapter(
+        $loginOAuthAdapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
@@ -39,7 +39,7 @@ final class LoginOAuthAdapterTest extends TestCase
             ]
         )->shouldBeCalled();
 
-        $auth0adapter->redirectToLogin();
+        $loginOAuthAdapter->redirectToLogin();
     }
 
     /**
@@ -49,14 +49,14 @@ final class LoginOAuthAdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginOAuthAdapter(
+        $loginOAuthAdapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
         $auth0->getIdToken()->willReturn('token');
         $auth0->exchange()->willReturn(true);
 
-        $this->assertEquals('token', $auth0adapter->token());
+        $this->assertEquals('token', $loginOAuthAdapter->token());
     }
 
     /**
@@ -66,13 +66,13 @@ final class LoginOAuthAdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginOAuthAdapter(
+        $loginOAuthAdapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
         $auth0->getRefreshToken()->willReturn('refresh-token');
 
-        $this->assertEquals('refresh-token', $auth0adapter->refreshToken());
+        $this->assertEquals('refresh-token', $loginOAuthAdapter->refreshToken());
     }
 
     /**
@@ -84,7 +84,7 @@ final class LoginOAuthAdapterTest extends TestCase
     {
         $auth0 = $this->prophesize(Auth0Interface::class);
 
-        $auth0adapter = new LoginOAuthAdapter(
+        $loginOAuthAdapter = new LoginOAuthAdapter(
             $auth0->reveal()
         );
 
@@ -93,7 +93,7 @@ final class LoginOAuthAdapterTest extends TestCase
 
         $this->expectException(UnSuccessfulAuthException::class);
 
-        $auth0adapter->token();
+        $loginOAuthAdapter->token();
     }
 
     /**
