@@ -27,7 +27,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginOAuthAdapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutOAuthAdapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshOAuthAdapter;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
 
@@ -125,7 +125,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             RefreshServiceInterface::class,
-            fn (): RefreshAuth0Adapter => new RefreshAuth0Adapter(
+            fn (): RefreshOAuthAdapter => new RefreshOAuthAdapter(
                 new Client(),
                 $this->parameter('keycloak.client_id'),
                 $this->parameter('keycloak.client_secret'),
