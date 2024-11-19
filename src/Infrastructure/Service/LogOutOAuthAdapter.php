@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
-final class LogOutAuth0Adapter implements LogOutServiceInterface
+final class LogOutOAuthAdapter implements LogOutServiceInterface
 {
     private ResponseFactoryInterface $responseFactory;
 

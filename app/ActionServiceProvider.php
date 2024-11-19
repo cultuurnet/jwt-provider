@@ -26,7 +26,7 @@ use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractClientInformationF
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\ExtractLocaleFromRequest;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\IsAllowedRefreshToken;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LoginAuth0Adapter;
-use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutAuth0Adapter;
+use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\LogOutOAuthAdapter;
 use CultuurNet\UDB3\JwtProvider\Infrastructure\Service\RefreshAuth0Adapter;
 use GuzzleHttp\Client;
 use Slim\Psr7\Factory\UriFactory;
@@ -94,7 +94,7 @@ final class ActionServiceProvider extends BaseServiceProvider
 
         $this->addShared(
             LogOutServiceInterface::class,
-            fn (): LogOutAuth0Adapter => new LogOutAuth0Adapter(
+            fn (): LogOutOAuthAdapter => new LogOutOAuthAdapter(
                 $this->get(Auth0::class),
                 new Authentication(
                     [
