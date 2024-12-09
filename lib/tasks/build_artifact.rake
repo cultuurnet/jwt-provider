@@ -8,7 +8,7 @@ task :build_artifact do |task|
   vendor         = 'publiq VZW'
   maintainer     = 'Infra publiq <infra@publiq.be>'
   license        = 'Apache-2.0'
-  description    = 'JSON Web Token provider for UiTdatabank'
+  description    = 'JSON Web Token provider for UiTdatabank (UiTiDv1)'
   source         = 'https://github.com/cultuurnet/jwt-provider'
   build_url      = ENV['JOB_DISPLAY_URL'].nil? ? '' : ENV['JOB_DISPLAY_URL']
 
