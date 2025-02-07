@@ -4,5 +4,5 @@ task :build do |task|
 
   FileUtils.rm('web/jwt-example.php', :force => true)
   FileUtils.rm('config.dist.yml', :force => true)
-￼ FileUtils.mkdir('log')
+  FileUtils.mkdir('log')
 end
