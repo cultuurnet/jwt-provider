@@ -175,7 +175,7 @@ class AuthorizeOptions
     }
 
     /**
-     * @param string $language 2-letter ISO code of the language
+     * @param string $lang 2-letter ISO code of the language
      * @return AuthorizeOptions
      */
     public function setLang($lang)
