@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials as RequestToken;
 use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
