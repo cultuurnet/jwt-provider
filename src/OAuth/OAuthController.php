@@ -1,7 +1,7 @@
 <?php
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use CultuurNet\Auth\AuthorizeOptions;
+use CultuurNet\UDB3\JwtProvider\Auth\AuthorizeOptions;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
 use CultuurNet\UDB3\JwtProvider\Http\ResponseFactory;
 use CultuurNet\UDB3\JwtProvider\RequestTokenStorage\RequestTokenStorageInterface;
