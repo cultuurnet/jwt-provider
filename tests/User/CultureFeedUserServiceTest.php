@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\JwtProvider\User;
 use ICultureFeed;
 use CultureFeed_User;
 use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials;
-use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\CultureFeed\CultureFeedFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
