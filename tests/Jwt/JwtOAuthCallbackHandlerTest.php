@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\Jwt;
 
-use CultuurNet\Auth\TokenCredentials;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials;
 use CultuurNet\Auth\User as AccessToken;
 use CultuurNet\UDB3\JwtProvider\Http\RedirectResponse;
 use CultuurNet\UDB3\JwtProvider\User\EmailAddress;

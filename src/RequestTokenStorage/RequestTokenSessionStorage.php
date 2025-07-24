@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
 use Aura\Session\Segment;
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials as RequestToken;
 
 /**
  * Class RequestTokenSessionStorage

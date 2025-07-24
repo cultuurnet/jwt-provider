@@ -2,7 +2,7 @@
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
 use InvalidArgumentException;
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials as RequestToken;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
