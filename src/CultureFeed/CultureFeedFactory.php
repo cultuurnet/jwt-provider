@@ -4,8 +4,8 @@ namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
-use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\Auth\ConsumerCredentials;
 use ICultureFeed;
 
 class CultureFeedFactory implements CultureFeedFactoryInterface

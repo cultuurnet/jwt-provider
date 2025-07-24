@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
-use CultuurNet\Auth\ConsumerCredentials;
+use CultuurNet\UDB3\JwtProvider\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 use CultuurNet\UDB3\JwtProvider\User\CultureFeedUserService;
 use CultuurNet\UDB3\JwtProvider\User\UserServiceInterface;
