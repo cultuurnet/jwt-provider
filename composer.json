@@ -6,7 +6,6 @@
     "authors": [],
     "require": {
         "aura/session": "^2.1",
-        "cultuurnet/auth": "^3.0",
         "cultuurnet/culturefeed-php": "^1.6",
         "filp/whoops": "^2.15",
         "hassankhan/config": "^2.1",
@@ -17,7 +16,10 @@
         "guzzle/guzzle": "^2.6",
         "slim/psr7": "^1.6",
         "league/container": "^4.2",
-        "symfony/yaml": "^4.4"
+        "symfony/yaml": "^4.4",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/oauth-subscriber": "^0.8.1",
+        "symfony/console": "^3.4"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "~2.9",
