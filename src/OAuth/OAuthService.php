@@ -123,25 +123,23 @@ class OAuthService
         return $user;
     }
 
-    private function createClient(Url $baseUrl, ConsumerCredentials $consumerCredentials)
+    private function createClient(Url $baseUrl, ConsumerCredentials $consumerCredentials, ?TokenCredentials $tokenCredentials = null): Client
     {
         $oAuthMiddleware = new Oauth1([
             'consumer_key' => $consumerCredentials->getKey(),
             'consumer_secret' => $consumerCredentials->getSecret(),
-            'token' => '',
-            'token_secret' => '',
+            'token' => $tokenCredentials ? $tokenCredentials->getToken() : '',
+            'token_secret' => $tokenCredentials ? $tokenCredentials->getSecret() : '',
         ]);
 
         $stack = HandlerStack::create();
         $stack->push($oAuthMiddleware);
 
-        $client = new Client([
+        return new Client([
             'base_uri' => (string) $baseUrl,
             'handler' => $stack,
             'auth' => 'oauth',
         ]);
-
-        return $client;
     }
 
     private function getUrlForPath($path) {
@@ -154,7 +152,7 @@ class OAuthService
 
     private function sendPostRequest(string $path, array $formData, ?TokenCredentials $tokenCredentials): ResponseInterface
     {
-        $client = $this->createClient($this->baseUrl, $tokenCredentials !== null ? $tokenCredentials : $this->consumerCredentials);
+        $client = $this->createClient($this->baseUrl, $this->consumerCredentials, $tokenCredentials);
 
         // Make sure to encode the form data using Query::build() and use the "body" option, as opposed to using the
         // "form_params" option. While form_params supports parameters with multiple values, it encodes them with a []
@@ -168,7 +166,7 @@ class OAuthService
 
         $status = $response->getStatusCode();
         if ($status < 200 || $status > 299) {
-            throw new \Exception($response);
+            throw new \Exception($response->getReasonPhrase(), $status);
         }
 
         return $response;
