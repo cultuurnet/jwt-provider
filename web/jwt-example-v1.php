@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 session_start();
 
+if ($_SERVER['HTTP_HOST'] === 'localhost') {
+    header('response-code: 400');
+    die('Access denied.');
+}
+
 $actual_link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
 $url = ('http://localhost:9999/jwt-example-v1.php');
