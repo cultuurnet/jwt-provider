@@ -11,7 +11,7 @@ $url = ('http://localhost:9999/jwt-example-v1.php');
 <ul>
     <li><a href="http://localhost:9999/connect?destination=<?php echo $url?>">Connect</a></li>
     <li><a href="http://localhost:9999/logout?destination=<?php echo $url?>">Logout</a></li>
-    <li><a href="http://localhost:9999/register">Register</a></li>
+    <li><a href="http://localhost:9999/register?destination=<?php echo $url?>"">Register</a></li>
 </ul>
 
     <style>
