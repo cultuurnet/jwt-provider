@@ -21,5 +21,8 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/web
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+COPY apache-limits.conf /etc/apache2/conf-available/apache-limits.conf
+RUN a2enconf apache-limits
+
 RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug
 COPY xdebug.ini $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
