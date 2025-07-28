@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\OAuth;
 
-use CultuurNet\Auth\ConsumerCredentials;
+use CultuurNet\UDB3\JwtProvider\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\JwtProvider\BaseServiceProvider;
 use CultuurNet\UDB3\JwtProvider\Jwt\JwtOAuthCallbackHandler;
 use CultuurNet\UDB3\JwtProvider\RoutingServiceProvider;

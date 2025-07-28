@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\User;
 
-use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\Auth\User as AccessToken;
 
 interface UserServiceInterface
 {

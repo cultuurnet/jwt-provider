@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Aura\Session\Segment;
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials as RequestToken;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 

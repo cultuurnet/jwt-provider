@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\RequestTokenStorage;
 
-use CultuurNet\Auth\TokenCredentials as RequestToken;
+use CultuurNet\UDB3\JwtProvider\Auth\TokenCredentials as RequestToken;
 
 interface RequestTokenStorageInterface
 {

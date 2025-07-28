@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\JwtProvider\CultureFeed;
 
-use CultuurNet\Auth\User as AccessToken;
+use CultuurNet\UDB3\JwtProvider\Auth\User as AccessToken;
 use ICultureFeed;
 
 interface CultureFeedFactoryInterface
