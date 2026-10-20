@@ -19,47 +19,45 @@ pipeline {
         }
 
         stage('Setup and build') {
+            agent { label 'docker' }
             stages {
                 stage('Build project') {
                     agent {
                         docker {
                             image 'build_images/php:7.4'
-                            label 'docker'
+                            reuseNode true
                             alwaysPull true
                         }
                     }
+                    options { skipDefaultCheckout() }
                     steps {
                         sh label: 'Install composer packages', script: 'composer install --no-dev --ignore-platform-reqs --prefer-dist --optimize-autoloader --no-interaction'
                         sh label: 'Remove development files', script: 'rm -f web/jwt-example.php config.dist.yml && mkdir log'
-                        sh label: 'Archive build', script: 'tar czf /tmp/build.tgz --exclude=./.git . && mv /tmp/build.tgz build.tgz'
-                        stash name: 'build', includes: 'build.tgz'
-                    }
-                    post {
-                        cleanup {
-                            cleanWs()
-                        }
                     }
                 }
 
                 stage('Build artifact') {
-                    agent { label 'ubuntu && 20.04' }
+                    agent {
+                        docker {
+                            image 'base_images/ruby:2.7'
+                            reuseNode true
+                        }
+                    }
+                    options { skipDefaultCheckout() }
                     environment {
                         GIT_SHORT_COMMIT = util.shortCommitRef()
                         ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
                     }
                     steps {
-                        sh label: 'Remove checkout', script: 'find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +'
-                        unstash 'build'
-                        sh label: 'Extract build', script: 'tar xzf build.tgz && rm build.tgz'
                         sh label: 'Install rubygems', script: 'bundle install --deployment'
                         sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
                         archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
                     }
-                    post {
-                        cleanup {
-                            cleanWs()
-                        }
-                    }
+                }
+            }
+            post {
+                cleanup {
+                    cleanWs()
                 }
             }
         }
