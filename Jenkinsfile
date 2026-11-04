@@ -96,7 +96,7 @@ pipeline {
             }
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'noble'
-                triggerDeployment nodeName: 'uitdatabank-jwt-acc01'
+                triggerDeployment nodeName: 'uitdatabank-jwt-acc02'
             }
             post {
                 always {
@@ -114,7 +114,7 @@ pipeline {
             }
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'noble'
-                triggerDeployment nodeName: 'uitdatabank-jwt-test01'
+                triggerDeployment nodeName: 'uitdatabank-jwt-test02'
             }
             post {
                 always {
@@ -132,7 +132,7 @@ pipeline {
             }
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'noble'
-                triggerDeployment nodeName: 'uitdatabank-jwt-prod01'
+                triggerDeployment nodeName: 'uitdatabank-jwt-prod02'
             }
             post {
                 always {
